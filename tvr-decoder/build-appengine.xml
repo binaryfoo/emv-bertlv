@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * http://lresende.blogspot.com/2009/10/google-appengine-sdk-and-maven.html
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+<project name="AppEngineSDKInstaller">
+
+
+    <property name="appengine.version" value="1.2.6"/>
+    <property name="localRepository" value="/home/wcurrie/.m2/repository"/>
+
+    <property name="appengine.distribution.location"
+              value="http://googleappengine.googlecode.com/files/appengine-java-sdk-${appengine.version}.zip"/>
+    <!--<property name="unpack.location" value="${basedir}/target/appengine-java-sdk-${appengine.version}"/>-->
+    <property name="unpack.location" value="/home/wcurrie/.eclipse/org.eclipse.platform_3.4.0_1879265304/plugins/com.google.appengine.eclipse.sdkbundle_1.2.6.v200910130758/appengine-java-sdk-1.2.6"/>
+
+    <!-- user -->
+    <property name="appengine.api.sdk"
+              value="${unpack.location}/lib/user/appengine-api-1.0-sdk-${appengine.version}.jar"/>
+    <property name="appengine.api.labs"
+              value="${unpack.location}/lib/user/appengine-api-labs-${appengine.version}.jar"/>
+    <!-- tools -->
+    <property name="appengine.tools.api"
+              value="${unpack.location}/lib/appengine-tools-api.jar"/>
+    <property name="appengine.api"
+              value="${unpack.location}/lib/impl/appengine-api.jar"/>
+    <property name="appengine.api.stubs"
+              value="${unpack.location}/lib/impl/appengine-api-stubs.jar"/>
+    <property name="appengine.api.labs"
+              value="${unpack.location}/lib/impl/appengine-api-labs.jar"/>
+    <property name="appengine.local.runtime"
+              value="${unpack.location}/lib/impl/appengine-local-runtime.jar"/>
+    <property name="appengine.repackaged.commons.logging"
+              value="${unpack.location}/lib/shared/jsp/repackaged-appengine-commons-logging-1.1.1.jar"/>
+    <!--<property name="appengine.local.runtime.shared"-->
+    <!--value="${unpack.location}/lib/shared/appengine-local-runtime-shared.jar"/>-->
+	
+    <condition property="maven.suffix" value="">
+        <os family="unix"/>
+    </condition>
+    <condition property="maven.suffix" value=".bat">
+        <os family="windows"/>
+    </condition>
+
+    <target name="check-installed">
+        <condition property="already.installed">
+            <available
+                    file="${localRepository}/com/google/appengine-java-sdk/${appengine.version}/appengine-java-sdk-${appengine.version}.zip"/>
+        </condition>
+        <echo message="sdk is installed : ${already.installed}"/>
+    </target>
+
+
+    <target name="check-unpacked">
+        <condition property="already.unpacked">
+            <available file="${unpack.location}"/>
+        </condition>
+    </target>
+
+    <target name="install" depends="check-installed" unless="already.installed">
+        <echo message="Installing the app engine with version : ${appengine.version}"/>
+
+        <mkdir dir="${basedir}/target/appengine-download/"/>
+        <get src="${appengine.distribution.location}"
+             dest="${basedir}/target/appengine-download/appengine-java-sdk-${appengine.version}.zip"
+             verbose="true"
+             usetimestamp="true"/>
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google  -DartifactId=appengine-java-sdk -Dversion=${appengine.version} -Dpackaging=zip -DgeneratePom=true -Dfile=${basedir}/target/appengine-download/appengine-java-sdk-${appengine.version}.zip"/>
+        </exec>
+
+        <antcall target="unpack-appengine-sdk"/>
+		
+        <antcall target="install-artifacts"/>
+
+    </target>
+	
+	<target name="install-artifacts">
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-api-1.0-sdk -Dversion=${appengine.version} -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.api.sdk}"/>
+        </exec>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-tools-sdk -Dversion=${appengine.version} -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.tools.api}"/>
+        </exec>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-api -Dversion=${appengine.version} -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.api}"/>
+        </exec>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-api-1.0-stubs -Dversion=${appengine.version} -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.api.stubs}"/>
+        </exec>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-api-1.0-labs -Dversion=${appengine.version} -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.api.labs}"/>
+        </exec>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-api-1.0-runtime -Dversion=${appengine.version} -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.local.runtime}"/>
+        </exec>
+
+        <exec executable="mvn${maven.suffix}" dir="${basedir}" failonerror="false">
+            <arg line="install:install-file -DgroupId=com.google.appengine  -DartifactId=appengine-repackaged-commons-logging -Dversion=1.1.1 -Dpackaging=jar -DgeneratePom=true -Dfile=${appengine.repackaged.commons.logging}"/>
+        </exec>
+	</target>
+
+    <target name="unpack-appengine-sdk" depends="check-installed, check-unpacked" unless="already.unpacked">
+        <fail message="AppEngine SDK zip file not installed in local repository: ${localRepository}"
+              unless="already.installed"/>
+        <mkdir dir="${basedir}/target/appengine-unpack-temp/"/>
+        <unzip src="${localRepository}/com/google/appengine-java-sdk/${appengine.version}/appengine-java-sdk-${appengine.version}.zip"
+               dest="${basedir}/target/appengine-unpack-temp/"
+               overwrite="false">
+        </unzip>
+        <move todir="${unpack.location}">
+            <fileset dir="${basedir}/target/appengine-unpack-temp/appengine-java-sdk-${appengine.version}"/>
+        </move>
+        <delete dir="${basedir}/target/appengine-unpack-temp/"/>
+    </target>
+
+
+    <target name="clean-appengine-files">
+        <delete dir="${unpack.location}"/>
+    </target>
+</project>

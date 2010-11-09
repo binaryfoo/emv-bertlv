@@ -1,0 +1,45 @@
+html,body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+div#container {
+	position: relative;
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
+}
+
+div#content {
+	padding: 1em;
+}
+
+div#footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	text-align: center;
+	font-size: x-small;
+}
+
+div#footer p {
+	padding: 1em;
+	margin: 0;
+}
+
+span.rawData {
+	font-weight: bold;
+}
+
+span.composite-label {
+	font-weight: bold;
+}
+
+.highlight {
+	background-color: #ff0000;
+}
+
+td.indent {
+	width: 20px;
+}
