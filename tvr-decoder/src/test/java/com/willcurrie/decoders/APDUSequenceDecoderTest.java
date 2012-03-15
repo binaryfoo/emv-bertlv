@@ -17,16 +17,19 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
 
     private ReplyAPDUDecoder replyAPDUDecoder;
     private SelectCommandAPDUDecoder selectCommandAPDUDecoder;
+    private GetProcessingOptionsCommandAPDUDecoder getProcessingOptionsCommandAPDUDecoder;
     private DecodedData decodedCommand;
     private DecodedData decodedReply;
     private Decoder decoder;
 
     @Before
     public void setUp() throws Exception {
-        replyAPDUDecoder = createMock(ReplyAPDUDecoder.class);
-        selectCommandAPDUDecoder = createMock(SelectCommandAPDUDecoder.class);
+        selectCommandAPDUDecoder = createMock("selectCommandAPDUDecoder", SelectCommandAPDUDecoder.class);
+        replyAPDUDecoder = createMock("replyAPDUDecoder", ReplyAPDUDecoder.class);
+        getProcessingOptionsCommandAPDUDecoder = createMock("getProcessingOptionsCommandAPDUDecoder", GetProcessingOptionsCommandAPDUDecoder.class);
         expect(selectCommandAPDUDecoder.getCommand()).andStubReturn(APDUCommand.Select);
-        decoder = new APDUSequenceDecoder(replyAPDUDecoder, selectCommandAPDUDecoder);
+        expect(getProcessingOptionsCommandAPDUDecoder.getCommand()).andStubReturn(APDUCommand.GetProcessingOptions);
+        decoder = new APDUSequenceDecoder(replyAPDUDecoder, selectCommandAPDUDecoder, getProcessingOptionsCommandAPDUDecoder);
         decodedCommand = createMock(DecodedData.class);
         decodedReply = createMock(DecodedData.class);
     }
@@ -35,7 +38,19 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
     public void testOneSelectCommand() throws Exception {
         String input = "00A4040007A000000004101000";
         expect(selectCommandAPDUDecoder.decode(input, 0)).andReturn(decodedCommand);
-        expect(decodedCommand.getEndIndex()).andReturn(input.length());
+        expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
+        replayAll();
+        List<DecodedData> list = decoder.decode(input, 0);
+        verifyAll();
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), is(decodedCommand));
+    }
+
+    @Test
+    public void testOneGetProcessingOptionsCommand() throws Exception {
+        String input = "80A8000002830000";
+        expect(getProcessingOptionsCommandAPDUDecoder.decode(input, 0)).andReturn(decodedCommand);
+        expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0);
         verifyAll();
@@ -47,11 +62,11 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
     public void testOneSelectCommandPlusResponse() throws Exception {
         String line1 = "00A4040007A000000004101000";
         String line2 = "6F1C8407A0000000041010A511500F505043204D434420303420207632309000";
-        String input = line1 + line2;
-        expect(selectCommandAPDUDecoder.decode(input, 0)).andReturn(decodedCommand);
-        expect(decodedCommand.getEndIndex()).andReturn(line1.length());
-        expect(replyAPDUDecoder.decode(input, line1.length())).andReturn(decodedReply);
-        expect(decodedReply.getEndIndex()).andReturn(line1.length() + line2.length());
+        String input = line1 + " " + line2;
+        expect(selectCommandAPDUDecoder.decode(line1, 0)).andReturn(decodedCommand);
+        expect(decodedCommand.getEndIndex()).andReturn(line1.length()/2);
+        expect(replyAPDUDecoder.decode(line2, line1.length()/2)).andReturn(decodedReply);
+        expect(decodedReply.getEndIndex()).andReturn(line1.length()/2 + line2.length()/2);
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0);
         verifyAll();

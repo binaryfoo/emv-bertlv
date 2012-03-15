@@ -12,9 +12,10 @@ public class ReplyAPDUDecoder {
     }
 
     public DecodedData decode(String input, int startIndexInBytes) {
-        List<DecodedData> oneTlv = tlvDecoder.decode(input.substring(0, input.length() - 4), startIndexInBytes);
+        int statusBytesStart = input.length() - 4;
+        List<DecodedData> oneTlv = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes);
         DecodedData payload = oneTlv.get(0);
         int endIndex = payload.getEndIndex() + 2;
-        return new DecodedData(input, "Reply", startIndexInBytes, endIndex, oneTlv);
+        return new DecodedData("Reply", input.substring(statusBytesStart), startIndexInBytes, endIndex, oneTlv);
     }
 }

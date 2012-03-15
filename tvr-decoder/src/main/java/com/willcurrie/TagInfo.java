@@ -46,7 +46,7 @@ public class TagInfo {
 		new TagInfo("9F34", "CVM Results", "Cardholder Verification Results", new CVMResultsDecoder()),
 		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder()),
 		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
-                new SelectCommandAPDUDecoder())),
+                new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(), new GenerateACAPDUDecoder())),
 	};
 	private static final Map<String, TagInfo> TAG_LOOKUP = new HashMap<String, TagInfo>();
 	static {
