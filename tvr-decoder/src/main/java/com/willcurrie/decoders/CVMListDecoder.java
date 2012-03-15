@@ -13,14 +13,14 @@ public class CVMListDecoder implements Decoder {
 	private static final int LENGTH_OF_CV_RULE = 4;
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndex) {
+	public List<DecodedData> decode(String input, int startIndexInBytes) {
 		int x = Integer.parseInt(input.substring(0, 8), 16);
 		int y = Integer.parseInt(input.substring(8, 16), 16);
 		ArrayList<DecodedData> decodedData = new ArrayList<DecodedData>();
 		for (int i = LENGTH_OF_AMOUNT_FIELDS_IN_CHARACTERS; i + LENGTH_OF_CV_RULE <= input.length(); i+=LENGTH_OF_CV_RULE) {
 			String ruleAsHexString = input.substring(i, i + LENGTH_OF_CV_RULE);
 			CVRule rule = new CVRule(ruleAsHexString);
-			decodedData.add(new DecodedData(ruleAsHexString, rule.getDescription(x, y), startIndex + i/2, startIndex + (i + LENGTH_OF_CV_RULE)/2));
+			decodedData.add(new DecodedData(ruleAsHexString, rule.getDescription(x, y), startIndexInBytes + i/2, startIndexInBytes + (i + LENGTH_OF_CV_RULE)/2));
 		}
 		return decodedData;
 	}

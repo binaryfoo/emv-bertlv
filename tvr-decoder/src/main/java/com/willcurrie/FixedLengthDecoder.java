@@ -41,12 +41,12 @@ public class FixedLengthDecoder implements Decoder {
 		return lengthInCharacters;
 	}
 	
-	public List<DecodedData> decode(String bitString, int startIndex) {
+	public List<DecodedData> decode(String bitString, int startIndexInBytes) {
 		long bitStringAsLong = Long.parseLong(bitString, 16);
 		ArrayList<DecodedData> bitsSetInString = new ArrayList<DecodedData>();
 		for (BitMapping bit : bits) {
 			if (bit.isSet(bitStringAsLong)) {
-				int start = startIndex + bit.getByteIndex();
+				int start = startIndexInBytes + bit.getByteIndex();
 				bitsSetInString.add(new DecodedData(bit.getBitAsHexString(), bit.getDescription(), start, start + 1));
 			}
 		}

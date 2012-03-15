@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Decoder {
 
-	public List<DecodedData> decode(String input, int startIndex);
+	public List<DecodedData> decode(String input, int startIndexInBytes);
 	
 	public String validate(String input);
 	

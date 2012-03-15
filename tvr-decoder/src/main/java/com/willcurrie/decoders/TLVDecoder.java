@@ -14,9 +14,9 @@ import com.willcurrie.tlv.Tag;
 public class TLVDecoder implements Decoder {
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndex) {
+	public List<DecodedData> decode(String input, int startIndexInBytes) {
 		List<BerTlv> list = BerTlv.parseList(ISOUtil.hex2byte(input));
-		return decodeTlvs(list, startIndex);
+		return decodeTlvs(list, startIndexInBytes);
 	}
 
 	private List<DecodedData> decodeTlvs(List<BerTlv> list, int startIndex) {

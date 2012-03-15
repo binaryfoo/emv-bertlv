@@ -12,13 +12,13 @@ public class CVMResultsDecoder implements Decoder {
 	private static final int FIELD_LENGTH = 6;
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndex) {
+	public List<DecodedData> decode(String input, int startIndexInBytes) {
 		CVRule rule = new CVRule(input.substring(0, 4));
 		String result = input.substring(4, 6);
 		return Arrays.asList(
-				new DecodedData(input.substring(0, 2), rule.getVerificationMethod().getDescription(), startIndex, startIndex + 1),
-				new DecodedData(input.substring(2, 4), rule.getConditionCode().getDescription(), startIndex + 1, startIndex + 2),
-				new DecodedData(result, decodeResult(result), startIndex + 2, startIndex + 3)
+				new DecodedData(input.substring(0, 2), rule.getVerificationMethod().getDescription(), startIndexInBytes, startIndexInBytes + 1),
+				new DecodedData(input.substring(2, 4), rule.getConditionCode().getDescription(), startIndexInBytes + 1, startIndexInBytes + 2),
+				new DecodedData(result, decodeResult(result), startIndexInBytes + 2, startIndexInBytes + 3)
 				);
 	}
 

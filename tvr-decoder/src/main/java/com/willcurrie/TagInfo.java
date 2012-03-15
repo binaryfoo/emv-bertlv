@@ -3,12 +3,7 @@ package com.willcurrie;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.willcurrie.decoders.AIPDecoder;
-import com.willcurrie.decoders.CVMListDecoder;
-import com.willcurrie.decoders.CVMResultsDecoder;
-import com.willcurrie.decoders.TLVDecoder;
-import com.willcurrie.decoders.TSIDecoder;
-import com.willcurrie.decoders.TVRDecoder;
+import com.willcurrie.decoders.*;
 
 public class TagInfo {
 	private final String tag;
@@ -50,6 +45,8 @@ public class TagInfo {
 		new TagInfo("8E", "CVM List", "Cardholder Verification Method List", new CVMListDecoder()),
 		new TagInfo("9F34", "CVM Results", "Cardholder Verification Results", new CVMResultsDecoder()),
 		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder()),
+		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
+                new SelectCommandAPDUDecoder())),
 	};
 	private static final Map<String, TagInfo> TAG_LOOKUP = new HashMap<String, TagInfo>();
 	static {
