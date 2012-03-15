@@ -33,6 +33,6 @@ public class DataObjectListDecoder implements Decoder {
 
     @Override
     public int getMaxLength() {
-        return 0;
+        return Integer.MAX_VALUE;
     }
 }

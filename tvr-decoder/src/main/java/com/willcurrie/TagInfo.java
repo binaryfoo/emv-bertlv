@@ -45,8 +45,11 @@ public class TagInfo {
 		new TagInfo("8E", "CVM List", "Cardholder Verification Method List", new CVMListDecoder()),
 		new TagInfo("9F34", "CVM Results", "Cardholder Verification Results", new CVMResultsDecoder()),
 		new TagInfo("DF5D", "Default DDOL", "Default DDOL", new DataObjectListDecoder()),
-		new TagInfo("8C", "CDOL 1", "CDOL 1", new DataObjectListDecoder()),
+		new TagInfo("8C", "DOL", "Data object list", new DataObjectListDecoder()), // actually CDOL 1
 		new TagInfo("8D", "CDOL 2", "CDOL 2", new DataObjectListDecoder()),
+		new TagInfo("9F38", "PDOL", "Processing DOL", new DataObjectListDecoder()),
+		new TagInfo("9F6C", "CTQ", "Card transaction qualifiers", new CardTxQualifiersDecoder()),
+		new TagInfo("9F66", "TTQ", "Terminal transaction qualifiers", new TerminalTxQualifiersDecoder()),
 		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder()),
 		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
                 new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(), new GenerateACAPDUDecoder())),

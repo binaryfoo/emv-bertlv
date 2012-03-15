@@ -92,22 +92,27 @@ public final class EmvTags {
     public static final Tag APPLICATION_CURRENCY_CODE = newTag("9F42", "application currency code", false);
     public static final Tag TRANSACTION_CATEGORY_CODE = newTag("9F53", "transaction category code", true);
     public static final Tag FCI_TEMPLATE = newTag("6F", "FCI template", false);
+    public static final Tag FCI_PROPRIETARY_TEMPLATE = newTag("A5", "FCI proprietary template", false);
     public static final Tag AFL = newTag("94", "Application File Locator (AFL)", false);
-    public static final Tag APPLICATION_EFFECTIVE_DATE = newTag("5F25", "Application effective date", false);
+    public static final Tag APPLICATION_EFFECTIVE_DATE = newTag("5F25", "application effective date", false);
+    public static final Tag PDOL = newTag("9F38", "PDOL", false);
     public static final Tag CDOL_1 = newTag("8C", "CDOL 1", false);
     public static final Tag CDOL_2 = newTag("8D", "CDOL 2", false);
-    public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "Application usage control", false);
-    public static final Tag CARD_APPLICATION_VERSION_NUMBER = newTag("9F08", "Card application version number", false);
+    public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "application usage control", false);
+    public static final Tag CARD_APPLICATION_VERSION_NUMBER = newTag("9F08", "card application version number", false);
     public static final Tag IAC_DEFAULT = newTag("9F0D", "IAC default", false);
     public static final Tag IAC_DENIAL = newTag("9F0E", "IAC denial", false);
     public static final Tag IAC_ONLINE = newTag("9F0F", "IAC online", false);
     public static final Tag SDA_TAG_LIST = newTag("9F4A", "SDA tag list", false);
-    public static final Tag ISSUER_PUBLIC_KEY_EXPONENT = newTag("9F32", "Issuer public key exponent", false);
-    public static final Tag ISSUER_PUBLIC_KEY_REMAINDER = newTag("92", "Issuer public key remainder", false);
-    public static final Tag ISSUER_PUBLIC_KEY_CERTIFICATE = newTag("90", "Issuer public key certificate", false);
+    public static final Tag ISSUER_PUBLIC_KEY_EXPONENT = newTag("9F32", "issuer public key exponent", false);
+    public static final Tag ISSUER_PUBLIC_KEY_REMAINDER = newTag("92", "issuer public key remainder", false);
+    public static final Tag ISSUER_PUBLIC_KEY_CERTIFICATE = newTag("90", "issuer public key certificate", false);
     public static final Tag ICC_PUBLIC_KEY_EXPONENT = newTag("9F47", "ICC public key exponent", false);
     public static final Tag ICC_PUBLIC_KEY_REMAINDER = newTag("9F48", "ICC public key remainder", false);
-    public static final Tag SIGNED_DYNAMIC_APPLICATION_DATA = newTag("9F4B", "Signed dynamic application data", false);
+    public static final Tag SIGNED_DYNAMIC_APPLICATION_DATA = newTag("9F4B", "signed dynamic application data", false);
+    public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F6C", "terminal transaction qualifiers", false);
+    public static final Tag CARD_TX_QUALIFIERS = newTag("9F6C", "card transaction qualifiers", false);
+    public static final Tag RESPONSE_TEMPLATE = newTag("77", "response template", false);
 
     private static Tag newTag(String hexString, String name, boolean isValueAscii) {
         Tag tag = Tag.fromHex(hexString);

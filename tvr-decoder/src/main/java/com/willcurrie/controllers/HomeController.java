@@ -23,7 +23,7 @@ public class HomeController {
 
 	private ArrayList<TagInfo> getTagsToShow() {
 		ArrayList<TagInfo> tagInfos = new ArrayList<TagInfo>();
-		for (String tag : Arrays.asList("95", "9B", "82", "8E", "9F34", "constructed", "apdu-sequence")) {
+		for (String tag : Arrays.asList("95", "9B", "82", "8E", "9F34", "8C", "9F6C", "9F66", "constructed", "apdu-sequence")) {
 			tagInfos.add(TagInfo.get(tag));
 		}
 		return tagInfos;
