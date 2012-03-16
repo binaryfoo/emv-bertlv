@@ -113,6 +113,9 @@ public final class EmvTags {
     public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F6C", "terminal transaction qualifiers", false);
     public static final Tag CARD_TX_QUALIFIERS = newTag("9F6C", "card transaction qualifiers", false);
     public static final Tag RESPONSE_TEMPLATE = newTag("77", "response template", false);
+    public static final Tag PIN_TRY_COUNTER = newTag("9F17", "pin try counter", false);
+    public static final Tag SIGNED_STATIC_APPLICATION_DATA = newTag("93", "signed static application data", false);
+    public static final Tag ICC_PUBLIC_KEY_CERTIFICATE = newTag("9F46", "ICC public key certificate", false);
 
     private static Tag newTag(String hexString, String name, boolean isValueAscii) {
         Tag tag = Tag.fromHex(hexString);

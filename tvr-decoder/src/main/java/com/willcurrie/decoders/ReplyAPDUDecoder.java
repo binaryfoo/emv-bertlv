@@ -2,6 +2,7 @@ package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ReplyAPDUDecoder {
@@ -13,9 +14,16 @@ public class ReplyAPDUDecoder {
 
     public DecodedData decode(String input, int startIndexInBytes) {
         int statusBytesStart = input.length() - 4;
-        List<DecodedData> oneTlv = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes);
-        DecodedData payload = oneTlv.get(0);
-        int endIndex = payload.getEndIndex() + 2;
-        return new DecodedData("Reply", input.substring(statusBytesStart), startIndexInBytes, endIndex, oneTlv);
+        int endIndex;
+        List<DecodedData> children;
+        if (input.length() == 4) {
+            children = Collections.emptyList();
+            endIndex = startIndexInBytes + 2;
+        } else {
+            children = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes);
+            DecodedData payload = children.get(0);
+            endIndex = payload.getEndIndex() + 2;
+        }
+        return new DecodedData("Reply", input.substring(statusBytesStart), startIndexInBytes, endIndex, children);
     }
 }

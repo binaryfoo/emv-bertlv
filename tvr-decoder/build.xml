@@ -1,5 +1,5 @@
 <project name="tvr-decoder" default="datanucleusenhance">
-    <property name="sdk.dir" location="/home/wcurrie/.eclipse/org.eclipse.platform_3.4.0_1879265304/plugins/com.google.appengine.eclipse.sdkbundle_1.2.6.v200910130758/appengine-java-sdk-1.2.6"/>
+    <property name="sdk.dir" location="/Users/wcurrie/Downloads/appengine-java-sdk-1.6.3.1"/>
     <import file="${sdk.dir}/config/user/ant-macros.xml"/>
     <property name="war.dir" value="target/tvr-decoder"/>
 

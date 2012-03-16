@@ -5,7 +5,9 @@ public enum APDUCommand {
     ReadRecord("00B2"),
     GetProcessingOptions("80A8"),
     GenerateAC("80AE"),
-    ComputeCryptographicChecksum("802A");
+    ComputeCryptographicChecksum("802A"),
+    GetData("80CA"),
+    ExternalAuthenticate("0082");
 
     private String firstTwoBytes;
 
