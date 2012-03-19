@@ -50,6 +50,7 @@ public class TagInfo {
 		new TagInfo("9F38", "PDOL", "Processing DOL", new DataObjectListDecoder()),
 		new TagInfo("9F6C", "CTQ", "Card transaction qualifiers", new CardTxQualifiersDecoder()),
 		new TagInfo("9F66", "TTQ", "Terminal transaction qualifiers", new TerminalTxQualifiersDecoder()),
+        new TagInfo("dol", "DOL", "Data Object List", new PopulatedDOLDecoder()),
 		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder()),
 		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
                 new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(),

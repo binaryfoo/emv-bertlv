@@ -110,7 +110,7 @@ public final class EmvTags {
     public static final Tag ICC_PUBLIC_KEY_EXPONENT = newTag("9F47", "ICC public key exponent", false);
     public static final Tag ICC_PUBLIC_KEY_REMAINDER = newTag("9F48", "ICC public key remainder", false);
     public static final Tag SIGNED_DYNAMIC_APPLICATION_DATA = newTag("9F4B", "signed dynamic application data", false);
-    public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F6C", "terminal transaction qualifiers", false);
+    public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F66", "terminal transaction qualifiers", false);
     public static final Tag CARD_TX_QUALIFIERS = newTag("9F6C", "card transaction qualifiers", false);
     public static final Tag RESPONSE_TEMPLATE = newTag("77", "response template", false);
     public static final Tag PIN_TRY_COUNTER = newTag("9F17", "pin try counter", false);

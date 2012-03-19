@@ -34,14 +34,13 @@ public class DecodeController {
 			return "validationError";
 		}
 		try {
-            value = value.toUpperCase().replaceAll("[^A-Z0-9 ]", "");
+            value = value.toUpperCase();
             List<DecodedData> decodedData = tagInfo.getDecoder().decode(value, 0);
             LOG.fine("Decoded successfully " + decodedData);
-            modelMap.addAttribute("rawData", splitIntoByteLengthStrings(value.replaceAll(" ", "")));
+            modelMap.addAttribute("rawData", splitIntoByteLengthStrings(value.replaceAll("(:| )", "")));
             modelMap.addAttribute("decodedData", decodedData);
             return "decodedData";
         } catch (Exception e) {
-            e.printStackTrace();
 			LOG.fine("Error decoding " + e.getMessage());
 			modelMap.addAttribute("error", e.getMessage());
 			return "validationError";

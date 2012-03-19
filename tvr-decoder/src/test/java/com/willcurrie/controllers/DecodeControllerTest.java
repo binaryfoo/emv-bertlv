@@ -3,6 +3,12 @@ package com.willcurrie.controllers;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
+import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
+
 public class DecodeControllerTest {
 
     private DecodeController decodeController = new DecodeController();
@@ -24,8 +30,7 @@ public class DecodeControllerTest {
                 "80AE50002B000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F030000\n" +
                 "7781B29F2701409F360200349F4B81906C9EC67BEF69A00E98F8ED96AAA2B945519E1348C78346B07D7650A9C2CC717611C69EDDBEFCAAF91FDEB09ABA2675CF430CCB0BAF0CAA8D8E18B9919790607847591970153565F65B33383C8757162669799D346B265B58421DD20E8109F5074AFB1B13B3A64D3470D8CC9E68342C8AAC238687B850EBEB260CB9F010AC4BD0F81C990026929974382077B103AD0C659F10120110904009248400000000000000000028FF9000";
         decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
-        Object decodedData = modelMap.get("decodedData");
-        System.out.println(decodedData);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
     @Test
@@ -64,8 +69,7 @@ public class DecodeControllerTest {
                 "80ae40001f303000000000100000000000000000368000008040003612031600d3173a1f00\n" +
                 "8012400029bb31d191bced0cf206010a0364bc009000";
         decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
-        Object decodedData = modelMap.get("decodedData");
-        System.out.println(decodedData);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
     @Test
@@ -103,7 +107,13 @@ public class DecodeControllerTest {
                 "80ae40001d11223344556677880000303080000080008221f601000000000000000000\n" +
                 "77299f2701009f360200419f2608c74d18b08248fefc9f10120110201009248400000000000000000029ff9000";
         decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
-        Object decodedData = modelMap.get("decodedData");
-        System.out.println(decodedData);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
+
+    @Test
+    public void testDecodeDOL() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        decodeController.decode("dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", modelMap);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 }

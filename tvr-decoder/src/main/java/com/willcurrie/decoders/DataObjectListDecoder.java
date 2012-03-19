@@ -23,7 +23,8 @@ public class DataObjectListDecoder implements Decoder {
             children.add(new DecodedData("", tag.toString() + " " + b + " bytes", offset, newOffset));
             offset = newOffset;
         }
-        return Arrays.asList(new DecodedData(input, "data object list", startIndexInBytes, input.length()/2, children));
+        return children;
+//        return Arrays.asList(new DecodedData(input, "data object list", startIndexInBytes, input.length()/2, children));
     }
 
     @Override
