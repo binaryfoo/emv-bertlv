@@ -116,4 +116,11 @@ public class DecodeControllerTest {
         decodeController.decode("dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
+
+    @Test
+    public void testDecodeDOLTwo() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        decodeController.decode("dol", "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403:000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F0300", modelMap);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
 }

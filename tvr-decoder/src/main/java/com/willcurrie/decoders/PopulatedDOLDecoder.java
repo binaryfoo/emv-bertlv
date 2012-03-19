@@ -14,10 +14,9 @@ public class PopulatedDOLDecoder implements Decoder {
     public List<DecodedData> decode(String input, int startIndexInBytes) {
         ArrayList<DecodedData> decoded = new ArrayList<DecodedData>();
         String[] fields = input.split(":");
-        BerTlv tlv = BerTlv.parse(ISOUtil.hex2byte(fields[1]));
-        ByteBuffer values = ByteBuffer.wrap(tlv.getValue());
+        ByteBuffer values = ByteBuffer.wrap(ISOUtil.hex2byte(fields[1]));
         List<DOLParser.DOLElement> elements = new DOLParser().parse(ISOUtil.hex2byte(fields[0]));
-        int offset = fields[0].length()/2 + tlv.getTag().getBytes().length + tlv.getLengthInBytesOfEncodedLength();
+        int offset = fields[0].length()/2;
         for (DOLParser.DOLElement element : elements) {
             byte[] value = new byte[element.getLength()];
             values.get(value);

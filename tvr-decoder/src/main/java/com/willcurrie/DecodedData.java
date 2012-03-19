@@ -26,7 +26,7 @@ public class DecodedData {
 	}
 	
 	private String trim(String decodedData) {
-		return decodedData.length() >= 40 ? decodedData.substring(0, 36) + "..." + StringUtils.right(decodedData, 4) : decodedData;
+		return decodedData.length() >= 60 ? decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) : decodedData;
 	}
 
 	public String getRawData() {
