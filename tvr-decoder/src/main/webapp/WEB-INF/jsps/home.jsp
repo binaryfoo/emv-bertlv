@@ -9,17 +9,18 @@
 	<script src="/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
 	    function doDecode() {
-		    $.get('/t/decode/' + $('#tag_field').val() + '/' + $('#value_field').val(),function(data) {
-				$("#display").slideUp('slow',function(){
-					$(this).html(data).slideDown('slow',function() {
+	        $("#display").slideUp('slow',function(){
+                $("#display").html("Loading...").show();
+		        $.get('/t/decode/' + $('#tag_field').val() + '/' + $('#value_field').val(),function(data) {
+					$("#display").html(data).slideDown('slow',function() {
 						$(".decoded,.composite-decoded").each(function() {
 			    			$(this).click(function(e) {
 								e.stopPropagation();
 							});
 				    	});
 			    	});
-				});
-			});
+		    	});
+            });
 	    }
 	
 	    function setMaxLength() {
