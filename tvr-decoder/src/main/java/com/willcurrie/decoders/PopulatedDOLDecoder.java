@@ -12,11 +12,17 @@ import java.util.List;
 public class PopulatedDOLDecoder implements Decoder {
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes) {
-        ArrayList<DecodedData> decoded = new ArrayList<DecodedData>();
         String[] fields = input.split(":");
-        ByteBuffer values = ByteBuffer.wrap(ISOUtil.hex2byte(fields[1]));
-        List<DOLParser.DOLElement> elements = new DOLParser().parse(ISOUtil.hex2byte(fields[0]));
-        int offset = fields[0].length()/2;
+        String pdol = fields[0];
+        String populatedPDOL = fields[1];
+        return decode(pdol, populatedPDOL, pdol.length()/2);
+    }
+
+    public List<DecodedData> decode(String pdol, String populatedPDOL, int startIndexInBytes) {
+        ArrayList<DecodedData> decoded = new ArrayList<DecodedData>();
+        ByteBuffer values = ByteBuffer.wrap(ISOUtil.hex2byte(populatedPDOL));
+        List<DOLParser.DOLElement> elements = new DOLParser().parse(ISOUtil.hex2byte(pdol));
+        int offset = startIndexInBytes;
         for (DOLParser.DOLElement element : elements) {
             byte[] value = new byte[element.getLength()];
             values.get(value);

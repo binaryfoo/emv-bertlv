@@ -28,12 +28,12 @@ public class TLVDecoder implements Decoder {
 			int contentEndIndex = startIndex + length;
 			int compositeStartElementIndex = startIndex + tag.getBytes().length + berTlv.getLengthInBytesOfEncodedLength();
 			if (tag.isConstructed()) {
-				decodedItems.add(new DecodedData(tag.toString(), valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex)));
+				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex)));
 			} else if (TagInfo.get(tag.getHexString()) != null) {
 				TagInfo tagInfo = TagInfo.get(tag.getHexString());
-				decodedItems.add(new DecodedData(tag.toString(), valueAsHexString, startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex)));
+				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex)));
 			} else {
-				decodedItems.add(new DecodedData(tag.toString(), decodePrimitiveTlv(berTlv), startIndex, contentEndIndex));
+				decodedItems.add(new DecodedData(tag, decodePrimitiveTlv(berTlv), startIndex, contentEndIndex));
 			}
 			startIndex += length;
 		}

@@ -1,4 +1,4 @@
-package com.willcurrie.decoders;
+package com.willcurrie.decoders.apdu;
 
 public enum APDUCommand {
     Select("00A4"),

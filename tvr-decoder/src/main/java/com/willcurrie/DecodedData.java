@@ -2,6 +2,7 @@ package com.willcurrie;
 
 import java.util.List;
 
+import com.willcurrie.tlv.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -12,18 +13,32 @@ public class DecodedData {
 	private final List<DecodedData> children;
 	private final int startIndex;
 	private final int endIndex;
-	
-	public DecodedData(String rawData, String decodedData, int startIndex, int endIndex) {
-		this(rawData, decodedData, startIndex, endIndex, null);
+    private final Tag tag;
+
+    public DecodedData(String rawData, String decodedData, int startIndex, int endIndex) {
+		this(null, rawData, decodedData, startIndex, endIndex, null);
 	}
 	
-	public DecodedData(String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
-		this.rawData = rawData;
-		this.decodedData = children != null && !children.isEmpty() ? trim(decodedData) : decodedData;
-		this.startIndex = startIndex;
-		this.endIndex = endIndex;
-		this.children = children;
+    public DecodedData(Tag tag, String decodedData, int startIndex, int endIndex) {
+        this(tag, tag.toString(), decodedData, startIndex, endIndex, null);
+    }
+
+    public DecodedData(String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+        this(null, rawData, decodedData, startIndex, endIndex, children);
+    }
+
+	public DecodedData(Tag tag, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+        this(tag, tag.toString(), decodedData, startIndex, endIndex, children);
 	}
+
+    private DecodedData(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+        this.tag = tag;
+        this.rawData = rawData;
+        this.decodedData = children != null && !children.isEmpty() ? trim(decodedData) : decodedData;
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
+        this.children = children;
+    }
 	
 	private String trim(String decodedData) {
 		return decodedData.length() >= 60 ? decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) : decodedData;
@@ -52,8 +67,12 @@ public class DecodedData {
 	public boolean isComposite() {
 		return children != null && !children.isEmpty();
 	}
-	
-	@Override
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    @Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
 	}

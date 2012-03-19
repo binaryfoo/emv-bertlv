@@ -2,14 +2,16 @@ package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
+import com.willcurrie.decoders.apdu.*;
 import org.easymock.classextension.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,7 +39,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
     @Test
     public void testOneSelectCommand() throws Exception {
         String input = "00A4040007A000000004101000";
-        expect(selectCommandAPDUDecoder.decode(input, 0)).andReturn(decodedCommand);
+        expect(selectCommandAPDUDecoder.decode(eq(input), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0);
@@ -49,7 +51,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
     @Test
     public void testOneGetProcessingOptionsCommand() throws Exception {
         String input = "80A8000002830000";
-        expect(getProcessingOptionsCommandAPDUDecoder.decode(input, 0)).andReturn(decodedCommand);
+        expect(getProcessingOptionsCommandAPDUDecoder.decode(eq(input), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0);
@@ -63,9 +65,9 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         String line1 = "00A4040007A000000004101000";
         String line2 = "6F1C8407A0000000041010A511500F505043204D434420303420207632309000";
         String input = line1 + " " + line2;
-        expect(selectCommandAPDUDecoder.decode(line1, 0)).andReturn(decodedCommand);
+        expect(selectCommandAPDUDecoder.decode(eq(line1), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(line1.length()/2);
-        expect(replyAPDUDecoder.decode(line2, line1.length()/2)).andReturn(decodedReply);
+        expect(replyAPDUDecoder.decode(eq(line2), eq(line1.length()/2), isA(DecodeSession.class))).andReturn(decodedReply);
         expect(decodedReply.getEndIndex()).andReturn(line1.length()/2 + line2.length()/2);
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0);

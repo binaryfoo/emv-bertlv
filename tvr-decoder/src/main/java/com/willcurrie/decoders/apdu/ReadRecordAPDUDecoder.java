@@ -1,4 +1,4 @@
-package com.willcurrie.decoders;
+package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 
@@ -9,7 +9,7 @@ public class ReadRecordAPDUDecoder implements CommandAPDUDecoder {
     }
 
     @Override
-    public DecodedData decode(String input, int startIndexInBytes) {
+    public DecodedData decode(String input, int startIndexInBytes, DecodeSession session) {
         return new DecodedData("C-APDU: Read Record ", input.substring(4, 8), startIndexInBytes, startIndexInBytes + 5);
     }
 }

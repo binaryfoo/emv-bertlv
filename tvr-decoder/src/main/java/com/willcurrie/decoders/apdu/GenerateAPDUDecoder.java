@@ -1,4 +1,4 @@
-package com.willcurrie.decoders;
+package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.tlv.ISOUtil;
@@ -10,7 +10,7 @@ public class GenerateAPDUDecoder implements CommandAPDUDecoder {
     }
 
     @Override
-    public DecodedData decode(String input, int startIndexInBytes) {
+    public DecodedData decode(String input, int startIndexInBytes, DecodeSession session) {
         int length = Integer.parseInt(input.substring(8, 10), 16);
         byte cid = ISOUtil.hex2byte(input.substring(4, 6))[0];
         String cryptogramType = parseCryptogramType(cid);

@@ -1,4 +1,4 @@
-package com.willcurrie.decoders;
+package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
@@ -18,14 +18,15 @@ public class APDUSequenceDecoder implements Decoder {
 
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes) {
+        DecodeSession session = new DecodeSession();
         ArrayList<DecodedData> list = new ArrayList<DecodedData>();
         for (String line : input.split(" ")) {
             CommandAPDUDecoder commandDecoder = getCommandDecoder(line);
             DecodedData decoded;
             if (commandDecoder != null) {
-                decoded = commandDecoder.decode(line, startIndexInBytes);
+                decoded = commandDecoder.decode(line, startIndexInBytes, session);
             } else {
-                decoded = replyDecoder.decode(line, startIndexInBytes);
+                decoded = replyDecoder.decode(line, startIndexInBytes, session);
             }
             list.add(decoded);
             startIndexInBytes = decoded.getEndIndex();

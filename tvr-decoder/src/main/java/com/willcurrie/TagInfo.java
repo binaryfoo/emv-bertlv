@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.willcurrie.decoders.*;
+import com.willcurrie.decoders.apdu.*;
 
 public class TagInfo {
 	private final String tag;
