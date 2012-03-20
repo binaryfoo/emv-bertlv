@@ -43,3 +43,8 @@ span.composite-label {
 td.indent {
 	width: 20px;
 }
+
+.bytes {
+    font-family: monospace;
+    font-size: small;
+}

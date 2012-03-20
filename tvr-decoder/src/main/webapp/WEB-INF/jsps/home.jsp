@@ -19,6 +19,7 @@
 							});
 				    	});
 			    	});
+			    	toggleCompositeDecodedVisibility();
 		    	});
             });
 	    }
@@ -53,6 +54,12 @@
 		function hideRawData() {
 			$("#rawData").hide("slow");
 		}
+
+		function toggleCompositeDecodedVisibility() {
+		    var checked = $('#showCompositeDecodedData').is(':checked');
+		    $(".composite-decodedData").toggle(checked);
+        }
+
     </script>
     <link rel="stylesheet" type="text/css" href="/tvr.css" />
 </head>
@@ -66,6 +73,7 @@
     </select>
     <input type="text" id="value_field"/>
     <input type="submit" value="Decode"/>
+    <input type="checkbox" id="showCompositeDecodedData" value="checked" onclick="toggleCompositeDecodedVisibility()"/><label for="showCompositeDecodedData" style="font-size:small">Show Raw Data for composite tags</label>
     <div id="recurseOption">
     Tags to not parse recursively: <input type="text" id="tagsToTreatAsPrimitive"/>
     </div>

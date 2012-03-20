@@ -10,7 +10,7 @@
 			<table class="composite-decoded" onclick="highlightBytes(${item.startIndex},${item.endIndex})">
 				<tr>
 					<td colspan="2">
-		    		<span class="composite-label">${item.rawData}</span> <span class="decodedData">${item.decodedData}</span> 
+		    		<span class="composite-label">${item.rawData}</span> <span class="composite-decodedData">${item.decodedData}</span>
 		    		</td>
 	    		</tr>
 				<tr>
