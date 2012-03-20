@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.willcurrie.decoders.DecodeSession;
+import com.willcurrie.hex.ByteElement;
+import com.willcurrie.hex.HexDumpElement;
+import com.willcurrie.hex.WhitespaceElement;
 import com.willcurrie.tlv.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -50,7 +53,7 @@ public class DecodeController {
             }
             List<DecodedData> decodedData = tagInfo.getDecoder().decode(value, 0, decodeSession);
             LOG.fine("Decoded successfully " + decodedData);
-            modelMap.addAttribute("rawData", splitIntoByteLengthStrings(value.replaceAll("(:| )", "")));
+            modelMap.addAttribute("rawData", splitIntoByteLengthStrings(value.replaceAll(":", " ")));
             modelMap.addAttribute("decodedData", decodedData);
             return "decodedData";
         } catch (Exception e) {
@@ -68,11 +71,18 @@ public class DecodeController {
         return tags;
     }
 
-    private List<String> splitIntoByteLengthStrings(String hexString) {
-    	ArrayList<String> bytes = new ArrayList<String>();
-    	for (int i = 0; i < hexString.length(); i+=2) {
-    		bytes.add(hexString.substring(i, i + 2));
+    private List<HexDumpElement> splitIntoByteLengthStrings(String hexString) {
+    	List<HexDumpElement> elements = new ArrayList<HexDumpElement>();
+        int byteOffset = 0;
+    	for (int i = 0; i < hexString.length(); ) {
+            if (hexString.charAt(i) == ' ') {
+                elements.add(new WhitespaceElement("<br>"));
+                i++;
+            } else {
+                elements.add(new ByteElement(hexString.substring(i, i + 2), byteOffset++));
+                i+=2;
+            }
     	}
-    	return bytes;
+    	return elements;
     }
 }

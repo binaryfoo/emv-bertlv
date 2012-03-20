@@ -1,8 +1,13 @@
 package com.willcurrie.controllers;
 
+import com.willcurrie.hex.ByteElement;
+import com.willcurrie.hex.HexDumpElement;
+import com.willcurrie.hex.WhitespaceElement;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
+
+import java.util.List;
 
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.hamcrest.core.Is.is;
@@ -32,6 +37,10 @@ public class DecodeControllerTest {
                 "7781B29F2701409F360200349F4B81906C9EC67BEF69A00E98F8ED96AAA2B945519E1348C78346B07D7650A9C2CC717611C69EDDBEFCAAF91FDEB09ABA2675CF430CCB0BAF0CAA8D8E18B9919790607847591970153565F65B33383C8757162669799D346B265B58421DD20E8109F5074AFB1B13B3A64D3470D8CC9E68342C8AAC238687B850EBEB260CB9F010AC4BD0F81C990026929974382077B103AD0C659F10120110904009248400000000000000000028FF9000";
         decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+        List<HexDumpElement> rawData = (List<HexDumpElement>) modelMap.get("rawData");
+        assertThat((ByteElement) rawData.get(0), is(new ByteElement("00", 0)));
+        assertThat((ByteElement) rawData.get(1), is(new ByteElement("A4", 1)));
+        assertThat((WhitespaceElement) rawData.get(13), is(new WhitespaceElement("<br>")));
     }
 
     @Test
