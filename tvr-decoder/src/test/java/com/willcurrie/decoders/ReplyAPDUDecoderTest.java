@@ -2,7 +2,6 @@ package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
-import com.willcurrie.decoders.apdu.DecodeSession;
 import com.willcurrie.decoders.apdu.ReplyAPDUDecoder;
 import org.junit.Test;
 
@@ -15,7 +14,8 @@ public class ReplyAPDUDecoderTest {
     public void testDecode() throws Exception {
         String input = "6F1C8407A0000000041010A511500F505043204D434420303420207632309000";
         DecodedData decoded = new ReplyAPDUDecoder(new TLVDecoder()).decode(input, 12, new DecodeSession());
-        assertThat(decoded.getDecodedData(), is("Reply"));
+        assertThat(decoded.getRawData(), is("Reply"));
+        assertThat(decoded.getDecodedData(), is("9000"));
         assertThat(decoded.getStartIndex(), is(12));
         assertThat(decoded.getEndIndex(), is(12 + input.length()/2));
     }

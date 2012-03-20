@@ -14,12 +14,12 @@ import com.willcurrie.tlv.Tag;
 public class TLVDecoder implements Decoder {
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndexInBytes) {
-		List<BerTlv> list = BerTlv.parseList(ISOUtil.hex2byte(input));
-		return decodeTlvs(list, startIndexInBytes);
+	public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
+		List<BerTlv> list = BerTlv.parseList(ISOUtil.hex2byte(input), true, decodeSession.getTagsToTreatAsPrimitive());
+		return decodeTlvs(list, startIndexInBytes, decodeSession);
 	}
 
-	private List<DecodedData> decodeTlvs(List<BerTlv> list, int startIndex) {
+	private List<DecodedData> decodeTlvs(List<BerTlv> list, int startIndex, DecodeSession decodeSession) {
 		ArrayList<DecodedData> decodedItems = new ArrayList<DecodedData>();
 		for (BerTlv berTlv : list) {
 			String valueAsHexString = berTlv.getValueAsHexString();
@@ -27,11 +27,11 @@ public class TLVDecoder implements Decoder {
 			int length = berTlv.toBinary().length;
 			int contentEndIndex = startIndex + length;
 			int compositeStartElementIndex = startIndex + tag.getBytes().length + berTlv.getLengthInBytesOfEncodedLength();
-			if (tag.isConstructed()) {
-				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex)));
+			if (tag.isConstructed() && !decodeSession.isTagToBeTreatedAsPrimitive(tag)) {
+				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)));
 			} else if (TagInfo.get(tag.getHexString()) != null) {
 				TagInfo tagInfo = TagInfo.get(tag.getHexString());
-				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex)));
+				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex, decodeSession)));
 			} else {
 				decodedItems.add(new DecodedData(tag, decodePrimitiveTlv(berTlv), startIndex, contentEndIndex));
 			}

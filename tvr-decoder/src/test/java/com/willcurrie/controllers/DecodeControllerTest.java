@@ -1,5 +1,6 @@
 package com.willcurrie.controllers;
 
+import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
@@ -29,7 +30,7 @@ public class DecodeControllerTest {
                 "00B2022400\n" +
                 "80AE50002B000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F030000\n" +
                 "7781B29F2701409F360200349F4B81906C9EC67BEF69A00E98F8ED96AAA2B945519E1348C78346B07D7650A9C2CC717611C69EDDBEFCAAF91FDEB09ABA2675CF430CCB0BAF0CAA8D8E18B9919790607847591970153565F65B33383C8757162669799D346B265B58421DD20E8109F5074AFB1B13B3A64D3470D8CC9E68342C8AAC238687B850EBEB260CB9F010AC4BD0F81C990026929974382077B103AD0C659F10120110904009248400000000000000000028FF9000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
@@ -68,7 +69,7 @@ public class DecodeControllerTest {
                 "6700\n" +
                 "80ae40001f303000000000100000000000000000368000008040003612031600d3173a1f00\n" +
                 "8012400029bb31d191bced0cf206010a0364bc009000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
@@ -106,21 +107,39 @@ public class DecodeControllerTest {
                 "77299f2701809f360200419f26084573436b1e4b95dd9f10120110a00009248400000000000000000029ff9000\n" +
                 "80ae40001d11223344556677880000303080000080008221f601000000000000000000\n" +
                 "77299f2701009f360200419f2608c74d18b08248fefc9f10120110201009248400000000000000000029ff9000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
     @Test
     public void testDecodeDOL() throws Exception {
         ModelMap modelMap = new ModelMap();
-        decodeController.decode("dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", modelMap);
+        decodeController.decode("dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", "", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
     @Test
     public void testDecodeDOLTwo() throws Exception {
         ModelMap modelMap = new ModelMap();
-        decodeController.decode("dol", "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403:000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F0300", modelMap);
+        decodeController.decode("dol", "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403:000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F0300", "", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
+
+    @Test
+    public void testInputWithConstructedTagThatCannotBeParsedAsConstructed() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        String input = "F082013CE007D002432BD10101E9409F02060000000009009F03060000000000005F2A0200365F3601029A031203209F21031410389C01009F3704000A7CA39F1E0831393062346262319F1A020036E581E2EF6D9F0607A00000000310109F1B0400010000DF400400010000DF420400010000DF430100DF4401009F3501229F3303E060C09F40056000F0A0019F090200029F6D020002DF32039F6A049F15024444DF57050000000000DF56050000000000DF580500000000009F660436000000EF719F0607A00000000410109F1B0400010000DF400400010000DF410400010000DF420400010000DF430100DF4401009F3501229F3303E008889F40056000F0A0019F090200029F6D020002DF32039F6A049F15024444DF57050000000000DF5605CC50848800DF5805CC50848800DF610101E30AE0085F249F6C9F039F33";
+        String tagsToTreatAsPrimitive = "E0";
+        decodeController.decode("constructed", input, tagsToTreatAsPrimitive, modelMap);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
+
+    @Test
+    public void testValidationErrorWhenConstructedTagCannotBeParsedAsConstructed() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        String input = "F00AE0085F249F6C9F039F33";
+        String tagsToTreatAsPrimitive = "";
+        decodeController.decode("constructed", input, tagsToTreatAsPrimitive, modelMap);
+        assertThat(modelMap, hasEntry(is("error"), Is.<Object>is("Failed parsing F0 (?),Failed parsing E0 (transaction group),Failed parsing 5F24 (card expiry),BufferUnderflowException")));
     }
 }

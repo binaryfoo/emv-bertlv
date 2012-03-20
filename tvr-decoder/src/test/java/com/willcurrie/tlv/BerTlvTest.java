@@ -154,8 +154,8 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
         List<BerTlv> actualEFTlvs = actualTlv.findTlvs(Tag.fromHex("EF"));
         assertEquals(2, actualEFTlvs.size());
-        BerTlv actualEFTlv1 = (BerTlv) actualEFTlvs.get(0);
-        BerTlv actualEFTlv2 = (BerTlv) actualEFTlvs.get(1);
+        BerTlv actualEFTlv1 = actualEFTlvs.get(0);
+        BerTlv actualEFTlv2 = actualEFTlvs.get(1);
         BerTlvUtils.assertEquals(tlv2.toBinary(), actualEFTlv1.toBinary());
         BerTlvUtils.assertEquals(nestedTag1.toBinary(), actualEFTlv1.findTlv(Tag.fromHex("9F1A")).toBinary());
         BerTlvUtils.assertEquals(tlv3.toBinary(), actualEFTlv2.toBinary());

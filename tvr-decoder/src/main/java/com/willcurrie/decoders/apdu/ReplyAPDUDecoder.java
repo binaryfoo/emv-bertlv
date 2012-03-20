@@ -2,6 +2,7 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
+import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.decoders.TLVDecoder;
 import com.willcurrie.tlv.Tag;
 
@@ -24,7 +25,7 @@ public class ReplyAPDUDecoder {
             children = Collections.emptyList();
             endIndex = startIndexInBytes + 2;
         } else {
-            children = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes);
+            children = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes, session);
             addToSession(session, children, Arrays.asList(EmvTags.PDOL, EmvTags.CDOL_1, EmvTags.CDOL_2));
             DecodedData payload = children.get(0);
             endIndex = payload.getEndIndex() + 2;

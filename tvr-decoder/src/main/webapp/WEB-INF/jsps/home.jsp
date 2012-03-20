@@ -11,7 +11,7 @@
 	    function doDecode() {
 	        $("#display").slideUp('slow',function(){
                 $("#display").html("Loading...").show();
-		        $.get('/t/decode/' + $('#tag_field').val() + '/' + $('#value_field').val(),function(data) {
+		        $.get('/t/decode/' + $('#tag_field').val() + '/' + $('#value_field').val() + '/' + $('#tagsToTreatAsPrimitive').val(),function(data) {
 					$("#display").html(data).slideDown('slow',function() {
 						$(".decoded,.composite-decoded").each(function() {
 			    			$(this).click(function(e) {
@@ -23,15 +23,22 @@
             });
 	    }
 	
-	    function setMaxLength() {
+	    function onOptionChange() {
 	        var value_field = $('#value_field')
 	        var options = $('#tag_field').attr("options");
 	        var selectedIndex = $('#tag_field').attr("selectedIndex");
 	        var maxLength = options[selectedIndex].getAttribute("data-maxlength");
+	        var recurseOptionRelevant = options[selectedIndex].getAttribute("data-recurseOptionRelevant");
 	        value_field.attr("maxLength", maxLength);
 	        if (value_field.val().length > maxLength) {
 	            value_field.val(value_field.val().substr(0, maxLength))
 	        }
+	        if (recurseOptionRelevant=='true') {
+	            $('#recurseOption').show('show');
+            } else {
+                $('#recurseOption').hide('show');
+                $('#tagsToTreatAsPrimitive').val('');
+            }
 	    }
 	
 		function highlightBytes(start, end) {
@@ -49,16 +56,19 @@
     </script>
     <link rel="stylesheet" type="text/css" href="/tvr.css" />
 </head>
-<body onload="setMaxLength()">
+<body onload="onOptionChange()">
     <div id="container"><div id="content">
     <form onsubmit="doDecode();return false">
-    <select id="tag_field" onchange="setMaxLength()">
+    <select id="tag_field" onchange="onOptionChange()">
     <c:forEach items="${tagInfos}" var="tagInfo">
-        <option value="${tagInfo.tag}" data-maxlength="${tagInfo.maxLength}">${tagInfo.shortName}</option>
+        <option value="${tagInfo.tag}" data-maxlength="${tagInfo.maxLength}" data-recurseOptionRelevant="${tagInfo.recurseOptionRelevant}">${tagInfo.shortName}</option>
     </c:forEach>
     </select>
     <input type="text" id="value_field"/>
     <input type="submit" value="Decode"/>
+    <div id="recurseOption">
+    Tags to not parse recursively: <input type="text" id="tagsToTreatAsPrimitive"/>
+    </div>
     </form>
     <div id="display">
     </div>

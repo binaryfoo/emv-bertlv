@@ -7,12 +7,11 @@ import com.willcurrie.tlv.Tag;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DataObjectListDecoder implements Decoder {
     @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes) {
+    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         List<DecodedData> children = new ArrayList<DecodedData>();
         ByteBuffer buffer = ByteBuffer.wrap(ISOUtil.hex2byte(input));
         int offset = startIndexInBytes;
@@ -24,7 +23,6 @@ public class DataObjectListDecoder implements Decoder {
             offset = newOffset;
         }
         return children;
-//        return Arrays.asList(new DecodedData(input, "data object list", startIndexInBytes, input.length()/2, children));
     }
 
     @Override

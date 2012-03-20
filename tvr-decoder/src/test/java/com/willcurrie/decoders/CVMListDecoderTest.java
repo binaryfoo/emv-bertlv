@@ -26,7 +26,7 @@ public class CVMListDecoderTest {
 				new DecodedData("0207", "Encrytped PIN online, If transaction in application currency and >= X, FAIL (x = 200)", 8, 10),
 				new DecodedData("1E00", "Signature, Always, FAIL", 10, 12)
 		);
-		List<DecodedData> actual = decoder.decode("000000C80000000002071E00", 0);
+		List<DecodedData> actual = decoder.decode("000000C80000000002071E00", 0, new DecodeSession());
 		assertEquals(expected, actual);
 	}
 	

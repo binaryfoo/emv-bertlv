@@ -3,6 +3,7 @@ package com.willcurrie.tlv;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BerTlv {
@@ -33,36 +34,44 @@ public abstract class BerTlv {
     }
 
     public static BerTlv newInstance(Tag tag, BerTlv tlv1, BerTlv tlv2) {
-        return new ConstructedBerTlv(tag, Arrays.asList(new BerTlv[] {tlv1, tlv2}));
+        return new ConstructedBerTlv(tag, Arrays.asList(tlv1, tlv2));
     }
 
     public static BerTlv parse(byte[] data) {
-        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), true);
-        return (BerTlv) tlvs.get(0);
+        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), true, Collections.<Tag>emptyList());
+        return tlvs.get(0);
     }
 
     public static BerTlv parseAsPrimitiveTag(byte[] data) {
-        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), false);
-        return (BerTlv) tlvs.get(0);
+        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), false, Collections.<Tag>emptyList());
+        return tlvs.get(0);
     }
 
     public static List<BerTlv> parseList(byte[] data) {
-        return parseList(ByteBuffer.wrap(data), true);
+        return parseList(ByteBuffer.wrap(data), true, Collections.<Tag>emptyList());
     }
 
-    private static List<BerTlv> parseList(ByteBuffer data, boolean parseConstructedTags) {
+    public static List<BerTlv> parseList(byte[] data, boolean parseConstructedTags, List<Tag> tagsToParseAsPrimitive) {
+        return parseList(ByteBuffer.wrap(data), parseConstructedTags, tagsToParseAsPrimitive);
+    }
+
+    private static List<BerTlv> parseList(ByteBuffer data, boolean parseConstructedTags, List<Tag> tagsToParseAsPrimitive) {
         List<BerTlv> tlvs = new ArrayList<BerTlv>();
 
         while (data.hasRemaining()) {
             Tag tag = Tag.parse(data);
-            int length = parseLength(data);
+            try {
+                int length = parseLength(data);
 
-            byte[] value = new byte[length];
-            data.get(value);
-            if (parseConstructedTags && tag.isConstructed()) {
-                tlvs.add(newInstance(tag, parseList(value)));
-            } else {
-                tlvs.add(newInstance(tag, value));
+                byte[] value = new byte[length];
+                data.get(value);
+                if (tag.isConstructed() && parseConstructedTags && !tagsToParseAsPrimitive.contains(tag)) {
+                    tlvs.add(newInstance(tag, parseList(value, parseConstructedTags, tagsToParseAsPrimitive)));
+                } else {
+                    tlvs.add(newInstance(tag, value));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Failed parsing " + tag + "," + (e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage()));
             }
         }
         return tlvs;
@@ -133,7 +142,7 @@ public abstract class BerTlv {
 
     public abstract List<BerTlv> getChildren();
 
-    private final byte[] getLength(byte[] value) {
+    private byte[] getLength(byte[] value) {
         byte[] length = null;
         if (value == null) {
             return new byte[] {(byte) 0x00};

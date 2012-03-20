@@ -3,6 +3,7 @@ package com.willcurrie;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.tlv.ISOUtil;
 
 public class FixedLengthDecoder implements Decoder {
@@ -41,7 +42,7 @@ public class FixedLengthDecoder implements Decoder {
 		return lengthInCharacters;
 	}
 	
-	public List<DecodedData> decode(String bitString, int startIndexInBytes) {
+	public List<DecodedData> decode(String bitString, int startIndexInBytes, DecodeSession decodeSession) {
 		long bitStringAsLong = Long.parseLong(bitString, 16);
 		ArrayList<DecodedData> bitsSetInString = new ArrayList<DecodedData>();
 		for (BitMapping bit : bits) {

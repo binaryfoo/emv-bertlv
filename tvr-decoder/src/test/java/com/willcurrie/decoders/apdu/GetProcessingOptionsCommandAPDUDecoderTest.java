@@ -2,6 +2,7 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
+import com.willcurrie.decoders.DecodeSession;
 import org.junit.Test;
 
 import java.util.List;

@@ -65,7 +65,7 @@ public final class EmvTags {
     public static final Tag APPLICATION_CRYPTOGRAM = newTag("9F26", "application cryptogram", false);
     public static final Tag ISSUER_APPLICATION_DATA = newTag("9F10", "issuer application data", false);
     public static final Tag TERMINAL_CURRENCY_CODE = newTag("5F2A", "terminal currency code", false);
-    public static final Tag TERMINAL_SERIAL_NUMBER = newTag("9F1E", "terminal serial number", false);
+    public static final Tag TERMINAL_SERIAL_NUMBER = newTag("9F1E", "terminal serial number", true);
     public static final Tag UNPREDICTABLE_NUMBER = newTag("9F37", "unpredictable number", false);
     public static final Tag CVM_RESULTS = newTag("9F34", "CVM results", false);
     public static final Tag CRYPTOGRAM_INFORMATION_DATA = newTag("9F27", "cryptogram information data", false);
@@ -134,6 +134,6 @@ public final class EmvTags {
 
     public static String getTagName(Tag tag) {
         String name = (String) TAG_NAMES.get(tag);
-        return name == null ? "" : name;
+        return name == null ? "?" : name;
     }
 }

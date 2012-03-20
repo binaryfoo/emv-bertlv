@@ -2,6 +2,7 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
+import com.willcurrie.decoders.DecodeSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,7 @@ public class APDUSequenceDecoder implements Decoder {
     }
 
     @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes) {
-        DecodeSession session = new DecodeSession();
+    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession session) {
         ArrayList<DecodedData> list = new ArrayList<DecodedData>();
         for (String line : input.split(" ")) {
             CommandAPDUDecoder commandDecoder = getCommandDecoder(line);

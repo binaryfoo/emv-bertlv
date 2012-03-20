@@ -23,13 +23,13 @@ public class TVRDecoderTest {
 	@Test
 	public void testPinRequiredButNotEntered() {
 		List<DecodedData> expected = Arrays.asList(new DecodedData("0000080000", "PIN entry required, PIN pad present, but PIN was not entered", 2, 3));
-		List<DecodedData> actual = decoder.decode("0000080000", 0);
+		List<DecodedData> actual = decoder.decode("0000080000", 0, new DecodeSession());
 		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testAllBitsSet() throws Exception {
-		List<DecodedData> actual = decoder.decode("FFFFFFFFFF", 0);
+		List<DecodedData> actual = decoder.decode("FFFFFFFFFF", 0, new DecodeSession());
 		assertEquals(26, actual.size());
 	}
 }

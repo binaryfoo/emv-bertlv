@@ -20,7 +20,7 @@ public class CVMResultsDecoderTest {
 				new DecodedData("00", "Always", 1, 2),
 				new DecodedData("02", "Sucessful", 2, 3)
 				);
-		List<DecodedData> actual = decoder.decode("1E0002", 0);
+		List<DecodedData> actual = decoder.decode("1E0002", 0, new DecodeSession());
 		assertEquals(expected, actual);
 	}
 	

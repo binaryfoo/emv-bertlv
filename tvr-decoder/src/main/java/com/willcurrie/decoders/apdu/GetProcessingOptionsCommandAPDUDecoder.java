@@ -2,6 +2,7 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
+import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.decoders.PopulatedDOLDecoder;
 import com.willcurrie.tlv.BerTlv;
 import com.willcurrie.tlv.ISOUtil;

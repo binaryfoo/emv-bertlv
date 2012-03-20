@@ -42,7 +42,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         expect(selectCommandAPDUDecoder.decode(eq(input), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
         replayAll();
-        List<DecodedData> list = decoder.decode(input, 0);
+        List<DecodedData> list = decoder.decode(input, 0, new DecodeSession());
         verifyAll();
         assertThat(list.size(), is(1));
         assertThat(list.get(0), is(decodedCommand));
@@ -54,7 +54,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         expect(getProcessingOptionsCommandAPDUDecoder.decode(eq(input), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
         replayAll();
-        List<DecodedData> list = decoder.decode(input, 0);
+        List<DecodedData> list = decoder.decode(input, 0, new DecodeSession());
         verifyAll();
         assertThat(list.size(), is(1));
         assertThat(list.get(0), is(decodedCommand));
@@ -70,7 +70,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         expect(replyAPDUDecoder.decode(eq(line2), eq(line1.length()/2), isA(DecodeSession.class))).andReturn(decodedReply);
         expect(decodedReply.getEndIndex()).andReturn(line1.length()/2 + line2.length()/2);
         replayAll();
-        List<DecodedData> list = decoder.decode(input, 0);
+        List<DecodedData> list = decoder.decode(input, 0, new DecodeSession());
         verifyAll();
         assertThat(list.size(), is(2));
         assertThat(list.get(0), is(decodedCommand));

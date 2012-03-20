@@ -2,7 +2,6 @@ package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
-import com.willcurrie.tlv.BerTlv;
 import com.willcurrie.tlv.ISOUtil;
 
 import java.nio.ByteBuffer;
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class PopulatedDOLDecoder implements Decoder {
     @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes) {
+    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         String[] fields = input.split(":");
         String pdol = fields[0];
         String populatedPDOL = fields[1];

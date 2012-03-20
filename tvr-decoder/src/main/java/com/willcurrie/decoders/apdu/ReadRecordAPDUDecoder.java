@@ -1,6 +1,7 @@
 package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
+import com.willcurrie.decoders.DecodeSession;
 
 public class ReadRecordAPDUDecoder implements CommandAPDUDecoder {
     @Override

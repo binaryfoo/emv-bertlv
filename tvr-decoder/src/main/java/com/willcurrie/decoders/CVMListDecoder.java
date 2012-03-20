@@ -13,7 +13,7 @@ public class CVMListDecoder implements Decoder {
 	private static final int LENGTH_OF_CV_RULE = 4;
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndexInBytes) {
+	public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
 		int x = Integer.parseInt(input.substring(0, 8), 16);
 		int y = Integer.parseInt(input.substring(8, 16), 16);
 		ArrayList<DecodedData> decodedData = new ArrayList<DecodedData>();

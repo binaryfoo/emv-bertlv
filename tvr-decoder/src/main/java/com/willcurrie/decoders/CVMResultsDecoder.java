@@ -12,7 +12,7 @@ public class CVMResultsDecoder implements Decoder {
 	private static final int FIELD_LENGTH = 6;
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndexInBytes) {
+	public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
 		CVRule rule = new CVRule(input.substring(0, 4));
 		String result = input.substring(4, 6);
 		return Arrays.asList(
