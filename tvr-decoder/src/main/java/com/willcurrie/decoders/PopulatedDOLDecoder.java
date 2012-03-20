@@ -26,7 +26,7 @@ public class PopulatedDOLDecoder implements Decoder {
         for (DOLParser.DOLElement element : elements) {
             byte[] value = new byte[element.getLength()];
             values.get(value);
-            decoded.add(new DecodedData(element.getTag().toString(), ISOUtil.hexString(value), offset, offset + value.length));
+            decoded.add(new DecodedData(element.getTag(), ISOUtil.hexString(value), offset, offset + value.length));
             offset += value.length;
         }
         return decoded;

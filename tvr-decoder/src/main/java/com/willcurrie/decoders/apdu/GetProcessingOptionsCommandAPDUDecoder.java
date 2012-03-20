@@ -20,8 +20,9 @@ public class GetProcessingOptionsCommandAPDUDecoder implements CommandAPDUDecode
         int length = Integer.parseInt(input.substring(8, 10), 16);
         String populatedPdol = input.substring(10, 10 + length * 2);
         BerTlv populatedPdolTlv = BerTlv.parse(ISOUtil.hex2byte(populatedPdol));
-        List<DecodedData> decodedPDOLElements = decodePDOLElements(session, populatedPdol, startIndexInBytes + 5 + populatedPdolTlv.getTag().getBytes().length + populatedPdolTlv.getLengthInBytesOfEncodedLength());
-        return new DecodedData("C-APDU: GPO", "PDOL " + populatedPdolTlv.getValueAsHexString(), startIndexInBytes, startIndexInBytes + 5 + length + 1, decodedPDOLElements);
+        String valueAsHexString = populatedPdolTlv.getValueAsHexString();
+        List<DecodedData> decodedPDOLElements = decodePDOLElements(session, valueAsHexString, startIndexInBytes + 5 + populatedPdolTlv.getTag().getBytes().length + populatedPdolTlv.getLengthInBytesOfEncodedLength());
+        return new DecodedData("C-APDU: GPO", "PDOL " + valueAsHexString, startIndexInBytes, startIndexInBytes + 5 + length + 1, decodedPDOLElements);
     }
 
     private List<DecodedData> decodePDOLElements(DecodeSession session, String populatedPdol, int startIndexInBytes) {
