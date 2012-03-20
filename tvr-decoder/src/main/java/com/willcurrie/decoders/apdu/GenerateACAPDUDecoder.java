@@ -2,14 +2,19 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
+import com.willcurrie.controllers.DecodeController;
 import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.decoders.PopulatedDOLDecoder;
 import com.willcurrie.tlv.ISOUtil;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class GenerateACAPDUDecoder implements CommandAPDUDecoder {
+
+    private static final Logger LOG = Logger.getLogger(DecodeController.class.getName());
+    
     @Override
     public APDUCommand getCommand() {
         return APDUCommand.GenerateAC;
@@ -36,11 +41,23 @@ public class GenerateACAPDUDecoder implements CommandAPDUDecoder {
     }
 
     private List<DecodedData> decodeCDOLElements(DecodeSession session, String populatedCdol, int startIndexInBytes) {
-        String cdol = session.get(EmvTags.CDOL_1);
+        String cdol = findCDOL(session);
         if (cdol != null) {
-            return new PopulatedDOLDecoder().decode(cdol, populatedCdol, startIndexInBytes);
+            try {
+                return new PopulatedDOLDecoder().decode(cdol, populatedCdol, startIndexInBytes);
+            } catch (Exception e) {
+                LOG.throwing(GenerateACAPDUDecoder.class.getSimpleName(), "decodeCDOLElements", e);
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    private String findCDOL(DecodeSession session) {
+        if (session.isFirstGenerateACCommand()) {
+            session.setFirstGenerateACCommand(false);
+            return session.get(EmvTags.CDOL_1);
         } else {
-            return Collections.emptyList();
+            return session.get(EmvTags.CDOL_2);
         }
     }
 }

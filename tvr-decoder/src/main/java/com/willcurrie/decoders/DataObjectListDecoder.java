@@ -27,6 +27,9 @@ public class DataObjectListDecoder implements Decoder {
 
     @Override
     public String validate(String input) {
+        if (!input.matches("^[0-9A-Za-z]$")) {
+            return "Only A-Z and 0-9 are valid";
+        }
         return null;
     }
 
