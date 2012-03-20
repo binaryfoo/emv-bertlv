@@ -118,6 +118,7 @@ public final class EmvTags {
     public static final Tag ICC_PUBLIC_KEY_CERTIFICATE = newTag("9F46", "ICC public key certificate", false);
     public static final Tag DATA_AUTHENTICATION_CODE = newTag("9F45", "data authentication code", false);
     public static final Tag ICC_DYNAMIC_NUMBER = newTag("9F4C", "ICC dynamic number", false);
+    public static final Tag RESPONSE_TEMPLATE_2 = newTag("70", "response template", false);
 
     private static Tag newTag(String hexString, String name, boolean isValueAscii) {
         Tag tag = Tag.fromHex(hexString);
