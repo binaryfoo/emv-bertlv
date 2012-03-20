@@ -4,19 +4,19 @@ import com.willcurrie.FixedLengthDecoder;
 
 public class TerminalTxQualifiersDecoder extends FixedLengthDecoder {
     public TerminalTxQualifiersDecoder() {
-        super(6,
-                "800000", "MSD supported",
-                "200000", "qVSDC supported",
-                "100000", "EMV contact chip supported",
-                "080000", "Offline only reader",
-                "040000", "Online PIN supported",
-                "020000", "Signature supported",
-                "010000", "Offline data auth for online transactions supported",
-                "008000", "Online cryptogram required",
-                "004000", "CVM required",
-                "002000", "Contact chip offline pin supported",
-                "000080", "Issuer update processing supported",
-                "000040", "Mobile device functionality supported"
+        super(8,
+                "80000000", "MSD supported",
+                "20000000", "qVSDC supported",
+                "10000000", "EMV contact chip supported",
+                "08000000", "Offline only reader",
+                "04000000", "Online PIN supported",
+                "02000000", "Signature supported",
+                "01000000", "Offline data auth for online transactions supported",
+                "00800000", "Online cryptogram required",
+                "00400000", "CVM required",
+                "00200000", "Contact chip offline pin supported",
+                "00008000", "Issuer update processing supported",
+                "00004000", "Mobile device functionality supported"
                 );
     }
 
