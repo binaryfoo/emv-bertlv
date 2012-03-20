@@ -34,7 +34,7 @@ public class DecodedData {
     private DecodedData(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
         this.tag = tag;
         this.rawData = rawData;
-        this.decodedData = children != null && !children.isEmpty() ? trim(decodedData) : decodedData;
+        this.decodedData = decodedData;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.children = children;
@@ -57,9 +57,13 @@ public class DecodedData {
 	}
 	
 	public String getDecodedData() {
-		return decodedData;
+		return isComposite() ? trim(decodedData) : decodedData;
 	}
 
+    public String getFullDecodedData() {
+        return decodedData;
+    }
+    
 	public List<DecodedData> getChildren() {
 		return children;
 	}

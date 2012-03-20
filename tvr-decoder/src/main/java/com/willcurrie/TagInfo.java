@@ -65,7 +65,7 @@ public class TagInfo {
 		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder(), true),
 		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
                 new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(),
-                new GenerateAPDUDecoder(), new GetDataAPDUDecoder(), new ExternalAuthenticateAPDUDecoder())),
+                new GenerateACAPDUDecoder(), new GetDataAPDUDecoder(), new ExternalAuthenticateAPDUDecoder())),
 	};
 	private static final Map<String, TagInfo> TAG_LOOKUP = new HashMap<String, TagInfo>();
 	static {

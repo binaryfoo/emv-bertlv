@@ -36,7 +36,7 @@ public class ReplyAPDUDecoder {
     private void addToSession(DecodeSession session, List<DecodedData> children, List<Tag> tags) {
         for (DecodedData child : children) {
             if (tags.contains(child.getTag())) {
-                session.put(child.getTag(), child.getDecodedData());
+                session.put(child.getTag(), child.getFullDecodedData());
             } else if (child.isComposite()) {
                 addToSession(session, child.getChildren(), tags);
             }
