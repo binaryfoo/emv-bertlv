@@ -12,10 +12,14 @@ public class ISOUtil {
      * @return String representation
      */
     public static String hexString(byte[] b) {
+        return hexString(b, 0, b.length);
+    }
+
+    public static String hexString(byte[] b, int offset, int len) {
         StringBuffer d = new StringBuffer(b.length * 2);
-        for (int i=0; i<b.length; i++) {
-            char hi = Character.forDigit ((b[i] >> 4) & 0x0F, 16);
-            char lo = Character.forDigit (b[i] & 0x0F, 16);
+        for (int i=0; i<len; i++) {
+            char hi = Character.forDigit ((b[offset+i] >> 4) & 0x0F, 16);
+            char lo = Character.forDigit (b[offset+i] & 0x0F, 16);
             d.append(Character.toUpperCase(hi));
             d.append(Character.toUpperCase(lo));
         }
