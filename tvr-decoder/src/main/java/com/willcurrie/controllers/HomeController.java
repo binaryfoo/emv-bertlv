@@ -18,14 +18,7 @@ public class HomeController {
 
     @RequestMapping("/home")
     public ModelAndView welcome(ModelMap model) {
-    	return new ModelAndView("home", "tagInfos", getTagsToShow());
+    	return new ModelAndView("home", "tagInfos", DecodeController.ROOT_TAG_INFO.entrySet());
     }
 
-	private ArrayList<TagInfo> getTagsToShow() {
-		ArrayList<TagInfo> tagInfos = new ArrayList<TagInfo>();
-		for (String tag : Arrays.asList("95", "9B", "82", "8E", "9F34", "8C", "9F6C", "9F66", "dol", "constructed", "apdu-sequence")) {
-			tagInfos.add(TagInfo.get(tag));
-		}
-		return tagInfos;
-	}
 }

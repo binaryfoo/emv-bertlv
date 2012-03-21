@@ -61,7 +61,7 @@
     <form onsubmit="doDecode();return false">
     <select id="tag_field" onchange="onOptionChange()">
     <c:forEach items="${tagInfos}" var="tagInfo">
-        <option value="${tagInfo.tag}" data-maxlength="${tagInfo.maxLength}">${tagInfo.shortName}</option>
+        <option value="${tagInfo.key}" data-maxlength="${tagInfo.value.maxLength}">${tagInfo.value.shortName}</option>
     </c:forEach>
     </select>
     <input type="text" id="value_field"/>

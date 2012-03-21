@@ -15,7 +15,7 @@ public class PopulatedDOLDecoderTest {
     public void testDecode() throws Exception {
         List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704:36000000000000001000000000000000003600000000000036120315000008E4C8", 0, new DecodeSession());
         assertThat(decoded.size(), is(9));
-        assertThat(decoded.get(0).getRawData(), is("9F66 (terminal transaction qualifiers)"));
+        assertThat(decoded.get(0).getRawData(), is("9F66 (TTQ)"));
         assertThat(decoded.get(0).getDecodedData(), is("36000000"));
         assertThat(decoded.get(0).getStartIndex(), is(24));
         assertThat(decoded.get(0).getEndIndex(), is(28));
@@ -29,7 +29,7 @@ public class PopulatedDOLDecoderTest {
     public void testDecodeTwoParameters() throws Exception {
         List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704", "36000000000000001000000000000000003600000000000036120315000008E4C8", 0);
         assertThat(decoded.size(), is(9));
-        assertThat(decoded.get(0).getRawData(), is("9F66 (terminal transaction qualifiers)"));
+        assertThat(decoded.get(0).getRawData(), is("9F66 (TTQ)"));
         assertThat(decoded.get(0).getDecodedData(), is("36000000"));
         assertThat(decoded.get(0).getStartIndex(), is(0));
         assertThat(decoded.get(0).getEndIndex(), is(4));

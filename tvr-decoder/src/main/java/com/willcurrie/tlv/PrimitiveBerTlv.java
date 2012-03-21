@@ -31,9 +31,6 @@ class PrimitiveBerTlv extends BerTlv {
     }
 
     public String toString() {
-        if (EmvTags.isTagAscii(getTag())) {
-            return getTag() + ": " + new String(value);
-        }
         return getTag() + ": " + ISOUtil.hexString(value);
     }
 }

@@ -29,24 +29,15 @@ public class TLVDecoder implements Decoder {
 			int compositeStartElementIndex = startIndex + tag.getBytes().length + berTlv.getLengthInBytesOfEncodedLength();
 			if (tag.isConstructed()) {
 				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)));
-			} else if (TagInfo.get(tag.getHexString()) != null) {
-				TagInfo tagInfo = TagInfo.get(tag.getHexString());
-				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex, decodeSession)));
 			} else {
-				decodedItems.add(new DecodedData(tag, decodePrimitiveTlv(berTlv), startIndex, contentEndIndex));
-			}
+                TagInfo tagInfo = decodeSession.getTagMetaData().get(tag);
+                decodedItems.add(new DecodedData(tag, tagInfo.decodePrimitiveTlvValue(valueAsHexString), startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex, decodeSession)));
+            }
 			startIndex += length;
 		}
 		return decodedItems;
 	}
 
-	private String decodePrimitiveTlv(BerTlv berTlv) {
-		if (EmvTags.isTagAscii(berTlv.getTag())) {
-		    return ISOUtil.dumpString(berTlv.getValue());
-		} 
-		return berTlv.getValueAsHexString();
-	}
-	
 	@Override
 	public int getMaxLength() {
 		return 10000;
