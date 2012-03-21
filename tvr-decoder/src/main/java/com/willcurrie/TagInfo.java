@@ -11,18 +11,12 @@ public class TagInfo {
 	private final String shortName;
 	private final String longName;
 	private final Decoder decoder;
-    private final boolean recurseOptionRelevant;
 
     private TagInfo(String tag, String shortName, String longName, Decoder decoder) {
-        this(tag, shortName, longName, decoder, false);
-    }
-
-    private TagInfo(String tag, String shortName, String longName, Decoder decoder, boolean recurseOptionRelevant) {
 		this.tag = tag;
 		this.shortName = shortName;
 		this.longName = longName;
 		this.decoder = decoder;
-        this.recurseOptionRelevant = recurseOptionRelevant;
     }
 	
 	public String getTag() {
@@ -45,10 +39,6 @@ public class TagInfo {
 		return decoder.getMaxLength();
 	}
 
-    public boolean isRecurseOptionRelevant() {
-        return recurseOptionRelevant;
-    }
-
     private static final TagInfo[] TAGS = {
 		new TagInfo("95", "TVR", "Terminal Verification Results", new TVRDecoder()),
 		new TagInfo("9B", "TSI", "Transaction Status Indicator", new TSIDecoder()),
@@ -63,7 +53,7 @@ public class TagInfo {
 		new TagInfo("9F6C", "CTQ", "Card transaction qualifiers", new CardTxQualifiersDecoder()),
 		new TagInfo("9F66", "TTQ", "Terminal transaction qualifiers", new TerminalTxQualifiersDecoder()),
         new TagInfo("dol", "Filled DOL", "Data Object List", new PopulatedDOLDecoder()),
-		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder(), true),
+		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder()),
 		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
                 new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(),
                 new GenerateACAPDUDecoder(), new GetDataAPDUDecoder(), new ExternalAuthenticateAPDUDecoder(), new ComputeCryptoChecksumDecoder())),

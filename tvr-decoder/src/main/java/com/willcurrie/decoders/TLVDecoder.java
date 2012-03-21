@@ -15,7 +15,7 @@ public class TLVDecoder implements Decoder {
 
 	@Override
 	public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
-		List<BerTlv> list = BerTlv.parseList(ISOUtil.hex2byte(input), true, decodeSession.getTagsToTreatAsPrimitive());
+		List<BerTlv> list = BerTlv.parseList(ISOUtil.hex2byte(input), true);
 		return decodeTlvs(list, startIndexInBytes, decodeSession);
 	}
 
@@ -27,7 +27,7 @@ public class TLVDecoder implements Decoder {
 			int length = berTlv.toBinary().length;
 			int contentEndIndex = startIndex + length;
 			int compositeStartElementIndex = startIndex + tag.getBytes().length + berTlv.getLengthInBytesOfEncodedLength();
-			if (tag.isConstructed() && !decodeSession.isTagToBeTreatedAsPrimitive(tag)) {
+			if (tag.isConstructed()) {
 				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)));
 			} else if (TagInfo.get(tag.getHexString()) != null) {
 				TagInfo tagInfo = TagInfo.get(tag.getHexString());

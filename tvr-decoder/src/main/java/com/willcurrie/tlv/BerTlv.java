@@ -1,9 +1,9 @@
 package com.willcurrie.tlv;
 
+import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class BerTlv {
@@ -38,24 +38,20 @@ public abstract class BerTlv {
     }
 
     public static BerTlv parse(byte[] data) {
-        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), true, Collections.<Tag>emptyList());
+        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), true);
         return tlvs.get(0);
     }
 
     public static BerTlv parseAsPrimitiveTag(byte[] data) {
-        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), false, Collections.<Tag>emptyList());
+        List<BerTlv> tlvs = parseList(ByteBuffer.wrap(data), false);
         return tlvs.get(0);
     }
 
-    public static List<BerTlv> parseList(byte[] data) {
-        return parseList(ByteBuffer.wrap(data), true, Collections.<Tag>emptyList());
+    public static List<BerTlv> parseList(byte[] data, boolean parseConstructedTags) {
+        return parseList(ByteBuffer.wrap(data), parseConstructedTags);
     }
 
-    public static List<BerTlv> parseList(byte[] data, boolean parseConstructedTags, List<Tag> tagsToParseAsPrimitive) {
-        return parseList(ByteBuffer.wrap(data), parseConstructedTags, tagsToParseAsPrimitive);
-    }
-
-    private static List<BerTlv> parseList(ByteBuffer data, boolean parseConstructedTags, List<Tag> tagsToParseAsPrimitive) {
+    private static List<BerTlv> parseList(ByteBuffer data, boolean parseConstructedTags) {
         List<BerTlv> tlvs = new ArrayList<BerTlv>();
 
         while (data.hasRemaining()) {
@@ -65,8 +61,12 @@ public abstract class BerTlv {
 
                 byte[] value = new byte[length];
                 data.get(value);
-                if (tag.isConstructed() && parseConstructedTags && !tagsToParseAsPrimitive.contains(tag)) {
-                    tlvs.add(newInstance(tag, parseList(value, parseConstructedTags, tagsToParseAsPrimitive)));
+                if (tag.isConstructed() && parseConstructedTags) {
+                    try {
+                        tlvs.add(newInstance(tag, parseList(value, parseConstructedTags)));
+                    } catch (Exception e) {
+                        tlvs.add(newInstance(tag, value));
+                    }
                 } else {
                     tlvs.add(newInstance(tag, value));
                 }

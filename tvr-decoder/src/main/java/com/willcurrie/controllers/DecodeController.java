@@ -26,8 +26,8 @@ public class DecodeController {
 	private static final Logger LOG = Logger.getLogger(DecodeController.class.getName());
 
     @RequestMapping(value = "/decode", method = RequestMethod.POST)
-    public String decode(@RequestParam String tag, @RequestParam String value, @RequestParam(required = false) String tagsToTreatAsPrimitive, ModelMap modelMap) {
-    	LOG.info("Request to decode tag [" + tag + "] and value [" + value + "] with tagsToTreatAsPrimitive [" + tagsToTreatAsPrimitive + "]");
+    public String decode(@RequestParam String tag, @RequestParam String value, ModelMap modelMap) {
+    	LOG.info("Request to decode tag [" + tag + "] and value [" + value + "]");
     	TagInfo tagInfo = TagInfo.get(tag);
     	if (tagInfo == null) {
     		LOG.fine("Unknown tag");
@@ -43,9 +43,6 @@ public class DecodeController {
 		try {
             value = value.toUpperCase();
             DecodeSession decodeSession = new DecodeSession();
-            if (StringUtils.isNotBlank(tagsToTreatAsPrimitive)) {
-                decodeSession.setTagsToTreatAsPrimitive(parseTags(tagsToTreatAsPrimitive));
-            }
             List<DecodedData> decodedData = tagInfo.getDecoder().decode(value, 0, decodeSession);
             LOG.fine("Decoded successfully " + decodedData);
             modelMap.addAttribute("rawData", splitIntoByteLengthStrings(value.replaceAll(":", " ")));
@@ -56,14 +53,6 @@ public class DecodeController {
 			modelMap.addAttribute("error", e.getMessage());
 			return "validationError";
 		}
-    }
-
-    private List<Tag> parseTags(String tagsToTreatAsPrimitive) {
-        ArrayList<Tag> tags = new ArrayList<Tag>();
-        for (String s : tagsToTreatAsPrimitive.split(",")) {
-            tags.add(Tag.fromHex(s));
-        }
-        return tags;
     }
 
     private List<HexDumpElement> splitIntoByteLengthStrings(String hexString) {
