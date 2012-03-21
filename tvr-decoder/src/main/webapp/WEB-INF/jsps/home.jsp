@@ -11,7 +11,7 @@
 	    function doDecode() {
 	        $("#display").slideUp('slow',function(){
                 $("#display").html("Loading...").show();
-		        $.get('/t/decode/' + $('#tag_field').val() + '/' + $('#value_field').val() + '/' + $('#tagsToTreatAsPrimitive').val(),function(data) {
+		        $.post('/t/decode', {tag: $('#tag_field').val(), value: $('#value_field').val(), tagsToTreatAsPrimitive: $('#tagsToTreatAsPrimitive').val()},function(data) {
 					$("#display").html(data).slideDown('slow',function() {
 						$(".decoded,.composite-decoded").each(function() {
 			    			$(this).click(function(e) {

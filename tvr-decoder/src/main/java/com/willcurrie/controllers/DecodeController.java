@@ -25,15 +25,10 @@ public class DecodeController {
 
 	private static final Logger LOG = Logger.getLogger(DecodeController.class.getName());
 
-    @RequestMapping(value = "/decode/{tagHexString}/{value}/", method = RequestMethod.GET)
-    public String decode(@PathVariable String tagHexString, @PathVariable String value, ModelMap modelMap) {
-        return decode(tagHexString, value, "", modelMap);
-    }
-
-    @RequestMapping(value = "/decode/{tagHexString}/{value}/{tagsToTreatAsPrimitive}", method = RequestMethod.GET)
-    public String decode(@PathVariable String tagHexString, @PathVariable String value, @PathVariable String tagsToTreatAsPrimitive, ModelMap modelMap) {
-    	LOG.info("Request to decode tag [" + tagHexString + "] and value [" + value + "] with tagsToTreatAsPrimitive [" + tagsToTreatAsPrimitive + "]");
-    	TagInfo tagInfo = TagInfo.get(tagHexString);
+    @RequestMapping(value = "/decode", method = RequestMethod.POST)
+    public String decode(@RequestParam String tag, @RequestParam String value, @RequestParam(required = false) String tagsToTreatAsPrimitive, ModelMap modelMap) {
+    	LOG.info("Request to decode tag [" + tag + "] and value [" + value + "] with tagsToTreatAsPrimitive [" + tagsToTreatAsPrimitive + "]");
+    	TagInfo tagInfo = TagInfo.get(tag);
     	if (tagInfo == null) {
     		LOG.fine("Unknown tag");
     		modelMap.addAttribute("error", "Unknown tag");
