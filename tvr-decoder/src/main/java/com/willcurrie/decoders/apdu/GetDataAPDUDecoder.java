@@ -14,6 +14,6 @@ public class GetDataAPDUDecoder implements CommandAPDUDecoder {
     public DecodedData decode(String input, int startIndexInBytes, DecodeSession session) {
         String tagHex = input.substring(4, 8);
         Tag tag = Tag.fromHex(tagHex);
-        return new DecodedData("C-APDU: GetData", tag.toString(session.getTagMetaData()), startIndexInBytes, startIndexInBytes + 7);
+        return new DecodedData("C-APDU: GetData", tag.toString(session.getTagMetaData()), startIndexInBytes, startIndexInBytes + 5);
     }
 }

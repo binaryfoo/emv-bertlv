@@ -1,8 +1,6 @@
 package com.willcurrie;
 
-import com.willcurrie.decoders.AsciiPrimitiveDecoder;
-import com.willcurrie.decoders.NullDecoder;
-import com.willcurrie.decoders.NullPrimitiveDecoder;
+import com.willcurrie.decoders.*;
 import com.willcurrie.tlv.Tag;
 
 import java.util.HashMap;
@@ -28,7 +26,7 @@ public class TagMetaData {
     public TagInfo get(Tag tag) {
         TagInfo tagInfo = metadata.get(tag.getHexString());
         if (tagInfo == null) {
-            return new TagInfo("?", "?", new NullDecoder(), new NullPrimitiveDecoder());
+            return new TagInfo("?", "?", Decoders.PRIMITIVE, PrimitiveDecoder.HEX);
         }
         return tagInfo;
     }

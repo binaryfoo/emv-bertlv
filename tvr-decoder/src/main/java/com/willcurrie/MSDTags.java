@@ -5,6 +5,7 @@ import com.willcurrie.decoders.PrimitiveDecoder;
 import com.willcurrie.tlv.Tag;
 
 import static com.willcurrie.decoders.PrimitiveDecoder.ASCII;
+import static com.willcurrie.decoders.PrimitiveDecoder.BASE_10;
 import static com.willcurrie.decoders.PrimitiveDecoder.HEX;
 
 public class MSDTags extends EmvTags {
@@ -12,8 +13,8 @@ public class MSDTags extends EmvTags {
 
     public static final Tag MSD_TRACK_1 = newTag("56", "track 1", ASCII);
     public static final Tag MSD_TRACK_2 = newTag("9F6B", "track 2", HEX);
-    public static final Tag MSD_CVC_3_TRACK_1 = newTag("9F60", "CVC3 track 1", HEX);
-    public static final Tag MSD_CVC_3_TRACK_2 = newTag("9F61", "CVC3 track 2", HEX);
+    public static final Tag MSD_CVC_3_TRACK_1 = newTag("9F60", "CVC3 track 1", BASE_10);
+    public static final Tag MSD_CVC_3_TRACK_2 = newTag("9F61", "CVC3 track 2", BASE_10);
     public static final Tag MSD_POSITION_OF_CVC_3_TRACK_1 = newTag("9F62", "position of CVC3 in track 1", HEX);
     public static final Tag MSD_POSITION_OF_CVC_3_TRACK_2 = newTag("9F65", "position of CVC3 in track 2", HEX);
     public static final Tag MSD_POSITION_OF_UN_AND_ATC_TRACK_1 = newTag("9F63", "position of UN and ATC in track 1", HEX);

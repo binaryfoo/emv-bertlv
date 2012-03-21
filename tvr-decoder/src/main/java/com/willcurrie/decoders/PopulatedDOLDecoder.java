@@ -4,6 +4,7 @@ import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
 import com.willcurrie.TagMetaData;
 import com.willcurrie.tlv.ISOUtil;
+import com.willcurrie.tlv.Tag;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ public class PopulatedDOLDecoder implements Decoder {
         for (DOLParser.DOLElement element : elements) {
             byte[] value = new byte[element.getLength()];
             values.get(value);
-            decoded.add(new DecodedData(element.getTag().toString(session.getTagMetaData()), ISOUtil.hexString(value), offset, offset + value.length));
+            TagMetaData tagMetaData = session.getTagMetaData();
+            Tag tag = element.getTag();
+            decoded.add(new DecodedData(tag.toString(tagMetaData), tagMetaData.get(tag).decodePrimitiveTlvValue(ISOUtil.hexString(value)), offset, offset + value.length));
             offset += value.length;
         }
         return decoded;

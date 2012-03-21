@@ -14,7 +14,7 @@ public class TagInfo {
     private final PrimitiveDecoder primitiveDecoder;
 
     public TagInfo(String shortName, String longName, Decoder decoder) {
-        this(shortName, longName, decoder, new NullPrimitiveDecoder());
+        this(shortName, longName, decoder, PrimitiveDecoder.HEX);
     }
     
     TagInfo(String shortName, String longName, Decoder decoder, PrimitiveDecoder primitiveDecoder) {

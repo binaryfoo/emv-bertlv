@@ -3,7 +3,11 @@ package com.willcurrie;
 import com.willcurrie.decoders.*;
 import com.willcurrie.tlv.Tag;
 
+import static com.willcurrie.decoders.Decoders.CVM_LIST;
+import static com.willcurrie.decoders.Decoders.CVM_RESULTS;
+import static com.willcurrie.decoders.Decoders.DOL;
 import static com.willcurrie.decoders.PrimitiveDecoder.ASCII;
+import static com.willcurrie.decoders.PrimitiveDecoder.BASE_10;
 import static com.willcurrie.decoders.PrimitiveDecoder.HEX;
 
 public class EmvTags {
@@ -23,7 +27,7 @@ public class EmvTags {
     public static final Tag AID_TABLE = newTag("E5", "AID table", HEX);
     public static final Tag POS_ENTRY_MODE = newTag("9F39", "pos entry mode", HEX);
     public static final Tag TERMINAL_APPLICATION_VERSION_NUMBER = newTag("9F09", "terminal application version number", HEX);
-    public static final Tag DEFAULT_DDOL = newTag("DF5D", "Default DDOL", "Default DDOL", new DataObjectListDecoder());
+    public static final Tag DEFAULT_DDOL = newTag("DF5D", "Default DDOL", "Default DDOL", DOL);
     public static final Tag TAC_DENIAL = newTag("DF57", "TAC denial", HEX);
     public static final Tag TAC_ONLINE = newTag("DF58", "TAC online", HEX);
     public static final Tag TAC_DEFAULT = newTag("DF56", "TAC default", HEX);
@@ -54,14 +58,14 @@ public class EmvTags {
     public static final Tag TRANSACTION_SEQUENCE_COUNTER = newTag("9F41", "transaction sequence counter", HEX);
     public static final Tag AMOUNT_AUTHORIZED = newTag("9F02", "amount authorized", HEX);
     public static final Tag AMOUNT_OTHER = newTag("9F03", "amount other", HEX);
-    public static final Tag APPLICATION_INTERCHANGE_PROFILE = newTag("82", "AIP", "Application Interchange Profile", new AIPDecoder());
-    public static final Tag APPLICATION_TRANSACTION_COUNTER = newTag("9F36", "application transaction counter", HEX);
+    public static final Tag APPLICATION_INTERCHANGE_PROFILE = newTag("82", "AIP", "Application Interchange Profile", Decoders.AIP);
+    public static final Tag APPLICATION_TRANSACTION_COUNTER = newTag("9F36", "application transaction counter", BASE_10);
     public static final Tag APPLICATION_CRYPTOGRAM = newTag("9F26", "application cryptogram", HEX);
     public static final Tag ISSUER_APPLICATION_DATA = newTag("9F10", "issuer application data", HEX);
     public static final Tag TERMINAL_CURRENCY_CODE = newTag("5F2A", "terminal currency code", HEX);
     public static final Tag TERMINAL_SERIAL_NUMBER = newTag("9F1E", "terminal serial number", ASCII);
     public static final Tag UNPREDICTABLE_NUMBER = newTag("9F37", "unpredictable number", HEX);
-    public static final Tag CVM_RESULTS = newTag("9F34", "CVM Results", "Cardholder Verification Results", new CVMResultsDecoder());
+    public static final Tag CVM_RESULTS = newTag("9F34", "CVM Results", "Cardholder Verification Results", Decoders.CVM_RESULTS);
     public static final Tag CRYPTOGRAM_INFORMATION_DATA = newTag("9F27", "cryptogram information data", HEX);
     public static final Tag HOST_INCIDENT_CODE = newTag("DF2E", "host incident code", HEX);
     public static final Tag ISSUER_AUTHENTICATION_DATA = newTag("91", "issuer authentication data", HEX);
@@ -80,18 +84,18 @@ public class EmvTags {
     public static final Tag PAN_SEQUENCE_NUMBER = newTag("5F34", "PAN sequence number", HEX);
     public static final Tag PAN = newTag("5A", "PAN", HEX);
     public static final Tag AUTHORISATION_RESPONSE_CODE = newTag("8A", "authorisation response code", ASCII);
-    public static final Tag TERMINAL_VERIFICATION_RESULTS = newTag("95", "TVR", "Terminal Verification Results", new TVRDecoder());
-    public static final Tag TSI = newTag("9B", "TSI", "Transaction Status Indicator", new TSIDecoder());
-    public static final Tag CVM_LIST = newTag("8E", "CVM List", "Cardholder Verification Method List", new CVMListDecoder());
+    public static final Tag TERMINAL_VERIFICATION_RESULTS = newTag("95", "TVR", "Terminal Verification Results", Decoders.TVR);
+    public static final Tag TSI = newTag("9B", "TSI", "Transaction Status Indicator", Decoders.TSI);
+    public static final Tag CVM_LIST = newTag("8E", "CVM List", "Cardholder Verification Method List", Decoders.CVM_LIST);
     public static final Tag APPLICATION_CURRENCY_CODE = newTag("9F42", "application currency code", HEX);
     public static final Tag TRANSACTION_CATEGORY_CODE = newTag("9F53", "transaction category code", ASCII);
     public static final Tag FCI_TEMPLATE = newTag("6F", "FCI template", HEX);
     public static final Tag FCI_PROPRIETARY_TEMPLATE = newTag("A5", "FCI proprietary template", HEX);
     public static final Tag AFL = newTag("94", "Application File Locator (AFL)", HEX);
     public static final Tag APPLICATION_EFFECTIVE_DATE = newTag("5F25", "application effective date", HEX);
-    public static final Tag PDOL = newTag("9F38", "PDOL", "Processing DOL", new DataObjectListDecoder());
-    public static final Tag CDOL_1 = newTag("8C", "CDOL 1", "Data object list", new DataObjectListDecoder());
-    public static final Tag CDOL_2 = newTag("8D", "CDOL 1", "Data object list", new DataObjectListDecoder());
+    public static final Tag PDOL = newTag("9F38", "PDOL", "Processing DOL", DOL);
+    public static final Tag CDOL_1 = newTag("8C", "CDOL 1", "Data object list", DOL);
+    public static final Tag CDOL_2 = newTag("8D", "CDOL 1", "Data object list", DOL);
     public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "application usage control", HEX);
     public static final Tag CARD_APPLICATION_VERSION_NUMBER = newTag("9F08", "card application version number", HEX);
     public static final Tag IAC_DEFAULT = newTag("9F0D", "IAC default", HEX);
@@ -129,7 +133,7 @@ public class EmvTags {
 
     protected static Tag newTag(TagMetaData metaData, String hexString, String name, PrimitiveDecoder primitiveDecoder) {
         Tag tag = Tag.fromHex(hexString);
-        metaData.put(tag, new TagInfo(name, null, new NullDecoder(), primitiveDecoder));
+        metaData.put(tag, new TagInfo(name, null, Decoders.PRIMITIVE, primitiveDecoder));
         return tag;
     }
 

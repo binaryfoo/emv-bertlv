@@ -44,4 +44,17 @@ public class PopulatedDOLDecoderTest {
         assertThat(decoded.get(8).getStartIndex(), is(29));
         assertThat(decoded.get(8).getEndIndex(), is(33));
     }
+
+    @Test
+    public void testDecodeIncludesPrimitiveElementsInPopulatedList() throws Exception {
+        DecodeSession session = new DecodeSession();
+        session.setTagMetaData(QVsdcTags.METADATA);
+        int startIndex = 12;
+        List<DecodedData> decoded = new PopulatedDOLDecoder().decode("8A029F02069F03069F1A0295055F2A029A039C019F3704", "303000000000100000000000000000368000008040003612031600D3173A1F", startIndex, session);
+        assertThat(decoded.size(), is(9));
+        assertThat(decoded.get(0).getRawData(), is("8A (authorisation response code)"));
+        assertThat(decoded.get(0).getDecodedData(), is("00"));
+        assertThat(decoded.get(0).getStartIndex(), is(startIndex));
+        assertThat(decoded.get(0).getEndIndex(), is(startIndex+2));
+    }
 }
