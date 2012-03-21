@@ -54,6 +54,7 @@ public class TagInfo {
 		new TagInfo("9B", "TSI", "Transaction Status Indicator", new TSIDecoder()),
 		new TagInfo("82", "AIP", "Application Interchange Profile", new AIPDecoder()),
 		new TagInfo("8E", "CVM List", "Cardholder Verification Method List", new CVMListDecoder()),
+		new TagInfo("9F68", "MSD CVM List", "MSD Cardholder Verification Method List", new CVMListDecoder()),
 		new TagInfo("9F34", "CVM Results", "Cardholder Verification Results", new CVMResultsDecoder()),
 		new TagInfo("DF5D", "Default DDOL", "Default DDOL", new DataObjectListDecoder()),
 		new TagInfo("8C", "DOL", "Data object list", new DataObjectListDecoder()), // actually CDOL 1
@@ -65,7 +66,7 @@ public class TagInfo {
 		new TagInfo("constructed", "TLV Data", "Constructed TLV data", new TLVDecoder(), true),
 		new TagInfo("apdu-sequence", "APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
                 new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(),
-                new GenerateACAPDUDecoder(), new GetDataAPDUDecoder(), new ExternalAuthenticateAPDUDecoder())),
+                new GenerateACAPDUDecoder(), new GetDataAPDUDecoder(), new ExternalAuthenticateAPDUDecoder(), new ComputeCryptoChecksumDecoder())),
 	};
 	private static final Map<String, TagInfo> TAG_LOOKUP = new HashMap<String, TagInfo>();
 	static {

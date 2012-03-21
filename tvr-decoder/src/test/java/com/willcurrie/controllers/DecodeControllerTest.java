@@ -121,6 +121,21 @@ public class DecodeControllerTest {
     }
 
     @Test
+    public void testMagStripe() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        String input = "00A4040007A000000004101000\n" +
+                "6F218407A0000000041010A516500A49443335312076312031BF0C075F5004746F746F9000\n" +
+                "80A8000002830000\n" +
+                "770A820200009404080101009000\n" +
+                "00B2010C00\n" +
+                "7081839F6C0200019F62060000000000079F6306000000000000563342353431333333303035363030333531315E4355535420494D50204D43203335312F5E313431323130313036373735303530309F6401009F650200079F660200009F6B115413330056003511D1412101067750500F9F6701009F680E00000000000000005E0342031F039000\n" +
+                "802A8E80040000000000\n" +
+                "770F9F610201F59F600201F59F3602000B9000";
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "", modelMap);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
+
+    @Test
     public void testDecodeDOL() throws Exception {
         ModelMap modelMap = new ModelMap();
         decodeController.decode("dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", "", modelMap);
@@ -151,4 +166,5 @@ public class DecodeControllerTest {
         decodeController.decode("constructed", input, tagsToTreatAsPrimitive, modelMap);
         assertThat(modelMap, hasEntry(is("error"), Is.<Object>is("Failed parsing F0 (?),Failed parsing E0 (transaction group),Failed parsing 5F24 (card expiry),BufferUnderflowException")));
     }
+
 }

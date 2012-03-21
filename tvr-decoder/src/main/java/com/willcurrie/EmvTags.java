@@ -119,6 +119,22 @@ public final class EmvTags {
     public static final Tag DATA_AUTHENTICATION_CODE = newTag("9F45", "data authentication code", false);
     public static final Tag ICC_DYNAMIC_NUMBER = newTag("9F4C", "ICC dynamic number", false);
     public static final Tag RESPONSE_TEMPLATE_2 = newTag("70", "response template", false);
+    public static final Tag FCI_DISCRETIONARY_DATA = newTag("BF0C", "FCI discretionary data", false);
+
+    // mastercard magstripe only
+
+    public static final Tag MSD_TRACK_1 = newTag("56", "MSD track 1", true);
+    public static final Tag MSD_TRACK_2 = newTag("9F6B", "MSD track 2", false);
+    public static final Tag MSD_CVC_3_TRACK_1 = newTag("9F60", "MSD CVC3 track 1", false);
+    public static final Tag MSD_CVC_3_TRACK_2 = newTag("9F61", "MSD CVC3 track 2", false);
+    public static final Tag MSD_POSITION_OF_CVC_3_TRACK_1 = newTag("9F62", "MSD position of CVC3 in track 1", false);
+    public static final Tag MSD_POSITION_OF_CVC_3_TRACK_2 = newTag("9F65", "MSD position of CVC3 in track 2", false);
+    public static final Tag MSD_POSITION_OF_UN_AND_ATC_TRACK_1 = newTag("9F63", "MSD position of UN and ATC in track 1", false);
+    //    public static final Tag MSD_POSITION_OF_UN_AND_ATC_TRACK_2 = newTag("9F66", "MSD position of UN and ATC in track 2", false);
+    public static final Tag MSD_NATC_TRACK_1 = newTag("9F64", "MSD number of digits from ATC in track 1", false);
+    public static final Tag MSD_NATC_TRACK_2 = newTag("9F67", "MSD number of digits from ATC in track 2", false);
+    public static final Tag MSD_CVM_LIST = newTag("9F68", "MSD cvm list", false);
+//    public static final Tag MSD_APPLICATION_VERSION_NUMBER = newTag("9F6C", "MSD application version number", false);
 
     private static Tag newTag(String hexString, String name, boolean isValueAscii) {
         Tag tag = Tag.fromHex(hexString);
