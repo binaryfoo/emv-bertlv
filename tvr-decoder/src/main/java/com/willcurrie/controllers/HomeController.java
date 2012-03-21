@@ -2,6 +2,7 @@ package com.willcurrie.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,8 +18,11 @@ import com.willcurrie.TagInfo;
 public class HomeController {
 
     @RequestMapping("/home")
-    public ModelAndView welcome(ModelMap model) {
-    	return new ModelAndView("home", "tagInfos", DecodeController.ROOT_TAG_INFO.entrySet());
+    public ModelAndView welcome() {
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("tagInfos", DecodeController.ROOT_TAG_INFO.entrySet());
+        model.put("tagMetaSets", DecodeController.TAG_META_SETS.keySet());
+        return new ModelAndView("home", model);
     }
 
 }

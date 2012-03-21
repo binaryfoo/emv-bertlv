@@ -19,7 +19,7 @@ public class DataObjectListDecoder implements Decoder {
             Tag tag = Tag.parse(buffer);
             byte b = buffer.get();
             int newOffset = offset + tag.getBytes().length + 1;
-            children.add(new DecodedData("", tag.toString() + " " + b + " bytes", offset, newOffset));
+            children.add(new DecodedData("", tag.toString(decodeSession.getTagMetaData()) + " " + b + " bytes", offset, newOffset));
             offset = newOffset;
         }
         return children;

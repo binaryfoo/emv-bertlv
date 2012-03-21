@@ -10,10 +10,19 @@ import java.util.Map;
 
 public class TagMetaData {
 
-    private Map<String, TagInfo> metadata = new HashMap<String, TagInfo>();
+    private final Map<String, TagInfo> metadata = new HashMap<String, TagInfo>();
+
+    public TagMetaData() {
+    }
+
+    public TagMetaData(TagMetaData metadata) {
+        this.metadata.putAll(metadata.metadata);
+    }
 
     public void put(Tag tag, TagInfo tagInfo) {
-        metadata.put(tag.getHexString(), tagInfo);
+        if (metadata.put(tag.getHexString(), tagInfo) != null) {
+            throw new IllegalArgumentException("Duplicate entry for " + tag.getHexString());
+        }
     }
     
     public TagInfo get(Tag tag) {

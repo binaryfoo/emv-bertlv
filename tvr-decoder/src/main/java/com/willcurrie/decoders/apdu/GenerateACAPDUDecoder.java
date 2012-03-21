@@ -44,7 +44,7 @@ public class GenerateACAPDUDecoder implements CommandAPDUDecoder {
         String cdol = findCDOL(session);
         if (cdol != null) {
             try {
-                return new PopulatedDOLDecoder().decode(cdol, populatedCdol, startIndexInBytes);
+                return new PopulatedDOLDecoder().decode(cdol, populatedCdol, startIndexInBytes, session);
             } catch (Exception e) {
                 LOG.throwing(GenerateACAPDUDecoder.class.getSimpleName(), "decodeCDOLElements", e);
             }

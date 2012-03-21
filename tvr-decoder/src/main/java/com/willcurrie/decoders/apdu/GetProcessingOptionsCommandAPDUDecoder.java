@@ -30,7 +30,7 @@ public class GetProcessingOptionsCommandAPDUDecoder implements CommandAPDUDecode
     private List<DecodedData> decodePDOLElements(DecodeSession session, String populatedPdol, int startIndexInBytes) {
         String pdol = session.get(EmvTags.PDOL);
         if (pdol != null) {
-            return new PopulatedDOLDecoder().decode(pdol, populatedPdol, startIndexInBytes);
+            return new PopulatedDOLDecoder().decode(pdol, populatedPdol, startIndexInBytes, session);
         } else {
             return Collections.emptyList();
         }

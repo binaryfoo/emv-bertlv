@@ -18,20 +18,12 @@ public class DecodedData {
     public DecodedData(String rawData, String decodedData, int startIndex, int endIndex) {
 		this(null, rawData, decodedData, startIndex, endIndex, null);
 	}
-	
-    public DecodedData(Tag tag, String decodedData, int startIndex, int endIndex) {
-        this(tag, tag.toString(), decodedData, startIndex, endIndex, null);
-    }
 
     public DecodedData(String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
         this(null, rawData, decodedData, startIndex, endIndex, children);
     }
 
-	public DecodedData(Tag tag, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
-        this(tag, tag.toString(), decodedData, startIndex, endIndex, children);
-	}
-
-    private DecodedData(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+    public DecodedData(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
         this.tag = tag;
         this.rawData = rawData;
         this.decodedData = decodedData;

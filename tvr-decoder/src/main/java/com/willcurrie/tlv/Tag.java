@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+import com.willcurrie.TagMetaData;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.willcurrie.EmvTags;
@@ -81,6 +82,10 @@ public class Tag {
     }
 
     public String toString() {
-        return ISOUtil.hexString(bytes) + " (" + EmvTags.getTagName(this) + ")";
+        return ISOUtil.hexString(bytes);
+    }
+
+    public String toString(TagMetaData tagMetaData) {
+        return ISOUtil.hexString(bytes) + " (" + tagMetaData.get(this).getShortName() + ")";
     }
 }

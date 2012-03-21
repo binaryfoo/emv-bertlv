@@ -1,9 +1,10 @@
 package com.willcurrie.controllers;
 
+import com.willcurrie.DecodedData;
+import com.willcurrie.QVsdcTags;
 import com.willcurrie.hex.ByteElement;
 import com.willcurrie.hex.HexDumpElement;
 import com.willcurrie.hex.WhitespaceElement;
-import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
@@ -14,11 +15,36 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
 
 public class DecodeControllerTest {
 
     private DecodeController decodeController = new DecodeController();
 
+    @Test
+    public void testPDOLShouldBeDecodedInGPOCommand() throws Exception {
+        String input = "00A4040007A000000003101000\n" +
+                "6F318407A0000000031010A52650095649534120544553549F38189F66049F02069F03069F1A0295055F2A029A039C019F37049000\n" +
+                "80A8000023832136000000000000001000000000000000003600000000000036120315000008E4C800\n" +
+                "773E9F100706010A03A000005F2002202F57104761340000000043D1712201131838755F340111820200009F360200E29F2608271A23709BDE117E9F6C0200009000";
+        ModelMap modelMap = new ModelMap();
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "qVSDC", modelMap);
+        List<DecodedData> decodedData = (List<DecodedData>) modelMap.get("decodedData");
+        DecodedData gpoCommand = findWithRaw(decodedData, "C-APDU: GPO");
+        assertThat(gpoCommand, is(not(nullValue())));
+        assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 73, 77)));
+        assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.UNPREDICTABLE_NUMBER.toString(QVsdcTags.METADATA), "0008E4C8", 102, 106)));
+    }
+
+    private DecodedData findWithRaw(List<DecodedData> list, String wanted) {
+        for (DecodedData decodedData : list) {
+            if (decodedData.getRawData().startsWith(wanted)) {
+                return decodedData;
+            }
+        }
+        return null;
+    }
+    
     @Test
     public void testContactless() throws Exception {
         ModelMap modelMap = new ModelMap();
@@ -35,7 +61,7 @@ public class DecodeControllerTest {
                 "00B2022400\n" +
                 "80AE50002B000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F030000\n" +
                 "7781B29F2701409F360200349F4B81906C9EC67BEF69A00E98F8ED96AAA2B945519E1348C78346B07D7650A9C2CC717611C69EDDBEFCAAF91FDEB09ABA2675CF430CCB0BAF0CAA8D8E18B9919790607847591970153565F65B33383C8757162669799D346B265B58421DD20E8109F5074AFB1B13B3A64D3470D8CC9E68342C8AAC238687B850EBEB260CB9F010AC4BD0F81C990026929974382077B103AD0C659F10120110904009248400000000000000000028FF9000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
         List<HexDumpElement> rawData = (List<HexDumpElement>) modelMap.get("rawData");
         assertThat((ByteElement) rawData.get(0), is(new ByteElement("00", 0)));
@@ -78,7 +104,7 @@ public class DecodeControllerTest {
                 "6700\n" +
                 "80ae40001f303000000000100000000000000000368000008040003612031600d3173a1f00\n" +
                 "8012400029bb31d191bced0cf206010a0364bc009000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
@@ -116,7 +142,7 @@ public class DecodeControllerTest {
                 "77299f2701809f360200419f26084573436b1e4b95dd9f10120110a00009248400000000000000000029ff9000\n" +
                 "80ae40001d11223344556677880000303080000080008221f601000000000000000000\n" +
                 "77299f2701009f360200419f2608c74d18b08248fefc9f10120110201009248400000000000000000029ff9000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
@@ -131,21 +157,21 @@ public class DecodeControllerTest {
                 "7081839F6C0200019F62060000000000079F6306000000000000563342353431333333303035363030333531315E4355535420494D50204D43203335312F5E313431323130313036373735303530309F6401009F650200079F660200009F6B115413330056003511D1412101067750500F9F6701009F680E00000000000000005E0342031F039000\n" +
                 "802A8E80040000000000\n" +
                 "770F9F610201F59F600201F59F3602000B9000";
-        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), modelMap);
+        decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
     @Test
     public void testDecodeFilledDOL() throws Exception {
         ModelMap modelMap = new ModelMap();
-        decodeController.decode("filled-dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", modelMap);
+        decodeController.decode("filled-dol", "9F66049F02069F03069F1A0295055F2A029A039C019F3704:832136000000000000001000000000000000003600000000000036120315000008E4C8", "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
     @Test
     public void testDecodeFilledDOLTwo() throws Exception {
         ModelMap modelMap = new ModelMap();
-        decodeController.decode("filled-dol", "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403:000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F0300", modelMap);
+        decodeController.decode("filled-dol", "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403:000000001000000000000000000200000000000036120315000000AFDC22000000000000000000001F0300", "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 
@@ -153,7 +179,7 @@ public class DecodeControllerTest {
     public void testInputWithConstructedTagThatCannotBeParsedAsConstructed() throws Exception {
         ModelMap modelMap = new ModelMap();
         String input = "F082013CE007D002432BD10101E9409F02060000000009009F03060000000000005F2A0200365F3601029A031203209F21031410389C01009F3704000A7CA39F1E0831393062346262319F1A020036E581E2EF6D9F0607A00000000310109F1B0400010000DF400400010000DF420400010000DF430100DF4401009F3501229F3303E060C09F40056000F0A0019F090200029F6D020002DF32039F6A049F15024444DF57050000000000DF56050000000000DF580500000000009F660436000000EF719F0607A00000000410109F1B0400010000DF400400010000DF410400010000DF420400010000DF430100DF4401009F3501229F3303E008889F40056000F0A0019F090200029F6D020002DF32039F6A049F15024444DF57050000000000DF5605CC50848800DF5805CC50848800DF610101E30AE0085F249F6C9F039F33";
-        decodeController.decode("constructed", input, modelMap);
+        decodeController.decode("constructed", input, "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
     }
 

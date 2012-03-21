@@ -1,6 +1,8 @@
 package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
+import com.willcurrie.EmvTags;
+import com.willcurrie.QVsdcTags;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,7 +15,9 @@ import static org.junit.Assert.assertThat;
 public class PopulatedDOLDecoderTest {
     @Test
     public void testDecode() throws Exception {
-        List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704:36000000000000001000000000000000003600000000000036120315000008E4C8", 0, new DecodeSession());
+        DecodeSession session = new DecodeSession();
+        session.setTagMetaData(QVsdcTags.METADATA);
+        List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704:36000000000000001000000000000000003600000000000036120315000008E4C8", 0, session);
         assertThat(decoded.size(), is(9));
         assertThat(decoded.get(0).getRawData(), is("9F66 (TTQ)"));
         assertThat(decoded.get(0).getDecodedData(), is("36000000"));
@@ -27,7 +31,9 @@ public class PopulatedDOLDecoderTest {
 
     @Test
     public void testDecodeTwoParameters() throws Exception {
-        List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704", "36000000000000001000000000000000003600000000000036120315000008E4C8", 0);
+        DecodeSession session = new DecodeSession();
+        session.setTagMetaData(QVsdcTags.METADATA);
+        List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704", "36000000000000001000000000000000003600000000000036120315000008E4C8", 0, session);
         assertThat(decoded.size(), is(9));
         assertThat(decoded.get(0).getRawData(), is("9F66 (TTQ)"));
         assertThat(decoded.get(0).getDecodedData(), is("36000000"));

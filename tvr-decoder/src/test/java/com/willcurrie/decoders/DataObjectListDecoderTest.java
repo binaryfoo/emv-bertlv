@@ -1,6 +1,7 @@
 package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
+import com.willcurrie.EmvTags;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,7 +14,9 @@ public class DataObjectListDecoderTest {
     @Test
     public void testDecode() throws Exception {
         String input = "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403";
-        List<DecodedData> decoded = new DataObjectListDecoder().decode(input, 0, new DecodeSession());
+        DecodeSession session = new DecodeSession();
+        session.setTagMetaData(EmvTags.METADATA);
+        List<DecodedData> decoded = new DataObjectListDecoder().decode(input, 0, session);
         assertThat(decoded.size(), is(12));
         assertThat(decoded.get(0).getStartIndex(), is(0));
         assertThat(decoded.get(0).getEndIndex(), is(3));

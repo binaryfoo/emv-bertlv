@@ -6,12 +6,9 @@ import com.willcurrie.tlv.Tag;
 import static com.willcurrie.decoders.PrimitiveDecoder.ASCII;
 import static com.willcurrie.decoders.PrimitiveDecoder.HEX;
 
-public final class EmvTags {
+public class EmvTags {
 
     public static final TagMetaData METADATA = new TagMetaData();
-
-    private EmvTags() {
-    }
 
     public static final Tag RECOGNISE_CARD_SUPPORTED_OPTIONS = newTag("DF8178", "recognise card supported options", HEX);
     public static final Tag ASCII_CODE_TABLE_INDEX = newTag("DF8172", "ascii code table index", HEX);
@@ -35,7 +32,7 @@ public final class EmvTags {
     public static final Tag MAX_TARGET_PERCENTAGE = newTag("DF5B", "max target percentage", HEX);
     public static final Tag THRESHOLD_VALUE = newTag("DF5C", "threshold value", HEX);
     public static final Tag FINAL_SELECT_INITIATE_TX = newTag("DF3A", "final select initiate tx", HEX);
-    public static final Tag TRANSACTION_CURRENCY_CODE = newTag("5F2A", "transaction currency code", HEX);
+//    public static final Tag TRANSACTION_CURRENCY_CODE = newTag("5F2A", "transaction currency code", HEX);
     public static final Tag TERMINAL_COUNTRY_CODE = newTag("9F1A", "terminal country code", HEX);
     public static final Tag TRANSACTION_CURRENCY_EXPONENT = newTag("5F36", "transaction currency exponent", HEX);
     public static final Tag MERCHANT_ID = newTag("9F16", "merchant id", ASCII);
@@ -48,7 +45,6 @@ public final class EmvTags {
     public static final Tag TRANSACTION_DATE = newTag("9A", "transaction date", HEX);
     public static final Tag TRANSACTION_TIME = newTag("9F21", "transaction time", HEX);
     public static final Tag TRANSACTION_AMOUNT = newTag("DF50", "transaction amount", HEX);
-    public static final Tag TRANSACTION_OTHER_AMOUNT = newTag("9F03", "transaction other amount", HEX);
     public static final Tag OFFLINE_TOTAL_AMOUNT = newTag("DF52", "offline total amount", HEX);
     public static final Tag TRANSACTION_TYPE = newTag("9C", "transaction type", HEX);
     public static final Tag TRANSACTION_GROUP = newTag("E0", "transaction group", HEX);
@@ -108,8 +104,6 @@ public final class EmvTags {
     public static final Tag ICC_PUBLIC_KEY_EXPONENT = newTag("9F47", "ICC public key exponent", HEX);
     public static final Tag ICC_PUBLIC_KEY_REMAINDER = newTag("9F48", "ICC public key remainder", HEX);
     public static final Tag SIGNED_DYNAMIC_APPLICATION_DATA = newTag("9F4B", "signed dynamic application data", HEX);
-    public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F66", "TTQ", "Terminal transaction qualifiers", new TerminalTxQualifiersDecoder());
-    public static final Tag CARD_TX_QUALIFIERS = newTag("9F6C", "CTQ", "Card transaction qualifiers", new CardTxQualifiersDecoder());
     public static final Tag RESPONSE_TEMPLATE = newTag("77", "response template", HEX);
     public static final Tag PIN_TRY_COUNTER = newTag("9F17", "pin try counter", HEX);
     public static final Tag SIGNED_STATIC_APPLICATION_DATA = newTag("93", "signed static application data", HEX);
@@ -119,34 +113,24 @@ public final class EmvTags {
     public static final Tag RESPONSE_TEMPLATE_2 = newTag("70", "response template", HEX);
     public static final Tag FCI_DISCRETIONARY_DATA = newTag("BF0C", "FCI discretionary data", HEX);
 
-    // mastercard magstripe only
-
-    public static final Tag MSD_TRACK_1 = newTag("56", "MSD track 1", ASCII);
-    public static final Tag MSD_TRACK_2 = newTag("9F6B", "MSD track 2", HEX);
-    public static final Tag MSD_CVC_3_TRACK_1 = newTag("9F60", "MSD CVC3 track 1", HEX);
-    public static final Tag MSD_CVC_3_TRACK_2 = newTag("9F61", "MSD CVC3 track 2", HEX);
-    public static final Tag MSD_POSITION_OF_CVC_3_TRACK_1 = newTag("9F62", "MSD position of CVC3 in track 1", HEX);
-    public static final Tag MSD_POSITION_OF_CVC_3_TRACK_2 = newTag("9F65", "MSD position of CVC3 in track 2", HEX);
-    public static final Tag MSD_POSITION_OF_UN_AND_ATC_TRACK_1 = newTag("9F63", "MSD position of UN and ATC in track 1", HEX);
-    //    public static final Tag MSD_POSITION_OF_UN_AND_ATC_TRACK_2 = newTag("9F66", "MSD position of UN and ATC in track 2", false);
-    public static final Tag MSD_NATC_TRACK_1 = newTag("9F64", "MSD number of digits from ATC in track 1", HEX);
-    public static final Tag MSD_NATC_TRACK_2 = newTag("9F67", "MSD number of digits from ATC in track 2", HEX);
-    public static final Tag MSD_CVM_LIST = newTag("9F68", "MSD CVM List", "MSD Cardholder Verification Method List", new CVMListDecoder());
-//    public static final Tag MSD_APPLICATION_VERSION_NUMBER = newTag("9F6C", "MSD application version number", false);
-
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
-        Tag tag = Tag.fromHex(hexString);
-        METADATA.put(tag, new TagInfo(shortName, longName, decoder, HEX));
-        return tag;
+        return newTag(METADATA, hexString, shortName, longName, decoder);
     }
 
     private static Tag newTag(String hexString, String name, PrimitiveDecoder primitiveDecoder) {
+        return newTag(METADATA, hexString, name, primitiveDecoder);
+    }
+
+    protected static Tag newTag(TagMetaData metaData, String hexString, String shortName, String longName, Decoder decoder) {
         Tag tag = Tag.fromHex(hexString);
-        METADATA.put(tag, new TagInfo(name, null, new NullDecoder(), primitiveDecoder));
+        metaData.put(tag, new TagInfo(shortName, longName, decoder, HEX));
         return tag;
     }
 
-    public static String getTagName(Tag tag) {
-        return METADATA.get(tag).getShortName();
+    protected static Tag newTag(TagMetaData metaData, String hexString, String name, PrimitiveDecoder primitiveDecoder) {
+        Tag tag = Tag.fromHex(hexString);
+        metaData.put(tag, new TagInfo(name, null, new NullDecoder(), primitiveDecoder));
+        return tag;
     }
+
 }

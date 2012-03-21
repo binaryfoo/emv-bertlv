@@ -2,6 +2,7 @@ package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
+import com.willcurrie.TagMetaData;
 import com.willcurrie.tlv.ISOUtil;
 
 import java.nio.ByteBuffer;
@@ -10,14 +11,14 @@ import java.util.List;
 
 public class PopulatedDOLDecoder implements Decoder {
     @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
+    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession session) {
         String[] fields = input.split(":");
         String pdol = fields[0];
         String populatedPDOL = fields[1];
-        return decode(pdol, populatedPDOL, pdol.length()/2);
+        return decode(pdol, populatedPDOL, pdol.length()/2, session);
     }
 
-    public List<DecodedData> decode(String pdol, String populatedPDOL, int startIndexInBytes) {
+    public List<DecodedData> decode(String pdol, String populatedPDOL, int startIndexInBytes, DecodeSession session) {
         ArrayList<DecodedData> decoded = new ArrayList<DecodedData>();
         ByteBuffer values = ByteBuffer.wrap(ISOUtil.hex2byte(populatedPDOL));
         List<DOLParser.DOLElement> elements = new DOLParser().parse(ISOUtil.hex2byte(pdol));
@@ -25,7 +26,7 @@ public class PopulatedDOLDecoder implements Decoder {
         for (DOLParser.DOLElement element : elements) {
             byte[] value = new byte[element.getLength()];
             values.get(value);
-            decoded.add(new DecodedData(element.getTag(), ISOUtil.hexString(value), offset, offset + value.length));
+            decoded.add(new DecodedData(element.getTag().toString(session.getTagMetaData()), ISOUtil.hexString(value), offset, offset + value.length));
             offset += value.length;
         }
         return decoded;

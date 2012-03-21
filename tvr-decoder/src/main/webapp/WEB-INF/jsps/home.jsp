@@ -11,7 +11,7 @@
 	    function doDecode() {
 	        $("#display").slideUp('slow',function(){
                 $("#display").html("Loading...").show();
-		        $.post('/t/decode', {tag: $('#tag_field').val(), value: $('#value_field').val()},function(data) {
+		        $.post('/t/decode', {tag: $('#tag_field').val(), value: $('#value_field').val(),meta: $('#tagmetaset_field').val()},function(data) {
 					$("#display").html(data).slideDown('slow',function() {
 						$(".decoded,.composite-decoded").each(function() {
 			    			$(this).click(function(e) {
@@ -66,6 +66,12 @@
     </select>
     <input type="text" id="value_field"/>
     <input type="submit" value="Decode"/>
+    <label for="tagmetaset_field"  style="font-size:small">with tags</label>
+    <select id="tagmetaset_field">
+    <c:forEach items="${tagMetaSets}" var="tagMeta">
+        <option value="${tagMeta}">${tagMeta}</option>
+    </c:forEach>
+    </select>
     <input type="checkbox" id="showCompositeDecodedData" value="checked" onclick="toggleCompositeDecodedVisibility()"/><label for="showCompositeDecodedData" style="font-size:small">Show Raw Data for composite tags</label>
     </form>
     <div id="display">

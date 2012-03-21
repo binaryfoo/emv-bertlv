@@ -3,10 +3,7 @@ package com.willcurrie.decoders;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.willcurrie.DecodedData;
-import com.willcurrie.Decoder;
-import com.willcurrie.EmvTags;
-import com.willcurrie.TagInfo;
+import com.willcurrie.*;
 import com.willcurrie.tlv.BerTlv;
 import com.willcurrie.tlv.ISOUtil;
 import com.willcurrie.tlv.Tag;
@@ -27,11 +24,12 @@ public class TLVDecoder implements Decoder {
 			int length = berTlv.toBinary().length;
 			int contentEndIndex = startIndex + length;
 			int compositeStartElementIndex = startIndex + tag.getBytes().length + berTlv.getLengthInBytesOfEncodedLength();
-			if (tag.isConstructed()) {
-				decodedItems.add(new DecodedData(tag, valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)));
-			} else {
-                TagInfo tagInfo = decodeSession.getTagMetaData().get(tag);
-                decodedItems.add(new DecodedData(tag, tagInfo.decodePrimitiveTlvValue(valueAsHexString), startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex, decodeSession)));
+            TagMetaData tagMetaData = decodeSession.getTagMetaData();
+            if (tag.isConstructed()) {
+                decodedItems.add(new DecodedData(tag, tag.toString(tagMetaData), valueAsHexString, startIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)));
+            } else {
+                TagInfo tagInfo = tagMetaData.get(tag);
+                decodedItems.add(new DecodedData(tag, tag.toString(tagMetaData), tagInfo.decodePrimitiveTlvValue(valueAsHexString), startIndex, contentEndIndex, tagInfo.getDecoder().decode(valueAsHexString, compositeStartElementIndex, decodeSession)));
             }
 			startIndex += length;
 		}
