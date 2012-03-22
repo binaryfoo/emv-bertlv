@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import java.util.List;
 
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
+import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -34,6 +35,7 @@ public class DecodeControllerTest {
         assertThat(gpoCommand, is(not(nullValue())));
         assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 73, 77)));
         assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.UNPREDICTABLE_NUMBER.toString(QVsdcTags.METADATA), "0008E4C8", 102, 106)));
+        assertThat(modelMap, not(hasKey("rawData")));
     }
 
     private DecodedData findWithRaw(List<DecodedData> list, String wanted) {
@@ -63,10 +65,13 @@ public class DecodeControllerTest {
                 "7781B29F2701409F360200349F4B81906C9EC67BEF69A00E98F8ED96AAA2B945519E1348C78346B07D7650A9C2CC717611C69EDDBEFCAAF91FDEB09ABA2675CF430CCB0BAF0CAA8D8E18B9919790607847591970153565F65B33383C8757162669799D346B265B58421DD20E8109F5074AFB1B13B3A64D3470D8CC9E68342C8AAC238687B850EBEB260CB9F010AC4BD0F81C990026929974382077B103AD0C659F10120110904009248400000000000000000028FF9000";
         decodeController.decode("apdu-sequence", input.replaceAll("\n", " "), "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
-        List<HexDumpElement> rawData = (List<HexDumpElement>) modelMap.get("rawData");
-        assertThat((ByteElement) rawData.get(0), is(new ByteElement("00", 0)));
-        assertThat((ByteElement) rawData.get(1), is(new ByteElement("A4", 1)));
-        assertThat((WhitespaceElement) rawData.get(13), is(new WhitespaceElement("<br>")));
+        assertThat(modelMap, not(hasKey("rawData")));
+        List<DecodedData> decodedData = (List<DecodedData>) modelMap.get("decodedData");
+        assertThat((ByteElement) decodedData.get(0).getHexDump().get(0), is(new ByteElement("00", 0)));
+        assertThat((ByteElement) decodedData.get(0).getHexDump().get(1), is(new ByteElement("A4", 1)));
+        assertThat((ByteElement) decodedData.get(0).getHexDump().get(12), is(new ByteElement("00", 12)));
+        assertThat((ByteElement) decodedData.get(12).getHexDump().get(0), is(new ByteElement("77", 652)));
+        assertThat((ByteElement) decodedData.get(12).getHexDump().get(182), is(new ByteElement("00", 834)));
     }
 
     @Test
@@ -181,6 +186,10 @@ public class DecodeControllerTest {
         String input = "F082013CE007D002432BD10101E9409F02060000000009009F03060000000000005F2A0200365F3601029A031203209F21031410389C01009F3704000A7CA39F1E0831393062346262319F1A020036E581E2EF6D9F0607A00000000310109F1B0400010000DF400400010000DF420400010000DF430100DF4401009F3501229F3303E060C09F40056000F0A0019F090200029F6D020002DF32039F6A049F15024444DF57050000000000DF56050000000000DF580500000000009F660436000000EF719F0607A00000000410109F1B0400010000DF400400010000DF410400010000DF420400010000DF430100DF4401009F3501229F3303E008889F40056000F0A0019F090200029F6D020002DF32039F6A049F15024444DF57050000000000DF5605CC50848800DF5805CC50848800DF610101E30AE0085F249F6C9F039F33";
         decodeController.decode("constructed", input, "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+        assertThat(modelMap, hasEntry(is("rawData"), is(not(nullValue()))));
+        List<HexDumpElement> hexDump = (List<HexDumpElement>) modelMap.get("rawData");
+        assertThat((ByteElement) hexDump.get(0), is(new ByteElement("F0", 0)));
+        assertThat((ByteElement) hexDump.get(319), is(new ByteElement("33", 319)));
     }
 
 }

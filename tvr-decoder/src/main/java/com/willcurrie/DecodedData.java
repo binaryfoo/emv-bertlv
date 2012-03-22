@@ -2,6 +2,7 @@ package com.willcurrie;
 
 import java.util.List;
 
+import com.willcurrie.hex.HexDumpElement;
 import com.willcurrie.tlv.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -14,6 +15,7 @@ public class DecodedData {
 	private final int startIndex;
 	private final int endIndex;
     private final Tag tag;
+    private List<HexDumpElement> hexDump;
 
     public DecodedData(String rawData, String decodedData, int startIndex, int endIndex) {
 		this(null, rawData, decodedData, startIndex, endIndex, null);
@@ -66,6 +68,14 @@ public class DecodedData {
 
     public Tag getTag() {
         return tag;
+    }
+
+    public List<HexDumpElement> getHexDump() {
+        return hexDump;
+    }
+
+    public void setHexDump(List<HexDumpElement> hexDump) {
+        this.hexDump = hexDump;
     }
 
     @Override

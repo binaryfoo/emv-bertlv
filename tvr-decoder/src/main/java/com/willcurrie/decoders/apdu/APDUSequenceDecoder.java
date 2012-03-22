@@ -2,6 +2,7 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
+import com.willcurrie.controllers.HexDumpFactory;
 import com.willcurrie.decoders.DecodeSession;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class APDUSequenceDecoder implements Decoder {
 
     private ReplyAPDUDecoder replyDecoder;
     private CommandAPDUDecoder[] commandDecoders;
+    private HexDumpFactory hexDumpFactory = new HexDumpFactory();
 
     public APDUSequenceDecoder(ReplyAPDUDecoder replyDecoder, CommandAPDUDecoder... commandDecoders) {
         this.replyDecoder = replyDecoder;
@@ -28,6 +30,7 @@ public class APDUSequenceDecoder implements Decoder {
             } else {
                 decoded = replyDecoder.decode(line, startIndexInBytes, session);
             }
+            decoded.setHexDump(hexDumpFactory.splitIntoByteLengthStrings(line, startIndexInBytes));
             list.add(decoded);
             startIndexInBytes = decoded.getEndIndex();
         }

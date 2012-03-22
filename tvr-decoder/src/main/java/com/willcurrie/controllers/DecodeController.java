@@ -9,9 +9,6 @@ import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.decoders.PopulatedDOLDecoder;
 import com.willcurrie.decoders.TLVDecoder;
 import com.willcurrie.decoders.apdu.*;
-import com.willcurrie.hex.ByteElement;
-import com.willcurrie.hex.HexDumpElement;
-import com.willcurrie.hex.WhitespaceElement;
 import com.willcurrie.tlv.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class DecodeController {
 
-	private static final Logger LOG = Logger.getLogger(DecodeController.class.getName());
-
     public static Map<String, TagMetaData> TAG_META_SETS = new LinkedHashMap<String, TagMetaData>();
     static {
         TAG_META_SETS.put("EMV", EmvTags.METADATA);
@@ -32,6 +27,10 @@ public class DecodeController {
         TAG_META_SETS.put("MSD", MSDTags.METADATA);
     }
     public static Map<String, TagInfo> ROOT_TAG_INFO = new LinkedHashMap<String, TagInfo>();
+
+	private static final Logger LOG = Logger.getLogger(DecodeController.class.getName());
+    private final HexDumpFactory hexDumpFactory = new HexDumpFactory();
+
     static {
         putTag(EmvTags.TERMINAL_VERIFICATION_RESULTS, EmvTags.METADATA);
         putTag(EmvTags.TSI, EmvTags.METADATA);
@@ -72,7 +71,9 @@ public class DecodeController {
             decodeSession.setTagMetaData(getTagMetaData(meta));
             List<DecodedData> decodedData = tagInfo.getDecoder().decode(value, 0, decodeSession);
             LOG.fine("Decoded successfully " + decodedData);
-            modelMap.addAttribute("rawData", splitIntoByteLengthStrings(value.replaceAll(":", " ")));
+            if (decodedData.size() == 0 || decodedData.get(0).getHexDump() == null) {
+                modelMap.addAttribute("rawData", hexDumpFactory.splitIntoByteLengthStrings(value.replaceAll(":", " "), 0));
+            }
             modelMap.addAttribute("decodedData", decodedData);
             return "decodedData";
         } catch (Exception e) {
@@ -88,18 +89,4 @@ public class DecodeController {
         return tagMetaData == null ? EmvTags.METADATA : tagMetaData;
     }
 
-    private List<HexDumpElement> splitIntoByteLengthStrings(String hexString) {
-    	List<HexDumpElement> elements = new ArrayList<HexDumpElement>();
-        int byteOffset = 0;
-    	for (int i = 0; i < hexString.length(); ) {
-            if (hexString.charAt(i) == ' ') {
-                elements.add(new WhitespaceElement("<br>"));
-                i++;
-            } else {
-                elements.add(new ByteElement(hexString.substring(i, i + 2), byteOffset++));
-                i+=2;
-            }
-    	}
-    	return elements;
-    }
 }

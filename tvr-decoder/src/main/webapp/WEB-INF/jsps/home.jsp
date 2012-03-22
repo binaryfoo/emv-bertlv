@@ -35,17 +35,17 @@
 	        }
 	    }
 	
-		function highlightBytes(start, end) {
-			$("#rawData").show("slow");
+		function highlightBytes(start, end, rawDataId) {
+			$("#rawData-"+rawDataId).show("slow");
 			$(".bytes").removeClass("highlight");
 			var i = 0;
-			for (i = start; i < end; i++) { 
+			for (i = start; i < end; i++) {
 				$("#b-" + i).addClass("highlight");
 			}
 		}
 
-		function hideRawData() {
-			$("#rawData").hide("slow");
+		function hideRawData(rawDataId) {
+			$("#rawData-"+rawDataId).hide("slow");
 		}
 
 		function toggleCompositeDecodedVisibility() {

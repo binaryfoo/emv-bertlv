@@ -3,6 +3,7 @@ package com.willcurrie.decoders;
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
 import com.willcurrie.decoders.apdu.*;
+import com.willcurrie.hex.HexDumpElement;
 import org.easymock.classextension.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +42,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         String input = "00A4040007A000000004101000";
         expect(selectCommandAPDUDecoder.decode(eq(input), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
+        decodedCommand.setHexDump(isA(List.class));
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0, new DecodeSession());
         verifyAll();
@@ -53,6 +55,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         String input = "80A8000002830000";
         expect(getProcessingOptionsCommandAPDUDecoder.decode(eq(input), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(input.length()/2);
+        decodedCommand.setHexDump(isA(List.class));
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0, new DecodeSession());
         verifyAll();
@@ -67,8 +70,10 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         String input = line1 + " " + line2;
         expect(selectCommandAPDUDecoder.decode(eq(line1), eq(0), isA(DecodeSession.class))).andReturn(decodedCommand);
         expect(decodedCommand.getEndIndex()).andReturn(line1.length()/2);
+        decodedCommand.setHexDump(isA(List.class));
         expect(replyAPDUDecoder.decode(eq(line2), eq(line1.length()/2), isA(DecodeSession.class))).andReturn(decodedReply);
         expect(decodedReply.getEndIndex()).andReturn(line1.length()/2 + line2.length()/2);
+        decodedReply.setHexDump(isA(List.class));
         replayAll();
         List<DecodedData> list = decoder.decode(input, 0, new DecodeSession());
         verifyAll();
