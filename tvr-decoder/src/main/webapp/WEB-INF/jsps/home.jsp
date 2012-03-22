@@ -15,11 +15,11 @@
 					$("#display").html(data).slideDown('slow',function() {
 						$(".decoded,.composite-decoded").each(function() {
 			    			$(this).click(function(e) {
+			    			    highlightBytes($(this));
 								e.stopPropagation();
 							});
 				    	});
 			    	});
-			    	toggleCompositeDecodedVisibility();
 		    	});
             });
 	    }
@@ -34,24 +34,36 @@
 	            value_field.val(value_field.val().substr(0, maxLength))
 	        }
 	    }
-	
-		function highlightBytes(start, end, rawDataId) {
+
+	    var highlighted=null;
+
+		function highlightBytes(decoded) {
+		    clearHighlight();
+		    decoded.addClass("highlight");
+		    highlighted=decoded;
+
+            var rawDataId=decoded.attr("data-i");
+            var start=decoded.attr("data-s");
+            var end=decoded.attr("data-e");
 			$("#rawData-"+rawDataId).show("slow");
-			$(".bytes").removeClass("highlight");
 			var i = 0;
 			for (i = start; i < end; i++) {
 				$("#b-" + i).addClass("highlight");
 			}
 		}
 
+        function clearHighlight() {
+            if (highlighted!=null) {
+                highlighted.removeClass("highlight");
+            }
+            highlighted=null;
+            $(".bytes").removeClass("highlight");
+        }
+
 		function hideRawData(rawDataId) {
+		    clearHighlight();
 			$("#rawData-"+rawDataId).hide("slow");
 		}
-
-		function toggleCompositeDecodedVisibility() {
-		    var checked = $('#showCompositeDecodedData').is(':checked');
-		    $(".composite-decodedData").toggle(checked);
-        }
 
     </script>
     <link rel="stylesheet" type="text/css" href="/tvr.css" />
@@ -72,7 +84,6 @@
         <option value="${tagMeta}">${tagMeta}</option>
     </c:forEach>
     </select>
-    <input type="checkbox" id="showCompositeDecodedData" value="checked" onclick="toggleCompositeDecodedVisibility()"/><label for="showCompositeDecodedData" style="font-size:small">Show Raw Data for composite tags</label>
     </form>
     <div id="display">
     </div>

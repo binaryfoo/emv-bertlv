@@ -6,15 +6,15 @@
         <jsp:include page="rawDataFragment.jsp"/>
     </c:if>
 	<c:if test="${not item.composite}">
-		<div class="decoded" onclick="highlightBytes(${item.startIndex},${item.endIndex},${rawDataId})">
+		<div class="decoded" data-s="${item.startIndex}" data-e="${item.endIndex}" data-i="${rawDataId}">
 	    <span class="rawData">${item.rawData}</span> <span class="decodedData">${item.decodedData}</span>
 	    </div>
     </c:if>
 	<c:if test="${item.composite}">
-        <table class="composite-decoded" onclick="highlightBytes(${item.startIndex},${item.endIndex},${rawDataId})">
+        <table class="composite-decoded" data-s="${item.startIndex}" data-e="${item.endIndex}" data-i="${rawDataId}">
             <tr>
                 <td colspan="2">
-                <span class="composite-label">${item.rawData}</span> <span class="composite-decodedData">${item.decodedData}</span>
+                <span class="composite-label">${item.rawData}</span>
                 </td>
             </tr>
             <tr>
