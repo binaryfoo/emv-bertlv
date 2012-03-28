@@ -1,5 +1,6 @@
 package com.willcurrie;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.willcurrie.hex.HexDumpElement;
@@ -18,7 +19,7 @@ public class DecodedData {
     private List<HexDumpElement> hexDump;
 
     public DecodedData(String rawData, String decodedData, int startIndex, int endIndex) {
-		this(null, rawData, decodedData, startIndex, endIndex, null);
+		this(null, rawData, decodedData, startIndex, endIndex, Collections.<DecodedData>emptyList());
 	}
 
     public DecodedData(String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {

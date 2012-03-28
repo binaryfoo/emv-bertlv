@@ -2,6 +2,7 @@ package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
+import com.willcurrie.TagInfo;
 import com.willcurrie.TagMetaData;
 import com.willcurrie.tlv.ISOUtil;
 import com.willcurrie.tlv.Tag;
@@ -29,7 +30,11 @@ public class PopulatedDOLDecoder implements Decoder {
             values.get(value);
             TagMetaData tagMetaData = session.getTagMetaData();
             Tag tag = element.getTag();
-            decoded.add(new DecodedData(tag.toString(tagMetaData), tagMetaData.get(tag).decodePrimitiveTlvValue(ISOUtil.hexString(value)), offset, offset + value.length));
+            TagInfo tagInfo = tagMetaData.get(tag);
+            String valueAsHexString = ISOUtil.hexString(value);
+            List<DecodedData> children = tagInfo.getDecoder().decode(valueAsHexString, offset, session);
+            DecodedData decodedData = new DecodedData(tag.toString(tagMetaData), tagInfo.decodePrimitiveTlvValue(valueAsHexString), offset, offset + value.length, children);
+            decoded.add(decodedData);
             offset += value.length;
         }
         return decoded;

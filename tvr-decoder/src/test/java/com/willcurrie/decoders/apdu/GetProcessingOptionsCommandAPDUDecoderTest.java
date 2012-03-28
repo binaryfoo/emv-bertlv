@@ -23,7 +23,8 @@ public class GetProcessingOptionsCommandAPDUDecoderTest {
         DecodedData decoded = new GetProcessingOptionsCommandAPDUDecoder().decode(input, 0, session);
         assertThat(decoded.getRawData(), is("C-APDU: GPO"));
         List<DecodedData> children = decoded.getChildren();
-        assertThat(children, hasItem(new DecodedData(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 7, 11)));
+        List<DecodedData> expectedDecodedTTQ = QVsdcTags.METADATA.get(QVsdcTags.TERMINAL_TX_QUALIFIERS).getDecoder().decode("36000000", 7, new DecodeSession());
+        assertThat(children, hasItem(new DecodedData(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 7, 11, expectedDecodedTTQ)));
         assertThat(children, hasItem(new DecodedData(EmvTags.UNPREDICTABLE_NUMBER.toString(EmvTags.METADATA), "0008E4C8", 36, 40)));
     }
 

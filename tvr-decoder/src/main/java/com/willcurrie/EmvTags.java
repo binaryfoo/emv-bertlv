@@ -107,6 +107,9 @@ public class EmvTags {
     public static final Tag ISSUER_PUBLIC_KEY_CERTIFICATE = newTag("90", "issuer public key certificate", HEX);
     public static final Tag ICC_PUBLIC_KEY_EXPONENT = newTag("9F47", "ICC public key exponent", HEX);
     public static final Tag ICC_PUBLIC_KEY_REMAINDER = newTag("9F48", "ICC public key remainder", HEX);
+    public static final Tag ICC_PIN_ENCIPHERMENT_PUBLIC_KEY = newTag("9F2D", "ICC pin encipherment public key", HEX);
+    public static final Tag ICC_PIN_ENCIPHERMENT_PUBLIC_KEY_EXPONENT = newTag("9F2E", "ICC pin encipherment public key exponent", HEX);
+    public static final Tag ICC_PIN_ENCIPHERMENT_PUBLIC_KEY_MODULUS = newTag("9F2F", "ICC pin encipherment public key modulus", HEX);
     public static final Tag SIGNED_DYNAMIC_APPLICATION_DATA = newTag("9F4B", "signed dynamic application data", HEX);
     public static final Tag RESPONSE_TEMPLATE = newTag("77", "response template", HEX);
     public static final Tag PIN_TRY_COUNTER = newTag("9F17", "pin try counter", HEX);
@@ -116,6 +119,11 @@ public class EmvTags {
     public static final Tag ICC_DYNAMIC_NUMBER = newTag("9F4C", "ICC dynamic number", HEX);
     public static final Tag RESPONSE_TEMPLATE_2 = newTag("70", "response template", HEX);
     public static final Tag FCI_DISCRETIONARY_DATA = newTag("BF0C", "FCI discretionary data", HEX);
+    public static final Tag SERVICE_CODE = newTag("5F30", "service code", HEX);
+    public static final Tag APPLICATION_CURRENCY_EXPONENT = newTag("9F44", "application currency exponent", HEX);
+    public static final Tag APPLICATION_REFERENCE_CURRENCY = newTag("9F3B", "application reference currency", HEX);
+    public static final Tag APPLICATION_REFERENCE_CURRENCY_EXPONENT = newTag("9F43", "application reference currency exponent", HEX);
+    public static final Tag DDOL = newTag("9F49", "DDOL", "dynamic data authentication DOL", DOL);
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
         return newTag(METADATA, hexString, shortName, longName, decoder);

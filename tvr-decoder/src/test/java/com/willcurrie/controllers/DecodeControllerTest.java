@@ -2,9 +2,11 @@ package com.willcurrie.controllers;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.QVsdcTags;
+import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.hex.ByteElement;
 import com.willcurrie.hex.HexDumpElement;
 import com.willcurrie.hex.WhitespaceElement;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
@@ -33,7 +35,8 @@ public class DecodeControllerTest {
         List<DecodedData> decodedData = (List<DecodedData>) modelMap.get("decodedData");
         DecodedData gpoCommand = findWithRaw(decodedData, "C-APDU: GPO");
         assertThat(gpoCommand, is(not(nullValue())));
-        assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 73, 77)));
+        List<DecodedData> expectedDecodedTTQ = QVsdcTags.METADATA.get(QVsdcTags.TERMINAL_TX_QUALIFIERS).getDecoder().decode("36000000", 73, new DecodeSession());
+        assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 73, 77, expectedDecodedTTQ)));
         assertThat(gpoCommand.getChildren(), hasItem(new DecodedData(QVsdcTags.UNPREDICTABLE_NUMBER.toString(QVsdcTags.METADATA), "0008E4C8", 102, 106)));
         assertThat(modelMap, not(hasKey("rawData")));
     }
@@ -190,6 +193,17 @@ public class DecodeControllerTest {
         List<HexDumpElement> hexDump = (List<HexDumpElement>) modelMap.get("rawData");
         assertThat((ByteElement) hexDump.get(0), is(new ByteElement("F0", 0)));
         assertThat((ByteElement) hexDump.get(319), is(new ByteElement("33", 319)));
+    }
+
+    @Ignore("TODO: work in progress")
+    @Test
+    public void testGetProcessingOptionsWithTemplate80Reply() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        String input = "80A8000002830000 800E1C000801010010010100180304009000";
+        decodeController.decode("apdu-sequence", input, "EMV", modelMap);
+        System.out.println(modelMap);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+        assertThat(modelMap, hasEntry(is("rawData"), is(not(nullValue()))));
     }
 
 }

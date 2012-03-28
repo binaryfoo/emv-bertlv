@@ -2,8 +2,11 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
+import com.willcurrie.QVsdcTags;
 import com.willcurrie.decoders.DecodeSession;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.hamcrest.collection.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.Is.is;
@@ -20,7 +23,8 @@ public class GenerateACAPDUDecoderTest {
         DecodedData decoded = new GenerateACAPDUDecoder().decode(input, startIndex, session);
         assertThat(decoded.getRawData(), is("C-APDU: Generate AC (TC+CDA)"));
         assertThat(decoded.getChildren(), hasItem(new DecodedData(EmvTags.AMOUNT_AUTHORIZED.toString(EmvTags.METADATA), "000000010001", startIndex + 5, startIndex + 11)));
-        assertThat(decoded.getChildren(), hasItem(new DecodedData(EmvTags.CVM_RESULTS.toString(EmvTags.METADATA), "5E0300", startIndex + 45, startIndex + 48)));
+        List<DecodedData> expectedDecodedCVMResults = EmvTags.METADATA.get(EmvTags.CVM_RESULTS).getDecoder().decode("5E0300", startIndex + 45, new DecodeSession());
+        assertThat(decoded.getChildren(), hasItem(new DecodedData(EmvTags.CVM_RESULTS.toString(EmvTags.METADATA), "5E0300", startIndex + 45, startIndex + 48, expectedDecodedCVMResults)));
     }
 
     @Test

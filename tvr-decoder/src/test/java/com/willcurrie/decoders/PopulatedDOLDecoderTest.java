@@ -5,6 +5,7 @@ import com.willcurrie.EmvTags;
 import com.willcurrie.QVsdcTags;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -37,6 +38,8 @@ public class PopulatedDOLDecoderTest {
         assertThat(decoded.size(), is(9));
         assertThat(decoded.get(0).getRawData(), is("9F66 (TTQ)"));
         assertThat(decoded.get(0).getDecodedData(), is("36000000"));
+        List<DecodedData> expectedDecodedTTQ = QVsdcTags.METADATA.get(QVsdcTags.TERMINAL_TX_QUALIFIERS).getDecoder().decode("36000000", 0, new DecodeSession());
+        assertThat(decoded.get(0).getChildren(), is(expectedDecodedTTQ));
         assertThat(decoded.get(0).getStartIndex(), is(0));
         assertThat(decoded.get(0).getEndIndex(), is(4));
         assertThat(decoded.get(8).getRawData(), is("9F37 (unpredictable number)"));
