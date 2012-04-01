@@ -1,17 +1,20 @@
 package com.willcurrie.controllers;
 
 import com.willcurrie.DecodedData;
+import com.willcurrie.EmvTags;
 import com.willcurrie.QVsdcTags;
 import com.willcurrie.decoders.DecodeSession;
+import com.willcurrie.decoders.Decoders;
 import com.willcurrie.hex.ByteElement;
 import com.willcurrie.hex.HexDumpElement;
-import com.willcurrie.hex.WhitespaceElement;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.collection.IsCollectionContaining.hasItems;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
@@ -195,7 +198,6 @@ public class DecodeControllerTest {
         assertThat((ByteElement) hexDump.get(319), is(new ByteElement("33", 319)));
     }
 
-    @Ignore("TODO: work in progress")
     @Test
     public void testGetProcessingOptionsWithTemplate80Reply() throws Exception {
         ModelMap modelMap = new ModelMap();
@@ -203,7 +205,12 @@ public class DecodeControllerTest {
         decodeController.decode("apdu-sequence", input, "EMV", modelMap);
         System.out.println(modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
-        assertThat(modelMap, hasEntry(is("rawData"), is(not(nullValue()))));
+        List<DecodedData> decodedData = (List<DecodedData>) modelMap.get("decodedData");
+        List<DecodedData> responseChildren = decodedData.get(1).getChildren();
+        assertThat(responseChildren, hasItem(new DecodedData(EmvTags.NON_TLV_RESPONSE_TEMPLATE, "80 (Fixed response template)", "1C00080101001001010018030400", 8, 24, Arrays.asList(
+                new DecodedData(EmvTags.APPLICATION_INTERCHANGE_PROFILE, "82 (AIP)", "1C00", 10, 12, Decoders.AIP.decode("1C00", 10, new DecodeSession())),
+                new DecodedData(EmvTags.AFL, "94 (Application File Locator (AFL))", "080101001001010018030400", 12, 24, Collections.<DecodedData>emptyList()))
+        )));
     }
 
 }

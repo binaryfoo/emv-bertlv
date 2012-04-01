@@ -124,6 +124,7 @@ public class EmvTags {
     public static final Tag APPLICATION_REFERENCE_CURRENCY = newTag("9F3B", "application reference currency", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY_EXPONENT = newTag("9F43", "application reference currency exponent", HEX);
     public static final Tag DDOL = newTag("9F49", "DDOL", "dynamic data authentication DOL", DOL);
+    public static final Tag NON_TLV_RESPONSE_TEMPLATE = newTag("80", "Fixed response template", "Fixed response template", new ResponseFormat1Decoder());
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
         return newTag(METADATA, hexString, shortName, longName, decoder);

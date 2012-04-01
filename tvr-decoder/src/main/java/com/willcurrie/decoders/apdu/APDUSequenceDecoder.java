@@ -26,6 +26,7 @@ public class APDUSequenceDecoder implements Decoder {
             CommandAPDUDecoder commandDecoder = getCommandDecoder(line);
             DecodedData decoded;
             if (commandDecoder != null) {
+                session.setCurrentCommand(commandDecoder.getCommand());
                 decoded = commandDecoder.decode(line, startIndexInBytes, session);
             } else {
                 decoded = replyDecoder.decode(line, startIndexInBytes, session);
