@@ -23,12 +23,12 @@ public class CVRule {
 		return baseRule;
 	}
 	
-	public CVRule.VerificationMethod getVerificationMethod() {
-		return verificationMethod;
+	public String getVerificationMethodDescription() {
+		return verificationMethod == null ? "Unknown" : verificationMethod.getDescription();
 	}
 	
-	public CVRule.ConditionCode getConditionCode() {
-		return conditionCode;
+	public String getConditionCodeDescription() {
+		return conditionCode == null ? "Unknown" : conditionCode.getDescription();
 	}
 	
 	public enum VerificationMethod {

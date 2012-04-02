@@ -16,8 +16,8 @@ public class CVMResultsDecoder implements Decoder {
 		CVRule rule = new CVRule(input.substring(0, 4));
 		String result = input.substring(4, 6);
 		return Arrays.asList(
-				new DecodedData(input.substring(0, 2), rule.getVerificationMethod().getDescription(), startIndexInBytes, startIndexInBytes + 1),
-				new DecodedData(input.substring(2, 4), rule.getConditionCode().getDescription(), startIndexInBytes + 1, startIndexInBytes + 2),
+				new DecodedData(input.substring(0, 2), rule.getVerificationMethodDescription(), startIndexInBytes, startIndexInBytes + 1),
+				new DecodedData(input.substring(2, 4), rule.getConditionCodeDescription(), startIndexInBytes + 1, startIndexInBytes + 2),
 				new DecodedData(result, decodeResult(result), startIndexInBytes + 2, startIndexInBytes + 3)
 				);
 	}

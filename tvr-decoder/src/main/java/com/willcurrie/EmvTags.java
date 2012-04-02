@@ -61,7 +61,7 @@ public class EmvTags {
     public static final Tag APPLICATION_INTERCHANGE_PROFILE = newTag("82", "AIP", "Application Interchange Profile", Decoders.AIP);
     public static final Tag APPLICATION_TRANSACTION_COUNTER = newTag("9F36", "application transaction counter", BASE_10);
     public static final Tag APPLICATION_CRYPTOGRAM = newTag("9F26", "application cryptogram", HEX);
-    public static final Tag ISSUER_APPLICATION_DATA = newTag("9F10", "issuer application data", HEX);
+    public static final Tag ISSUER_APPLICATION_DATA = newTag("9F10", "issuer application data", "issuer application data", new IssuerApplicationDataDecoder());
     public static final Tag TERMINAL_CURRENCY_CODE = newTag("5F2A", "terminal currency code", HEX);
     public static final Tag TERMINAL_SERIAL_NUMBER = newTag("9F1E", "terminal serial number", ASCII);
     public static final Tag UNPREDICTABLE_NUMBER = newTag("9F37", "unpredictable number", HEX);

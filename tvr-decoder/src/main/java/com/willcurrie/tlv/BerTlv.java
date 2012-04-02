@@ -71,7 +71,7 @@ public abstract class BerTlv {
                     tlvs.add(newInstance(tag, value));
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Failed parsing " + tag + "," + (e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage()));
+                throw new RuntimeException("Failed parsing " + tag + "," + (e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage()), e);
             }
         }
         return tlvs;

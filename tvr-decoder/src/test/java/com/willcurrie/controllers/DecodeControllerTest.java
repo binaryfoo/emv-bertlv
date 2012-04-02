@@ -203,7 +203,6 @@ public class DecodeControllerTest {
         ModelMap modelMap = new ModelMap();
         String input = "80A8000002830000 800E1C000801010010010100180304009000";
         decodeController.decode("apdu-sequence", input, "EMV", modelMap);
-        System.out.println(modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
         List<DecodedData> decodedData = (List<DecodedData>) modelMap.get("decodedData");
         List<DecodedData> responseChildren = decodedData.get(1).getChildren();
@@ -213,4 +212,11 @@ public class DecodeControllerTest {
         )));
     }
 
+    @Test
+    public void testInvalidCvmResults() throws Exception {
+        ModelMap modelMap = new ModelMap();
+        String input = "F081D4E007D002522BD10101BF810105DF2D020000E50ADF91590120DF9158011FE9818C57104761340000000043D1712201131838758407A000000003101050095649534120544553549F260894961F236784C26D9F2701809F100706010A03A000009F36020134950500000000009F370400027D995F2A0200369C01209A030904029F02060000000020009F1A0200369F34033F0002820200005F3401115F2002202F9F6C0200009F660436000000E325E0239F03060000000000009F3303E060C09F1E0831393062346332629F3501229F09020002";
+        decodeController.decode("constructed", input, "EMV", modelMap);
+        assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
 }

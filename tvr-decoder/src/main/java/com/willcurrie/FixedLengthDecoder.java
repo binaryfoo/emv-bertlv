@@ -74,7 +74,7 @@ public class FixedLengthDecoder implements Decoder {
 					return i;
 				}
 			}
-			throw new IllegalArgumentException("Non non-zero bits in " + bitAsHexString);
+			throw new IllegalArgumentException("No non-zero bits in " + bitAsHexString);
 		}
 
 		public boolean isSet(long bitString) {
