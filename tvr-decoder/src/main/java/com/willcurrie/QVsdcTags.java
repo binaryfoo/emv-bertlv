@@ -14,6 +14,7 @@ public class QVsdcTags extends EmvTags {
 
     public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F66", "TTQ", "Terminal transaction qualifiers", new TerminalTxQualifiersDecoder());
     public static final Tag CARD_TX_QUALIFIERS = newTag("9F6C", "CTQ", "Card transaction qualifiers", new CardTxQualifiersDecoder());
+    public static final Tag CARD_AUTH_RELATED_DATA = newTag("9F69", "Card Authentication Related Data", HEX);
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
         return newTag(METADATA, hexString, shortName, longName, decoder);

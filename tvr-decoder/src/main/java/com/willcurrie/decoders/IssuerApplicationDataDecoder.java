@@ -11,20 +11,25 @@ public class IssuerApplicationDataDecoder implements Decoder {
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         try {
-            return decodeVisaIad(input, startIndexInBytes);
-        } catch (Exception e) {
-            return Collections.emptyList();
+            if (input.startsWith("06")) {
+                return decodeVisaIad(input, startIndexInBytes, decodeSession);
+            }
+        } catch (Exception ignored) {
         }
+        return Collections.emptyList();
     }
 
-    private List<DecodedData> decodeVisaIad(String input, int startIndexInBytes) {
+    /*
+     * From Visa Contactless Payment Specification v2.1
+     */
+    private List<DecodedData> decodeVisaIad(String input, int startIndexInBytes, DecodeSession decodeSession) {
         List<DecodedData> decoded = new ArrayList<DecodedData>();
         String dki = input.substring(2, 4);
         decoded.add(new DecodedData("Derivation key index", dki, startIndexInBytes + 1, startIndexInBytes + 2));
         String cvn = input.substring(4, 6);
         decoded.add(new DecodedData("Cryptogram version number", cvn, startIndexInBytes + 2, startIndexInBytes + 3));
         String cvr = input.substring(6, 14);
-        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 3, startIndexInBytes + 7));
+        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 3, startIndexInBytes + 7, new VisaCardVerificationResultsDecoder().decode(cvr, startIndexInBytes + 3, decodeSession)));
         if (input.length() > 14) {
             int iddLength = Integer.parseInt(input.substring(14, 16), 16);
             if (iddLength > 0) {
