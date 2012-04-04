@@ -3,8 +3,6 @@ package com.willcurrie;
 import com.willcurrie.decoders.*;
 import com.willcurrie.tlv.Tag;
 
-import static com.willcurrie.decoders.Decoders.CVM_LIST;
-import static com.willcurrie.decoders.Decoders.CVM_RESULTS;
 import static com.willcurrie.decoders.Decoders.DOL;
 import static com.willcurrie.decoders.PrimitiveDecoder.ASCII;
 import static com.willcurrie.decoders.PrimitiveDecoder.BASE_10;

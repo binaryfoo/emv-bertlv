@@ -1,10 +1,8 @@
 package com.willcurrie.decoders;
 
-import static org.hamcrest.collection.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.willcurrie.EmvTags;

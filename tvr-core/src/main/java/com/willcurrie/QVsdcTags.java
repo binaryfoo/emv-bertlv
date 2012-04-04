@@ -1,12 +1,10 @@
 package com.willcurrie;
 
-import com.willcurrie.decoders.CVMListDecoder;
 import com.willcurrie.decoders.CardTxQualifiersDecoder;
 import com.willcurrie.decoders.PrimitiveDecoder;
 import com.willcurrie.decoders.TerminalTxQualifiersDecoder;
 import com.willcurrie.tlv.Tag;
 
-import static com.willcurrie.decoders.PrimitiveDecoder.ASCII;
 import static com.willcurrie.decoders.PrimitiveDecoder.HEX;
 
 public class QVsdcTags extends EmvTags {

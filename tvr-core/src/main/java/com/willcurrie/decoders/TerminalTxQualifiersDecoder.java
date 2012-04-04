@@ -1,7 +1,5 @@
 package com.willcurrie.decoders;
 
-import com.willcurrie.FixedLengthDecoder;
-
 public class TerminalTxQualifiersDecoder extends FixedLengthDecoder {
     public TerminalTxQualifiersDecoder() {
         super(8,

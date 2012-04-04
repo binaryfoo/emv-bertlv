@@ -1,9 +1,10 @@
-package com.willcurrie;
+package com.willcurrie.decoders;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.willcurrie.decoders.DecodeSession;
+import com.willcurrie.DecodedData;
+import com.willcurrie.Decoder;
 import com.willcurrie.tlv.ISOUtil;
 
 public class FixedLengthDecoder implements Decoder {

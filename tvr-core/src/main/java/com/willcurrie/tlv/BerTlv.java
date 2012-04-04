@@ -1,6 +1,5 @@
 package com.willcurrie.tlv;
 
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,7 +142,7 @@ public abstract class BerTlv {
     public abstract List<BerTlv> getChildren();
 
     private byte[] getLength(byte[] value) {
-        byte[] length = null;
+        byte[] length;
         if (value == null) {
             return new byte[] {(byte) 0x00};
         }

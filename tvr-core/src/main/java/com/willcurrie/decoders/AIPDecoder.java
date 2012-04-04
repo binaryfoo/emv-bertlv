@@ -1,7 +1,5 @@
 package com.willcurrie.decoders;
 
-import com.willcurrie.FixedLengthDecoder;
-
 public class AIPDecoder extends FixedLengthDecoder {
 
 	public AIPDecoder() {

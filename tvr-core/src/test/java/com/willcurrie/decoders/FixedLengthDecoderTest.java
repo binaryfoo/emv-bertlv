@@ -1,9 +1,8 @@
-package com.willcurrie;
+package com.willcurrie.decoders;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
-
 
 public class FixedLengthDecoderTest {
 

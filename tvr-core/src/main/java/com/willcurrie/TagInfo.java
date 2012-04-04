@@ -1,11 +1,6 @@
 package com.willcurrie;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.willcurrie.decoders.*;
-import com.willcurrie.decoders.apdu.*;
-import com.willcurrie.tlv.Tag;
 
 public class TagInfo {
     private final String shortName;

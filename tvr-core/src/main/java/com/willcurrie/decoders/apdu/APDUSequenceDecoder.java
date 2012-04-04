@@ -2,7 +2,7 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.Decoder;
-import com.willcurrie.controllers.HexDumpFactory;
+import com.willcurrie.HexDumpFactory;
 import com.willcurrie.decoders.DecodeSession;
 
 import java.util.ArrayList;

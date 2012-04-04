@@ -1,16 +1,12 @@
 package com.willcurrie.decoders;
 
 import com.willcurrie.DecodedData;
-import com.willcurrie.EmvTags;
 import com.willcurrie.QVsdcTags;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class PopulatedDOLDecoderTest {

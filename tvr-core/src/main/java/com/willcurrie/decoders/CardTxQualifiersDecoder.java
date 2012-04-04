@@ -1,11 +1,5 @@
 package com.willcurrie.decoders;
 
-import com.willcurrie.DecodedData;
-import com.willcurrie.Decoder;
-import com.willcurrie.FixedLengthDecoder;
-
-import java.util.List;
-
 public class CardTxQualifiersDecoder extends FixedLengthDecoder {
     public CardTxQualifiersDecoder() {
         super(4,

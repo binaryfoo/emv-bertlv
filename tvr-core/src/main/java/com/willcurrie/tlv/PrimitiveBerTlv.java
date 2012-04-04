@@ -3,8 +3,6 @@ package com.willcurrie.tlv;
 import java.util.Collections;
 import java.util.List;
 
-import com.willcurrie.EmvTags;
-
 class PrimitiveBerTlv extends BerTlv {
 
     private final byte[] value;

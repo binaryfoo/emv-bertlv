@@ -1,7 +1,5 @@
 package com.willcurrie.decoders;
 
-import com.willcurrie.FixedLengthDecoder;
-
 public class TSIDecoder extends FixedLengthDecoder {
 
 	public TSIDecoder() {

@@ -1,4 +1,4 @@
-package com.willcurrie.controllers;
+package com.willcurrie;
 
 import com.willcurrie.hex.ByteElement;
 import com.willcurrie.hex.HexDumpElement;

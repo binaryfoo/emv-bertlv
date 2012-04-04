@@ -2,7 +2,6 @@ package com.willcurrie.decoders.apdu;
 
 import com.willcurrie.DecodedData;
 import com.willcurrie.EmvTags;
-import com.willcurrie.controllers.DecodeController;
 import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.decoders.PopulatedDOLDecoder;
 import com.willcurrie.tlv.ISOUtil;
@@ -13,7 +12,7 @@ import java.util.logging.Logger;
 
 public class GenerateACAPDUDecoder implements CommandAPDUDecoder {
 
-    private static final Logger LOG = Logger.getLogger(DecodeController.class.getName());
+    private static final Logger LOG = Logger.getLogger(GenerateACAPDUDecoder.class.getName());
     
     @Override
     public APDUCommand getCommand() {

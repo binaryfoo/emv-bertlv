@@ -4,9 +4,7 @@ import com.willcurrie.TagMetaData;
 import com.willcurrie.decoders.apdu.APDUCommand;
 import com.willcurrie.tlv.Tag;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class DecodeSession extends HashMap<Tag, String> {
 

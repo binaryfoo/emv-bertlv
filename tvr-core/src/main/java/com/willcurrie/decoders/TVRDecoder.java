@@ -1,7 +1,5 @@
 package com.willcurrie.decoders;
 
-import com.willcurrie.FixedLengthDecoder;
-
 public class TVRDecoder extends FixedLengthDecoder {
 
 	public TVRDecoder() {
