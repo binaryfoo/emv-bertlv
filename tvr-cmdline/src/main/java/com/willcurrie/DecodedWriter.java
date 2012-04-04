@@ -13,9 +13,11 @@ public class DecodedWriter {
     public void write(List<DecodedData> decoded, String indent) {
         for (DecodedData d : decoded) {
             out.print(indent);
-            out.print("[");
-            out.print(d.getRawData());
-            out.print("] ");
+            if (d.getRawData() != null && d.getRawData().length() > 0) {
+                out.print("[");
+                out.print(d.getRawData());
+                out.print("] ");
+            }
             out.print(d.getDecodedData());
             out.print("\n");
             write(d.getChildren(), indent + "  ");

@@ -1,14 +1,12 @@
 package com.willcurrie;
 
-import sun.misc.IOUtils;
+import com.willcurrie.decoders.DecodeSession;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -19,12 +17,24 @@ public class Main {
         String tag = args[0];
         String value = args[1];
         String meta = args.length > 2 ? args[2] : "EMV";
+
+        RootDecoder rootDecoder = new RootDecoder();
+        DecodeSession decodeSession = new DecodeSession();
+        decodeSession.setTagMetaData(rootDecoder.getTagMetaData(meta));
         TagInfo tagInfo = RootDecoder.getTagInfo(tag);
         if (value.equals("-")) {
-            value = readStandardInput();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                decodeValue(line, decodeSession, tagInfo);
+            }
+        } else {
+            decodeValue(value, decodeSession, tagInfo);
         }
-        RootDecoder rootDecoder = new RootDecoder();
-        List<DecodedData> decoded = rootDecoder.decode(value, meta, tagInfo);
+    }
+
+    private static void decodeValue(String value, DecodeSession decodeSession, TagInfo tagInfo) {
+        List<DecodedData> decoded = tagInfo.getDecoder().decode(value, 0, decodeSession);
         new DecodedWriter(System.out).write(decoded, "");
     }
 
@@ -36,15 +46,5 @@ public class Main {
         }
         System.out.println("  <value> is the hex string or '-' for standard input");
         System.out.println("  <tag-set> is one of " + RootDecoder.getAllTagMeta() + " defaults to EMV");
-    }
-
-    private static String readStandardInput() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder b = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            b.append(line).append(" ");
-        }
-        return b.toString();
     }
 }
