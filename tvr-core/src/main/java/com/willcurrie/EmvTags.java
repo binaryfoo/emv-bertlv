@@ -89,7 +89,7 @@ public class EmvTags {
     public static final Tag TRANSACTION_CATEGORY_CODE = newTag("9F53", "transaction category code", ASCII);
     public static final Tag FCI_TEMPLATE = newTag("6F", "FCI template", HEX);
     public static final Tag FCI_PROPRIETARY_TEMPLATE = newTag("A5", "FCI proprietary template", HEX);
-    public static final Tag AFL = newTag("94", "Application File Locator (AFL)", HEX);
+    public static final Tag AFL = newTag("94", "AFL", "Application File Locator", Decoders.AFL);
     public static final Tag APPLICATION_EFFECTIVE_DATE = newTag("5F25", "application effective date", HEX);
     public static final Tag PDOL = newTag("9F38", "PDOL", "Processing DOL", DOL);
     public static final Tag CDOL_1 = newTag("8C", "CDOL 1", "Data object list", DOL);
@@ -118,6 +118,7 @@ public class EmvTags {
     public static final Tag RESPONSE_TEMPLATE_2 = newTag("70", "response template", HEX);
     public static final Tag FCI_DISCRETIONARY_DATA = newTag("BF0C", "FCI discretionary data", HEX);
     public static final Tag SERVICE_CODE = newTag("5F30", "service code", HEX);
+    public static final Tag LANGUAGE_PREFERENCE = newTag("5F2D", "language preference", ASCII);
     public static final Tag APPLICATION_CURRENCY_EXPONENT = newTag("9F44", "application currency exponent", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY = newTag("9F3B", "application reference currency", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY_EXPONENT = newTag("9F43", "application reference currency exponent", HEX);

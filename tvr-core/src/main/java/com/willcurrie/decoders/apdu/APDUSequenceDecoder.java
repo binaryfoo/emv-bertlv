@@ -22,18 +22,22 @@ public class APDUSequenceDecoder implements Decoder {
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession session) {
         ArrayList<DecodedData> list = new ArrayList<DecodedData>();
-        for (String line : input.split(" ")) {
-            CommandAPDUDecoder commandDecoder = getCommandDecoder(line);
-            DecodedData decoded;
-            if (commandDecoder != null) {
-                session.setCurrentCommand(commandDecoder.getCommand());
-                decoded = commandDecoder.decode(line, startIndexInBytes, session);
-            } else {
-                decoded = replyDecoder.decode(line, startIndexInBytes, session);
+        for (String line : input.split("\\s+")) {
+            try {
+                CommandAPDUDecoder commandDecoder = getCommandDecoder(line);
+                DecodedData decoded;
+                if (commandDecoder != null) {
+                    session.setCurrentCommand(commandDecoder.getCommand());
+                    decoded = commandDecoder.decode(line, startIndexInBytes, session);
+                } else {
+                    decoded = replyDecoder.decode(line, startIndexInBytes, session);
+                }
+                decoded.setHexDump(hexDumpFactory.splitIntoByteLengthStrings(line, startIndexInBytes));
+                list.add(decoded);
+                startIndexInBytes = decoded.getEndIndex();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed on line [" + line + "]", e);
             }
-            decoded.setHexDump(hexDumpFactory.splitIntoByteLengthStrings(line, startIndexInBytes));
-            list.add(decoded);
-            startIndexInBytes = decoded.getEndIndex();
         }
         return list;
     }
