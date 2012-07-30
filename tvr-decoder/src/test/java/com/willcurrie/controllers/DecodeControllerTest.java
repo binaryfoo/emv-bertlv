@@ -208,7 +208,11 @@ public class DecodeControllerTest {
         List<DecodedData> responseChildren = decodedData.get(1).getChildren();
         assertThat(responseChildren, hasItem(new DecodedData(EmvTags.NON_TLV_RESPONSE_TEMPLATE, "80 (Fixed response template)", "1C00080101001001010018030400", 8, 24, Arrays.asList(
                 new DecodedData(EmvTags.APPLICATION_INTERCHANGE_PROFILE, "82 (AIP)", "1C00", 10, 12, Decoders.AIP.decode("1C00", 10, new DecodeSession())),
-                new DecodedData(EmvTags.AFL, "94 (Application File Locator (AFL))", "080101001001010018030400", 12, 24, Collections.<DecodedData>emptyList()))
+                new DecodedData(EmvTags.AFL, "94 (AFL)", "080101001001010018030400", 12, 24, Arrays.asList(
+                        new DecodedData("", "SFI 1 number 1", 12, 16),
+                        new DecodedData("", "SFI 2 number 1", 16, 20),
+                        new DecodedData("", "SFI 3 number 3-4", 20, 24)
+                )))
         )));
     }
 

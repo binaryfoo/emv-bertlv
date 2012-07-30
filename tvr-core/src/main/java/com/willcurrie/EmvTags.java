@@ -119,6 +119,8 @@ public class EmvTags {
     public static final Tag FCI_DISCRETIONARY_DATA = newTag("BF0C", "FCI discretionary data", HEX);
     public static final Tag SERVICE_CODE = newTag("5F30", "service code", HEX);
     public static final Tag LANGUAGE_PREFERENCE = newTag("5F2D", "language preference", ASCII);
+    public static final Tag ISSUER_CODE_TABLE_INDEX = newTag("9F11", "issuer code table index", HEX);
+    public static final Tag APPLICATION_PREFERRED_NAME = newTag("9F12", "application preferred name", ASCII);
     public static final Tag APPLICATION_CURRENCY_EXPONENT = newTag("9F44", "application currency exponent", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY = newTag("9F3B", "application reference currency", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY_EXPONENT = newTag("9F43", "application reference currency exponent", HEX);
