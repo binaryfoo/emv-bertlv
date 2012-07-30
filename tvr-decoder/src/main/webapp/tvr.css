@@ -30,6 +30,12 @@ div#footer p {
 
 span.rawData {
 	font-weight: bold;
+    display: table-cell;
+    padding-right: 5px;
+}
+
+span.decodedData {
+    display: table-cell;
 }
 
 span.composite-label {

@@ -6,6 +6,7 @@
 <head>
 	<title>TVR Decoder</title>
 	<meta name="google-site-verification" content="slrW544StiiGPgULPcN6D3hvx-BCNi8ch9PXDwCceJk" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<script src="/jquery-1.3.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
 	    function doDecode() {
