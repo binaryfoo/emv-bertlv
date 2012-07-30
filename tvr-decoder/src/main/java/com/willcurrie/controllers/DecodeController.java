@@ -1,6 +1,7 @@
 package com.willcurrie.controllers;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.willcurrie.*;
@@ -49,10 +50,18 @@ public class DecodeController {
             return "decodedData";
         } catch (Exception e) {
             e.printStackTrace();
-			LOG.fine("Error decoding " + e.getMessage());
-			modelMap.addAttribute("error", e.getMessage());
+			LOG.log(Level.FINE, "Error decoding", e);
+			modelMap.addAttribute("error", getMessageTrace(e));
 			return "validationError";
 		}
+    }
+
+    private String getMessageTrace(Exception e) {
+        StringBuilder b = new StringBuilder(e.getMessage());
+        for (Throwable t = e.getCause(); t != null; t = t.getCause()) {
+            b.append(", ").append(t);
+        }
+        return b.toString();
     }
 
 }
