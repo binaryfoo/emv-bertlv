@@ -11,17 +11,15 @@ import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.collection.IsCollectionContaining.hasItems;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
 
 public class DecodeControllerTest {
 
