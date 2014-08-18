@@ -23,29 +23,20 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <stopKey>STOP</stopKey>
+                    <stopPort>8081</stopPort>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <modules>
         <module>tvr-decoder-war</module>
         <module>tvr-decoder-ear</module>
     </modules>
-
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>mvnsearch</id>-->
-            <!--<url>http://www.mvnsearch.org/maven2</url>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>datanucleus</id>-->
-            <!--<url>http://www.datanucleus.org/downloads/maven2</url>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>org.springsource.maven.snapshot</id>-->
-            <!--<name>SpringSource Maven Central-compatible Snapshot Repository</name>-->
-            <!--<url>http://maven.springframework.org/milestone</url>-->
-        <!--</repository>-->
-        <!--<repository>-->
-		    <!--<id>openqa-releases</id>-->
-		    <!--<url>http://archiva.openqa.org/repository/releases</url> -->
-		<!--</repository> -->
-    <!--</repositories>-->
 </project>

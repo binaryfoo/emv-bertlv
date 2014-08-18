@@ -54,3 +54,7 @@ td.indent {
     font-family: monospace;
     font-size: small;
 }
+
+#display {
+    margin-top: 1em;
+}

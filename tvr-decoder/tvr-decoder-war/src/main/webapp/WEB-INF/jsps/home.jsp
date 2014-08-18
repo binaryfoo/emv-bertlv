@@ -68,29 +68,32 @@
 
     </script>
     <link rel="stylesheet" type="text/css" href="/tvr.css" />
+    <link rel="stylesheet" href="/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/bootstrap-theme.min.css"/>
 </head>
 <body onload="onOptionChange()">
     <div id="container"><div id="content">
-    <form onsubmit="doDecode();return false">
-    <select id="tag_field" onchange="onOptionChange()">
+    <form onsubmit="doDecode();return false" class="form-inline">
+    <select id="tag_field" onchange="onOptionChange()" class="form-control">
     <c:forEach items="${tagInfos}" var="tagInfo">
         <option value="${tagInfo.key}" data-maxlength="${tagInfo.value.maxLength}">${tagInfo.value.shortName}</option>
     </c:forEach>
     </select>
-    <input type="text" id="value_field"/>
-    <input type="submit" value="Decode"/>
+    <input type="text" id="value_field" class="form-control"/>
+    <input type="submit" value="Decode" class="btn btn-primary"/>
     <label for="tagmetaset_field"  style="font-size:small">with tags</label>
-    <select id="tagmetaset_field">
+    <select id="tagmetaset_field" class="form-control">
     <c:forEach items="${tagMetaSets}" var="tagMeta">
         <option value="${tagMeta}">${tagMeta}</option>
     </c:forEach>
     </select>
     </form>
+        <small>What on earth is this all about? Data involved in <a href="http://en.wikipedia.org/wiki/EMV">credit card</a> card transactions...</small>
     <div id="display">
     </div>
     </div>
     <div id="footer">
-    	<p><a href="http://code.google.com/p/tvr-decoder/">Project</a></p>
+    	<p><a href="https://github.com/wcurrie/emv-bertlv">Project</a></p>
     </div>
     </div>
     <script type="text/javascript">

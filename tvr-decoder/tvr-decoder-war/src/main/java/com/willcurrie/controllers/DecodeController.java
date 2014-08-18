@@ -57,7 +57,7 @@ public class DecodeController {
     }
 
     private String getMessageTrace(Exception e) {
-        StringBuilder b = new StringBuilder(e.getMessage());
+        StringBuilder b = new StringBuilder(e.getMessage() != null ? e.getMessage() : "Either something has gone wrong or you've given me rubbish");
         for (Throwable t = e.getCause(); t != null; t = t.getCause()) {
             b.append(", ").append(t);
         }
