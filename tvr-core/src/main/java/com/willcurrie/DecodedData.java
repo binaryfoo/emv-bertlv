@@ -13,8 +13,8 @@ public class DecodedData {
 	private final String rawData;
 	private final String decodedData;
 	private final List<DecodedData> children;
-	private final int startIndex;
-	private final int endIndex;
+	private final int startIndex; // in bytes
+	private final int endIndex; // in bytes
     private final Tag tag;
     private List<HexDumpElement> hexDump;
 
@@ -46,7 +46,7 @@ public class DecodedData {
 	public int getStartIndex() {
 		return startIndex;
 	}
-	
+
 	public int getEndIndex() {
 		return endIndex;
 	}

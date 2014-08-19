@@ -34,6 +34,7 @@ public class RootDecoder {
         TAG_META_SETS.put("EMV", EmvTags.METADATA);
         TAG_META_SETS.put("qVSDC", QVsdcTags.METADATA);
         TAG_META_SETS.put("MSD", MSDTags.METADATA);
+        TAG_META_SETS.put("Amex", AmexTags.METADATA);
     }
 
     public RootDecoder() {
