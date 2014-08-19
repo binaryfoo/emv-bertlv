@@ -60,7 +60,7 @@ public class EmvTags {
     public static final Tag APPLICATION_TRANSACTION_COUNTER = newTag("9F36", "application transaction counter", BASE_10);
     public static final Tag APPLICATION_CRYPTOGRAM = newTag("9F26", "application cryptogram", HEX);
     public static final Tag ISSUER_APPLICATION_DATA = newTag("9F10", "issuer application data", "issuer application data", new IssuerApplicationDataDecoder());
-    public static final Tag TERMINAL_CURRENCY_CODE = newTag("5F2A", "terminal currency code", HEX);
+    public static final Tag TERMINAL_CURRENCY_CODE = newTag("5F2A", "terminal currency code", Decoders.CURRENCY_CODE);
     public static final Tag TERMINAL_SERIAL_NUMBER = newTag("9F1E", "terminal serial number", ASCII);
     public static final Tag UNPREDICTABLE_NUMBER = newTag("9F37", "unpredictable number", HEX);
     public static final Tag CVM_RESULTS = newTag("9F34", "CVM Results", "Cardholder Verification Results", Decoders.CVM_RESULTS);
@@ -85,7 +85,7 @@ public class EmvTags {
     public static final Tag TERMINAL_VERIFICATION_RESULTS = newTag("95", "TVR", "Terminal Verification Results", Decoders.TVR);
     public static final Tag TSI = newTag("9B", "TSI", "Transaction Status Indicator", Decoders.TSI);
     public static final Tag CVM_LIST = newTag("8E", "CVM List", "Cardholder Verification Method List", Decoders.CVM_LIST);
-    public static final Tag APPLICATION_CURRENCY_CODE = newTag("9F42", "application currency code", HEX);
+    public static final Tag APPLICATION_CURRENCY_CODE = newTag("9F42", "application currency code", Decoders.CURRENCY_CODE);
     public static final Tag TRANSACTION_CATEGORY_CODE = newTag("9F53", "transaction category code", ASCII);
     public static final Tag FCI_TEMPLATE = newTag("6F", "FCI template", HEX);
     public static final Tag FCI_PROPRIETARY_TEMPLATE = newTag("A5", "FCI proprietary template", HEX);
@@ -129,6 +129,10 @@ public class EmvTags {
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
         return newTag(METADATA, hexString, shortName, longName, decoder);
+    }
+
+    private static Tag newTag(String hexString, String longName, Decoder decoder) {
+        return newTag(METADATA, hexString, longName, longName, decoder);
     }
 
     private static Tag newTag(String hexString, String name, PrimitiveDecoder primitiveDecoder) {

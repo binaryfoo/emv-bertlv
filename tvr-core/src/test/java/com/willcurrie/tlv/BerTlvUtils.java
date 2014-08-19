@@ -1,6 +1,6 @@
 package com.willcurrie.tlv;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public final class BerTlvUtils {
 
