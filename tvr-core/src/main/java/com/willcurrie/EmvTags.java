@@ -26,9 +26,9 @@ public class EmvTags {
     public static final Tag POS_ENTRY_MODE = newTag("9F39", "pos entry mode", HEX);
     public static final Tag TERMINAL_APPLICATION_VERSION_NUMBER = newTag("9F09", "terminal application version number", HEX);
     public static final Tag DEFAULT_DDOL = newTag("DF5D", "Default DDOL", "Default DDOL", DOL);
-    public static final Tag TAC_DENIAL = newTag("DF57", "TAC denial", HEX);
-    public static final Tag TAC_ONLINE = newTag("DF58", "TAC online", HEX);
-    public static final Tag TAC_DEFAULT = newTag("DF56", "TAC default", HEX);
+    public static final Tag TAC_DENIAL = newTag("DF57", "TAC denial", Decoders.TVR);
+    public static final Tag TAC_ONLINE = newTag("DF58", "TAC online", Decoders.TVR);
+    public static final Tag TAC_DEFAULT = newTag("DF56", "TAC default", Decoders.TVR);
     public static final Tag TERMINAL_FLOOR_LIMIT = newTag("9F1B", "terminal floor limit", HEX);
     public static final Tag TARGET_PERCENTAGE = newTag("DF5A", "target percentage", HEX);
     public static final Tag MAX_TARGET_PERCENTAGE = newTag("DF5B", "max target percentage", HEX);
@@ -96,9 +96,9 @@ public class EmvTags {
     public static final Tag CDOL_2 = newTag("8D", "CDOL 1", "Data object list", DOL);
     public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "application usage control", HEX);
     public static final Tag CARD_APPLICATION_VERSION_NUMBER = newTag("9F08", "card application version number", HEX);
-    public static final Tag IAC_DEFAULT = newTag("9F0D", "IAC default", HEX);
-    public static final Tag IAC_DENIAL = newTag("9F0E", "IAC denial", HEX);
-    public static final Tag IAC_ONLINE = newTag("9F0F", "IAC online", HEX);
+    public static final Tag IAC_DEFAULT = newTag("9F0D", "IAC default", Decoders.TVR);
+    public static final Tag IAC_DENIAL = newTag("9F0E", "IAC denial", Decoders.TVR);
+    public static final Tag IAC_ONLINE = newTag("9F0F", "IAC online", Decoders.TVR);
     public static final Tag SDA_TAG_LIST = newTag("9F4A", "SDA tag list", HEX);
     public static final Tag ISSUER_PUBLIC_KEY_EXPONENT = newTag("9F32", "issuer public key exponent", HEX);
     public static final Tag ISSUER_PUBLIC_KEY_REMAINDER = newTag("92", "issuer public key remainder", HEX);
