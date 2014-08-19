@@ -79,7 +79,7 @@
         <option value="${tagInfo.key}" data-maxlength="${tagInfo.value.maxLength}">${tagInfo.value.shortName}</option>
     </c:forEach>
     </select>
-    <input type="text" id="value_field" class="form-control"/>
+    <textarea type="text" id="value_field" class="form-control" rows="1"></textarea>
     <input type="submit" value="Decode" class="btn btn-primary"/>
     <label for="tagmetaset_field"  style="font-size:small">with tags</label>
     <select id="tagmetaset_field" class="form-control">

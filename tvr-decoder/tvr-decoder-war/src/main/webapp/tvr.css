@@ -58,3 +58,8 @@ td.indent {
 #display {
     margin-top: 1em;
 }
+
+#value_field {
+    resize: both;
+    display: inline-block;
+}
