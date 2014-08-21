@@ -1,34 +1,20 @@
 package com.willcurrie.decoders;
 
-import com.willcurrie.DecodedData;
-import com.willcurrie.Decoder;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class CurrencyCodeDecoder implements Decoder {
+public class CurrencyCodeDecoder implements PrimitiveDecoder {
 
     private static Map<String, String> numericToAlpha;
 
-    @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
-        String alpha = getNumericToAlpha().get(input.substring(1));
-        return Arrays.asList(new DecodedData(input, alpha == null ? "Unknown" : alpha, startIndexInBytes, startIndexInBytes + 2));
-    }
 
     @Override
-    public String validate(String input) {
-        return null;
-    }
-
-    @Override
-    public int getMaxLength() {
-        return 0;
+    public String decode(String hexString) {
+        String alpha = getNumericToAlpha().get(hexString.substring(1));
+        return alpha == null ? "Unknown" : alpha;
     }
 
     private synchronized Map<String, String> getNumericToAlpha() {

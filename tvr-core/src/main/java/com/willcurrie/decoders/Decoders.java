@@ -11,5 +11,4 @@ public class Decoders {
     public static final Decoder AIP = new AIPDecoder();
     public static final Decoder TSI = new TSIDecoder();
     public static final Decoder AFL = new ApplicationFileLocatorDecoder();
-    public static final Decoder CURRENCY_CODE = new CurrencyCodeDecoder();
 }

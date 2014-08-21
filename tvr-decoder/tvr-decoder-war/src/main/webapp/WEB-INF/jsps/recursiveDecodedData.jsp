@@ -11,13 +11,14 @@
 	    </div>
     </c:if>
 	<c:if test="${item.composite}">
+        <c:set var="itemId" value="${item.startIndex}-${item.endIndex}" scope="request"/>
         <table class="composite-decoded" data-s="${item.startIndex}" data-e="${item.endIndex}" data-i="${rawDataId}">
             <tr>
                 <td colspan="2">
-                <span class="composite-label">${item.rawData}</span>
+                <span class="composite-label">${item.rawData} <span class="glyphicon glyphicon-zoom-out expander" data-item="${itemId}"></span> <span class="composite-chunked collapsed" data-item="${itemId}">${item.decodedData}</span></span>
                 </td>
             </tr>
-            <tr>
+            <tr class="detail expanded" data-item="${itemId}">
                 <td class="indent"></td>
                 <td>
                 <c:set var="decodedData" value="${item.children}" scope="request"/>

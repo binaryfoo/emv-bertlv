@@ -20,6 +20,12 @@
 								e.stopPropagation();
 							});
 				    	});
+                        $(".expander").each(function() {
+                            $(this).click(function(e) {
+                                toggleExpander($(this));
+                                e.stopPropagation();
+                            })
+                        })
 			    	});
 		    	});
             });
@@ -46,7 +52,7 @@
             var rawDataId=decoded.attr("data-i");
             var start=decoded.attr("data-s");
             var end=decoded.attr("data-e");
-			$("#rawData-"+rawDataId).show("slow");
+			$("#rawData-"+rawDataId).show("fast");
 			var i = 0;
 			for (i = start; i < end; i++) {
 				$("#b-" + i).addClass("highlight");
@@ -63,13 +69,29 @@
 
 		function hideRawData(rawDataId) {
 		    clearHighlight();
-			$("#rawData-"+rawDataId).hide("slow");
+			$("#rawData-"+rawDataId).hide("fast");
 		}
 
+        function toggleExpander(e) {
+            var itemId = e[0].getAttribute("data-item");
+            var collapsed = e.hasClass("glyphicon-zoom-in");
+            var detail = $('.detail[data-item="' + itemId + '"]');
+            var chunk = $('.composite-chunked[data-item="' + itemId + '"]');
+            if (collapsed) {
+                detail.addClass("expanded").removeClass("collapsed");
+                chunk.removeClass("expanded").addClass("collapsed");
+                e.removeClass("glyphicon-zoom-in").addClass("glyphicon-zoom-out")
+            } else {
+                detail.removeClass("expanded").addClass("collapsed");
+                chunk.addClass("expanded").removeClass("collapsed");
+                e.removeClass("glyphicon-zoom-out").addClass("glyphicon-zoom-in")
+            }
+        }
+
     </script>
-    <link rel="stylesheet" type="text/css" href="/tvr.css" />
-    <link rel="stylesheet" href="/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/tvr.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
 </head>
 <body onload="onOptionChange()">
     <div id="container"><div id="content">
