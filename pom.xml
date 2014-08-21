@@ -7,9 +7,25 @@
     <artifactId>tvr-all</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <appengine.target.version>1.9.9</appengine.target.version>
+    </properties>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.google.appengine</groupId>
+                    <artifactId>appengine-maven-plugin</artifactId>
+                    <version>${appengine.target.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     <modules>
         <module>tvr-core</module>
         <module>tvr-cmdline</module>
-        <module>tvr-decoder</module>
+        <module>tvr-decoder-war</module>
+        <module>tvr-decoder-ear</module>
     </modules>
 </project>

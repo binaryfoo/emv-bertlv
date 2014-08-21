@@ -180,6 +180,17 @@
                     </webResources>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.5.v20120716</version>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <stopKey>STOP</stopKey>
+                    <stopPort>8081</stopPort>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
