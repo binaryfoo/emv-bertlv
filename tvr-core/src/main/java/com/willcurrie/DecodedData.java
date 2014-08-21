@@ -3,12 +3,14 @@ package com.willcurrie;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.willcurrie.hex.HexDumpElement;
 import com.willcurrie.tlv.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class DecodedData {
 	private final String rawData;
 	private final String decodedData;

@@ -7,7 +7,10 @@ import com.willcurrie.decoders.DecodeSession;
 import com.willcurrie.decoders.Decoders;
 import com.willcurrie.hex.ByteElement;
 import com.willcurrie.hex.HexDumpElement;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ModelMap;
 
 import java.util.Arrays;
@@ -20,10 +23,18 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 public class DecodeControllerTest {
 
-    private DecodeController decodeController = new DecodeController();
+    private DecodeController decodeController;
+    private MockMvc mockMvc;
+
+    @Before
+    public void setUp() throws Exception {
+        decodeController = new DecodeController();
+        mockMvc = MockMvcBuilders.standaloneSetup(decodeController).build();
+    }
 
     @Test
     public void testPDOLShouldBeDecodedInGPOCommand() throws Exception {
@@ -220,5 +231,13 @@ public class DecodeControllerTest {
         String input = "F081D4E007D002522BD10101BF810105DF2D020000E50ADF91590120DF9158011FE9818C57104761340000000043D1712201131838758407A000000003101050095649534120544553549F260894961F236784C26D9F2701809F100706010A03A000009F36020134950500000000009F370400027D995F2A0200369C01209A030904029F02060000000020009F1A0200369F34033F0002820200005F3401115F2002202F9F6C0200009F660436000000E325E0239F03060000000000009F3303E060C09F1E0831393062346332629F3501229F09020002";
         decodeController.decode("constructed", input, "EMV", modelMap);
         assertThat(modelMap, hasEntry(is("decodedData"), is(not(nullValue()))));
+    }
+
+    @Test
+    public void testJson() throws Exception {
+        String s = mockMvc.perform(get("/api/decode").param("tag", "95").param("value", "8000000000").param("meta", "EMV")).andReturn().getResponse().getContentAsString();
+        System.out.println(s);
+//                .andExpect();
+
     }
 }
