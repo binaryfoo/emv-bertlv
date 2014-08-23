@@ -1,0 +1,9 @@
+CA public keys:
+Visa: https://technologypartner.visa.com/Download.aspx?id=34
+Mastercard (paypass): https://www.paypass.com/PP_Imp_Guides/PayPass_v3_TTAL2-Testing%20Env_26Feb2013.pdf
+
+Similar project:
+https://code.google.com/p/javaemvreader/
+
+Command coding at APDU level:
+http://www.wrankl.de/SCTables/SCTables.html
