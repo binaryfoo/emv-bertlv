@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.binaryfoo</groupId>
     <artifactId>emv-bertlv</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>EMV BER-TLV Decoder</name>
     <description>
         Some decoders for the data used in EMV credit card transactions.
@@ -25,7 +23,8 @@
         <connection>scm:git:git@github.com:binaryfoo/emv-bertlv.git</connection>
         <developerConnection>scm:git:git@github.com:binaryfoo/emv-bertlv.git</developerConnection>
         <url>git@github.com:binaryfoo/emv-bertlv.git</url>
-    </scm>
+      <tag>emv-bertlv-0.1.0</tag>
+  </scm>
 
     <developers>
         <developer>
