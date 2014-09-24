@@ -10,7 +10,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.binaryfoo</groupId>
-            <artifactId>emv-bertlv-core</artifactId>
+            <artifactId>emv-bertlv</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

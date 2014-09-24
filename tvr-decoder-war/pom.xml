@@ -8,7 +8,7 @@
 
     <parent>
         <groupId>io.github.binaryfoo</groupId>
-        <artifactId>emv-bertlv</artifactId>
+        <artifactId>emv-bertlv-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.binaryfoo</groupId>
-            <artifactId>emv-bertlv-core</artifactId>
+            <artifactId>emv-bertlv</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- Compile/runtime dependencies -->
