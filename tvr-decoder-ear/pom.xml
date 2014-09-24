@@ -9,7 +9,7 @@
 
   <parent>
     <groupId>com.willcurrie</groupId>
-    <artifactId>tvr-decoder</artifactId>
+    <artifactId>tvr-all</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
