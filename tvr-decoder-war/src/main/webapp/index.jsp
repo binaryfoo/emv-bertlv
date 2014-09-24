@@ -1,3 +1,0 @@
-<%
-response.sendRedirect("/t/home");
-%>
