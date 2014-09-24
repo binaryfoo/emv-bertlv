@@ -10,7 +10,7 @@
             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com.willcurrie.controllers"/>
+    <context:component-scan base-package="io.github.binaryfoo.controllers"/>
     <mvc:annotation-driven/>
 
     <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

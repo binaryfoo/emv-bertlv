@@ -29,7 +29,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.willcurrie.Main</mainClass>
+                                    <mainClass>io.github.binaryfoo.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

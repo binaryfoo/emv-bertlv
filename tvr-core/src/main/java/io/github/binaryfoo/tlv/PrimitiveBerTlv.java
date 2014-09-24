@@ -1,0 +1,35 @@
+package io.github.binaryfoo.tlv;
+
+import java.util.Collections;
+import java.util.List;
+
+class PrimitiveBerTlv extends BerTlv {
+
+    private final byte[] value;
+
+    PrimitiveBerTlv(Tag tag, byte[] value) {
+        super(tag);
+        this.value = value;
+    }
+
+    public byte[] getValue() {
+        return value;
+    }
+
+    public BerTlv findTlv(Tag tag) {
+        return null;
+    }
+
+    public List<BerTlv> findTlvs(Tag tag) {
+        return Collections.emptyList();
+    }
+
+    public List<BerTlv> getChildren() {
+        return Collections.emptyList();
+    }
+
+    public String toString() {
+        return getTag() + ": " + ISOUtil.hexString(value);
+    }
+}
+
