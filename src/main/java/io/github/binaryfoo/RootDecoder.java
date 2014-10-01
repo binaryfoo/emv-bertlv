@@ -84,6 +84,10 @@ public class RootDecoder {
         return tagInfo.getDecoder().decode(value, 0, decodeSession);
     }
 
+    public List<DecodedData> decode(String value, String meta, String tag) {
+        return decode(value, meta, getTagInfo(tag));
+    }
+
     public TagMetaData getTagMetaData(String meta) {
         TagMetaData tagMetaData = TAG_META_SETS.get(meta);
         return tagMetaData == null ? EmvTags.METADATA : tagMetaData;

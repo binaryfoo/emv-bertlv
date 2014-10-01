@@ -36,7 +36,7 @@ public class APDUSequenceDecoder implements Decoder {
                 list.add(decoded);
                 startIndexInBytes = decoded.getEndIndex();
             } catch (Exception e) {
-                throw new RuntimeException("Failed on line [" + line + "]", e);
+                list.add(new DecodedData(line, "Failed to decode: " + e.getMessage(), 0, 0));
             }
         }
         return list;
