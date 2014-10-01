@@ -9,6 +9,7 @@ public class TVRDecoder extends FixedLengthDecoder {
 			"2000000000", "ICC data missing",
 			"1000000000", "Card appears on terminal exception file",
 			"0800000000", "DDA failed",
+			"0200000000", "SDA selected",
 			"0400000000", "CDA failed",
 			"0080000000", "ICC and terminal have different application versions",
 			"0040000000", "Expired application",
