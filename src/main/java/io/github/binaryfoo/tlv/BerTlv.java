@@ -55,14 +55,15 @@ public abstract class BerTlv {
 
         while (data.hasRemaining()) {
             Tag tag = Tag.parse(data);
+            if (isPaddingByte(tag)) {
+                continue;
+            }
             try {
                 int length = parseLength(data);
-
-                byte[] value = new byte[length];
-                data.get(value);
+                byte[] value = readUpToLength(data, length);
                 if (tag.isConstructed() && parseConstructedTags) {
                     try {
-                        tlvs.add(newInstance(tag, parseList(value, parseConstructedTags)));
+                        tlvs.add(newInstance(tag, parseList(value, true)));
                     } catch (Exception e) {
                         tlvs.add(newInstance(tag, value));
                     }
@@ -74,6 +75,17 @@ public abstract class BerTlv {
             }
         }
         return tlvs;
+    }
+
+    private static byte[] readUpToLength(ByteBuffer data, int length) {
+        byte[] value = new byte[length > data.remaining() ? data.remaining() : length];
+        data.get(value);
+        return value;
+    }
+
+    // Specification Update No. 69, 2009, Padding of BER-TLV Encoded Constructed Data Objects
+    private static boolean isPaddingByte(Tag tag) {
+        return tag.getBytes().length == 1 && tag.getBytes()[0] == 0;
     }
 
     private static int parseLength(ByteBuffer data) {
