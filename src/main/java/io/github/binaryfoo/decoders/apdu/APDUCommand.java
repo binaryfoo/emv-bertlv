@@ -8,7 +8,9 @@ public enum APDUCommand {
     ComputeCryptographicChecksum("802A"),
     GetData("80CA"),
     ExternalAuthenticate("0082"),
-    InternalAuthenticate("0088");
+    InternalAuthenticate("0088"),
+    Verify("0020"),
+    GetChallenge("0084");
 
     private String firstTwoBytes;
 
