@@ -49,7 +49,11 @@ public class FixedLengthDecoder implements Decoder {
 		for (BitMapping bit : bits) {
 			if (bit.isSet(bitStringAsLong)) {
 				int start = startIndexInBytes + bit.getByteIndex();
-				bitsSetInString.add(new DecodedData(bit.getBitAsHexString(), bit.getDescription(), start, start + 1));
+				bitsSetInString.add(new DecodedData(
+                        bit.getBitAsHexString() + " (" + ByteLabeller.labelFor(bit.getBitAsHexString()) + ")",
+                        bit.getDescription(),
+                        start, start + 1
+                ));
 			}
 		}
 		return bitsSetInString;
