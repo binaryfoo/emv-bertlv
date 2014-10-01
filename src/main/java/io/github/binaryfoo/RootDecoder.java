@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The main entry point.
+ */
 public class RootDecoder {
     private static Map<String, TagMetaData> TAG_META_SETS = new LinkedHashMap<String, TagMetaData>();
     private static Map<String, TagInfo> ROOT_TAG_INFO = new LinkedHashMap<String, TagInfo>();
@@ -66,6 +69,15 @@ public class RootDecoder {
         return TAG_META_SETS.keySet();
     }
 
+    /**
+     * f(hex string) -> somewhat english description
+     *
+     * @param value Hex string to decode.
+     * @param meta One of the keys in io.github.binaryfoo.RootDecoder#TAG_META_SETS.
+     * @param tagInfo One of the values returned by io.github.binaryfoo.RootDecoder#getTagInfo(java.lang.String).
+     *
+     * @return Somewhat english description.
+     */
     public List<DecodedData> decode(String value, String meta, TagInfo tagInfo) {
         DecodeSession decodeSession = new DecodeSession();
         decodeSession.setTagMetaData(getTagMetaData(meta));
