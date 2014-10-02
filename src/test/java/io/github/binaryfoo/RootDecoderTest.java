@@ -15,7 +15,7 @@ public class RootDecoderTest {
                         "700E9F080200019F420209789F4A01829000\n" +
                         "00AABBCCDDEE\n" +
                         "00B2013400\n";
-        List<DecodedData> decoded = new RootDecoder().decode(apdus, "EMV", "apdu-sequence");
+        List<DecodedData> decoded = decodeApdus(apdus);
         assertThat(decoded.size(), is(4));
     }
 
@@ -23,7 +23,7 @@ public class RootDecoderTest {
     public void decodingResponseToGenerateACUSesCDOLInCommand() throws Exception {
         String apdus = "80AE40001F3030000000101000000000000000003602000080000036141002005563312100\n" +
                        "80124000015C221DC28EB72FCF060201036400009000";
-        List<DecodedData> decoded = new RootDecoder().decode(apdus, "EMV", "apdu-sequence");
+        List<DecodedData> decoded = decodeApdus(apdus);
 
         DecodedData decodedRApdu = decoded.get(1);
         assertThat(decodedRApdu.getRawData(), is("R-APDU"));
@@ -42,6 +42,17 @@ public class RootDecoderTest {
         DecodedData decodedCvr = decodedIAD.getChildren().get(2);
         assertThat(decodedCvr.getRawData(), is("Card verification results"));
         assertThat(decodedCvr.getChildren().get(2).getDecodedData(), is("(Byte 2 Bit 3) Offline PIN performed"));
+    }
 
+    @Test
+    public void decodePutData() throws Exception {
+        String apdus = "04DA9F58090098636D71A294BB85";
+        List<DecodedData> decoded = decodeApdus(apdus);
+        assertThat(decoded.get(0).getRawData(), is("C-APDU: Put Data"));
+        assertThat(decoded.get(0).getEndIndex(), is(14));
+    }
+
+    private List<DecodedData> decodeApdus(String apdus) {
+        return new RootDecoder().decode(apdus, "EMV", "apdu-sequence");
     }
 }
