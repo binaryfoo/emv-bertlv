@@ -21,16 +21,20 @@ public class ReplyAPDUDecoder {
         int statusBytesStart = input.length() - 4;
         int endIndex;
         List<DecodedData> children;
+        String decodedData;
         if (input.length() == 4) {
+            ResponseCode responseCode = ResponseCode.lookup(input.substring(statusBytesStart));
+            decodedData = responseCode.getHex() + " " + responseCode.getDescription();
             children = Collections.emptyList();
             endIndex = startIndexInBytes + 2;
         } else {
+            decodedData = input.substring(statusBytesStart);
             children = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes, session);
             addToSession(session, children, Arrays.asList(EmvTags.PDOL, EmvTags.CDOL_1, EmvTags.CDOL_2));
             DecodedData payload = children.get(0);
             endIndex = payload.getEndIndex() + 2;
         }
-        return new DecodedData("R-APDU", input.substring(statusBytesStart), startIndexInBytes, endIndex, children);
+        return new DecodedData("R-APDU", decodedData, startIndexInBytes, endIndex, children);
     }
 
     private void addToSession(DecodeSession session, List<DecodedData> children, List<Tag> tags) {
