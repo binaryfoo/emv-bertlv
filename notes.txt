@@ -8,3 +8,7 @@ https://code.google.com/p/javaemvreader/
 
 Command coding at APDU level:
 http://www.wrankl.de/SCTables/SCTables.html
+
+Release and deploy (from http://central.sonatype.org/pages/apache-maven.html#performing-a-release-deployment):
+mvn release:clean release:prepare
+mvn release:perform

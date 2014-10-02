@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The main entry point.
+ */
 public class RootDecoder {
     private static Map<String, TagMetaData> TAG_META_SETS = new LinkedHashMap<String, TagMetaData>();
     private static Map<String, TagInfo> ROOT_TAG_INFO = new LinkedHashMap<String, TagInfo>();
@@ -26,9 +29,20 @@ public class RootDecoder {
         ROOT_TAG_INFO.put("dol", new TagInfo("DOL", "Data Object List", new DataObjectListDecoder()));
         ROOT_TAG_INFO.put("filled-dol", new TagInfo("Filled DOL", "Data Object List", new PopulatedDOLDecoder()));
         ROOT_TAG_INFO.put("constructed", new TagInfo("TLV Data", "Constructed TLV data", new TLVDecoder()));
-        ROOT_TAG_INFO.put("apdu-sequence", new TagInfo("APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(new ReplyAPDUDecoder(new TLVDecoder()),
-                new SelectCommandAPDUDecoder(), new GetProcessingOptionsCommandAPDUDecoder(), new ReadRecordAPDUDecoder(),
-                new GenerateACAPDUDecoder(), new GetDataAPDUDecoder(), new ExternalAuthenticateAPDUDecoder(), new ComputeCryptoChecksumDecoder(), new InternalAuthenticateAPDUDecoder())));
+        ROOT_TAG_INFO.put("apdu-sequence", new TagInfo("APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(
+                new ReplyAPDUDecoder(new TLVDecoder()),
+                new SelectCommandAPDUDecoder(),
+                new GetProcessingOptionsCommandAPDUDecoder(),
+                new ReadRecordAPDUDecoder(),
+                new GenerateACAPDUDecoder(),
+                new GetDataAPDUDecoder(),
+                new ExternalAuthenticateAPDUDecoder(),
+                new ComputeCryptoChecksumDecoder(),
+                new InternalAuthenticateAPDUDecoder(),
+                new VerifyPinAPDUDecoder(),
+                new GetChallengeAPDUDecoder(),
+                new PutDataAPDUDecoder()
+        )));
     }
     static {
         TAG_META_SETS.put("EMV", EmvTags.METADATA);
@@ -56,10 +70,23 @@ public class RootDecoder {
         return TAG_META_SETS.keySet();
     }
 
+    /**
+     * f(hex string) -> somewhat english description
+     *
+     * @param value Hex string to decode.
+     * @param meta One of the keys in io.github.binaryfoo.RootDecoder#TAG_META_SETS.
+     * @param tagInfo One of the values returned by io.github.binaryfoo.RootDecoder#getTagInfo(java.lang.String).
+     *
+     * @return Somewhat english description.
+     */
     public List<DecodedData> decode(String value, String meta, TagInfo tagInfo) {
         DecodeSession decodeSession = new DecodeSession();
         decodeSession.setTagMetaData(getTagMetaData(meta));
         return tagInfo.getDecoder().decode(value, 0, decodeSession);
+    }
+
+    public List<DecodedData> decode(String value, String meta, String tag) {
+        return decode(value, meta, getTagInfo(tag));
     }
 
     public TagMetaData getTagMetaData(String meta) {

@@ -6,9 +6,14 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
 
-public class BerTlvTest extends TestCase {
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
+public class BerTlvTest {
+
+    @Test
     public void testNewInstanceWithByteFlagThatIsTooBig() throws Exception {
         try {
             BerTlv.newInstance(Tag.fromHex("9A"), 256);
@@ -17,26 +22,31 @@ public class BerTlvTest extends TestCase {
         }
     }
 
+    @Test
     public void testNewInstanceWithByteFlag255() throws Exception {
         BerTlvUtils.assertEquals("9A01FF", BerTlv.newInstance(Tag.fromHex("9A"), 255).toBinary());
     }
 
+    @Test
     public void testNewInstanceWithHexString05() throws Exception {
         BerTlvUtils.assertEquals("9A0105", BerTlv.newInstance(Tag.fromHex("9A"), "05").toBinary());
     }
 
+    @Test
     public void testToBinary_ValueLengthLessThan127() throws Exception {
         Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
         BerTlv tlv = BerTlv.newInstance(tag, new byte[] {0x01, 0x02, 0x03, 0x04});
         BerTlvUtils.assertEquals("9F1A0401020304", tlv.toBinary());
     }
 
+    @Test
     public void testToBinary_ValueLength128() throws Exception {
         Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
         BerTlv tlv = BerTlv.newInstance(tag, new byte[128]);
         BerTlvUtils.assertEquals("9F1A8180" + StringUtils.repeat("00", 128), tlv.toBinary());
     }
 
+    @Test
     public void testToBinary_2Primitives() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), new byte[] {(byte) 1});
         BerTlv tlv2 = BerTlv.newInstance(Tag.fromHex("9F1A"), new byte[] {(byte) 3});
@@ -48,6 +58,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals("EF" + "07" + ISOUtil.hexString(tlv1Bytes) + ISOUtil.hexString(tlv2Bytes), tlv.toBinary());
     }
 
+    @Test
     public void testToBinary_1PrimitiveAnd1Constructed() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), new byte[] {(byte) 1});
         BerTlv tlv2 = BerTlv.newInstance(Tag.fromHex("EF"), Arrays.asList(new BerTlv[] {BerTlv.newInstance(Tag.fromHex("9F1A"), new byte[] {(byte) 3})}));
@@ -59,15 +70,18 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals("E0" + "09" + ISOUtil.hexString(tlv1Bytes) + ISOUtil.hexString(tlv2Bytes), tlv.toBinary());
     }
 
+    @Test
     public void testToHexString_Primitive() throws Exception {
         assertEquals("E1021234", BerTlv.newInstance(Tag.fromHex("E1"), "1234").toHexString());
     }
 
+    @Test
     public void testGetChildrenPrimitive() throws Exception {
         BerTlv tlv = BerTlv.newInstance(Tag.fromHex("E1"), "1234");
         assertEquals(0, tlv.getChildren().size());
     }
 
+    @Test
     public void testFindTlvConstructed() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), 1);
         BerTlv tlv2 = BerTlv.newInstance(Tag.fromHex("9F1A"), 3);
@@ -77,6 +91,7 @@ public class BerTlvTest extends TestCase {
         assertNull(tlv.findTlv(Tag.fromHex("00")));
     }
 
+    @Test
     public void testGetChildrenConstructed() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), 1);
         BerTlv tlv2 = BerTlv.newInstance(Tag.fromHex("9F1A"), 3);
@@ -87,6 +102,7 @@ public class BerTlvTest extends TestCase {
         assertEquals(tlv2, children.get(1));
     }
 
+    @Test
     public void testFindTlvsConstructed() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), 1);
         BerTlv tlv2 = BerTlv.newInstance(Tag.fromHex("9A"), 3);
@@ -98,11 +114,13 @@ public class BerTlvTest extends TestCase {
         assertTrue(tlv.findTlvs(Tag.fromHex("00")).isEmpty());
     }
 
+    @Test
     public void testFindTlvPrimitive() throws Exception {
         BerTlv tlv = BerTlv.newInstance(Tag.fromHex("9A"), 1);
         assertNull(tlv.findTlv(Tag.fromHex("9A")));
     }
 
+    @Test
     public void testParsePrimitive() throws Exception {
         Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[] {0x01, 0x02, 0x03, 0x04});
@@ -110,6 +128,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
     }
 
+    @Test
     public void testParsePrimitive_Length128() throws Exception {
         Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[128]);
@@ -117,6 +136,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
     }
 
+    @Test
     public void testParsePrimitive_Length255() throws Exception {
         Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[255]);
@@ -124,6 +144,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
     }
 
+    @Test
     public void testParsePrimitive_Length314() throws Exception {
         Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[314]);
@@ -131,6 +152,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
     }
 
+    @Test
     public void testParseConstructed_2Primitives() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), 1);
         BerTlv tlv2 = BerTlv.newInstance(Tag.fromHex("9F1A"), 3);
@@ -142,6 +164,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(tlv1.toBinary(), actualTlv.findTlv(Tag.fromHex("9A")).toBinary());
     }
 
+    @Test
     public void testParseConstructed_1PrimitiveAnd2Constructed() throws Exception {
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("9A"), 1);
         BerTlv nestedTag1 = BerTlv.newInstance(Tag.fromHex("9F1A"), 3);
@@ -162,6 +185,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(nestedTag2.toBinary(), actualEFTlv2.findTlv(Tag.fromHex("8A")).toBinary());
     }
 
+    @Test
     public void testParseConstructed_1ConstructedAnd1Primitive() throws Exception {
         BerTlv nestedTag = BerTlv.newInstance(Tag.fromHex("9F1A"), 3);
         BerTlv tlv1 = BerTlv.newInstance(Tag.fromHex("EF"), Arrays.asList(new BerTlv[] {nestedTag}));
@@ -180,6 +204,7 @@ public class BerTlvTest extends TestCase {
         BerTlvUtils.assertEquals(tlv2.toBinary(), actual9ATlv.toBinary());
     }
 
+    @Test
     public void testParseAsPrimitive() throws Exception {
         BerTlv tlv = BerTlv.parseAsPrimitiveTag(ISOUtil.hex2byte("E181039F5301"));
         assertEquals(Tag.fromHex("E1"), tlv.getTag());
@@ -187,15 +212,25 @@ public class BerTlvTest extends TestCase {
         assertTrue(tlv instanceof PrimitiveBerTlv);
     }
 
+    @Test
     public void testGetValueAsHexString() throws Exception {
         BerTlv tlv = BerTlv.newInstance(Tag.fromHex("9A"), new byte[] {1, 2, (byte) 0xFF});
         assertEquals("0102FF", tlv.getValueAsHexString());
     }
     
+    @Test
     public void testGetLengthInBytesOfEncodedLength() throws Exception {
     	assertEquals(1, BerTlv.newInstance(Tag.fromHex("9A"), "FF").getLengthInBytesOfEncodedLength());
     	assertEquals(2, BerTlv.newInstance(Tag.fromHex("9A"), StringUtils.repeat("A", 400)).getLengthInBytesOfEncodedLength());
     	assertEquals(3, BerTlv.newInstance(Tag.fromHex("9A"), StringUtils.repeat("A", 4000)).getLengthInBytesOfEncodedLength());
 	}
+
+    @Test
+    public void testHandlesZeroPadding() throws Exception {
+        String crap = "910A93D60A0F3CC53834303072459F180400004000860E04DA9F5809004B360CA0FF728F689F180400004000860E04DA9F580904B50F23328A5C788500000000000000000000000000000000000000000000";
+
+        List<BerTlv> tlv = BerTlv.parseList(ISOUtil.hex2byte(crap), true);
+        assertThat(tlv.get(1).getChildren().size(), is(4));
+    }
 }
 
