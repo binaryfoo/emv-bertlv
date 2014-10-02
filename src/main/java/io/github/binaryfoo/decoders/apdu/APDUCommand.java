@@ -10,7 +10,8 @@ public enum APDUCommand {
     ExternalAuthenticate("0082"),
     InternalAuthenticate("0088"),
     Verify("0020"),
-    GetChallenge("0084");
+    GetChallenge("0084"),
+    PutData("00DA");
 
     private String firstTwoBytes;
 

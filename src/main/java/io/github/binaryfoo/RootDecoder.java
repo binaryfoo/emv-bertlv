@@ -40,7 +40,8 @@ public class RootDecoder {
                 new ComputeCryptoChecksumDecoder(),
                 new InternalAuthenticateAPDUDecoder(),
                 new VerifyPinAPDUDecoder(),
-                new GetChallengeAPDUDecoder()
+                new GetChallengeAPDUDecoder(),
+                new PutDataAPDUDecoder()
         )));
     }
     static {
