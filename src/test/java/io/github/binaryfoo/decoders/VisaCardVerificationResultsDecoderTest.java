@@ -20,11 +20,11 @@ public class VisaCardVerificationResultsDecoderTest {
         assertThat(decoded, is(Arrays.asList(
             new DecodedData("", "Second GENERATE AC not requested", startIndex + 1, startIndex + 2),
             new DecodedData("", "ARQC returned in GPO/first GENERATE AC", startIndex + 1, startIndex + 2),
-            new DecodedData("", "Offline PIN performed", startIndex + 1, startIndex + 2),
-            new DecodedData("", "Last online transaction not completed", startIndex + 2, startIndex + 3),
-            new DecodedData("", "Exceeded velocity checking counters", startIndex + 2, startIndex + 3),
-            new DecodedData("", "New card", startIndex + 2, startIndex + 3),
-            new DecodedData("", "Issuer Authentication failure on last online transaction", startIndex + 2, startIndex + 3)
+            new DecodedData("", "(Byte 2 Bit 3) Offline PIN performed", startIndex + 1, startIndex + 2),
+            new DecodedData("", "(Byte 3 Bit 8) Last online transaction not completed", startIndex + 2, startIndex + 3),
+            new DecodedData("", "(Byte 3 Bit 6) Exceeded velocity checking counters", startIndex + 2, startIndex + 3),
+            new DecodedData("", "(Byte 3 Bit 5) New card", startIndex + 2, startIndex + 3),
+            new DecodedData("", "(Byte 3 Bit 4) Issuer Authentication failure on last online transaction", startIndex + 2, startIndex + 3)
         )));
     }
 }
