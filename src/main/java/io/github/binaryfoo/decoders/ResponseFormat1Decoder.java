@@ -8,6 +8,7 @@ import io.github.binaryfoo.decoders.apdu.APDUCommand;
 import io.github.binaryfoo.tlv.Tag;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ResponseFormat1Decoder implements Decoder {
@@ -36,10 +37,10 @@ public class ResponseFormat1Decoder implements Decoder {
         return null;
     }
 
-    private DecodedData decode(Tag tag, String aip, int startIndexInBytes, int length, DecodeSession decodeSession) {
+    private DecodedData decode(Tag tag, String value, int startIndexInBytes, int length, DecodeSession decodeSession) {
         TagMetaData tagMetaData = decodeSession.getTagMetaData();
-        List<DecodedData> children = tagMetaData.get(tag).getDecoder().decode(aip, startIndexInBytes, decodeSession);
-        return new DecodedData(tag, tag.toString(tagMetaData), aip, startIndexInBytes, startIndexInBytes + length, children);
+        List<DecodedData> children = tagMetaData.get(tag).getDecoder().decode(value, startIndexInBytes, decodeSession);
+        return new DecodedData(tag, tag.toString(tagMetaData), tagMetaData.get(tag).decodePrimitiveTlvValue(value), startIndexInBytes, startIndexInBytes + length, children);
     }
 
     @Override

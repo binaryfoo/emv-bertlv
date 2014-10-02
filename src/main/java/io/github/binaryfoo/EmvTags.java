@@ -64,7 +64,7 @@ public class EmvTags {
     public static final Tag TERMINAL_SERIAL_NUMBER = newTag("9F1E", "terminal serial number", ASCII);
     public static final Tag UNPREDICTABLE_NUMBER = newTag("9F37", "unpredictable number", HEX);
     public static final Tag CVM_RESULTS = newTag("9F34", "CVM Results", "Cardholder Verification Results", Decoders.CVM_RESULTS);
-    public static final Tag CRYPTOGRAM_INFORMATION_DATA = newTag("9F27", "cryptogram information data", HEX);
+    public static final Tag CRYPTOGRAM_INFORMATION_DATA = newTag("9F27", "cryptogram information data", new CryptogramInformationDecoder());
     public static final Tag HOST_INCIDENT_CODE = newTag("DF2E", "host incident code", HEX);
     public static final Tag ISSUER_AUTHENTICATION_DATA = newTag("91", "issuer authentication data", HEX);
     public static final Tag ISSUER_SCRIPT_TERMPLATE_1 = newTag("71", "issuer script termplate 1", HEX);
