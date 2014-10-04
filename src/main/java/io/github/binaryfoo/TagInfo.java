@@ -2,6 +2,9 @@ package io.github.binaryfoo;
 
 import io.github.binaryfoo.decoders.*;
 
+/**
+ * How a single tag should be decoded.
+ */
 public class TagInfo {
     private final String shortName;
 	private final String longName;
@@ -27,7 +30,12 @@ public class TagInfo {
 		return longName;
 	}
 
-	public Decoder getDecoder() {
+    /**
+     * Decode the value of a BerTLv (primitive or constructed) to be included in the children field of a DecodedData.
+     *
+     * Idea being children are shown in a tree structure.
+     */
+    public Decoder getDecoder() {
 		return decoder;
 	}
 
@@ -35,6 +43,11 @@ public class TagInfo {
 		return decoder.getMaxLength();
 	}
 
+    /**
+     * Decode the value of a PrimitiveBerTLv to be included in the decodedData field of a DecodedData.
+     *
+     * Idea being the decodedData is shown on the same line (same node in the tree) instead of nesting one level down.
+     */
     public String decodePrimitiveTlvValue(String valueAsHexString) {
         return primitiveDecoder.decode(valueAsHexString);
     }

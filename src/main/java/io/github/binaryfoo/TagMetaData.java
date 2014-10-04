@@ -6,6 +6,9 @@ import io.github.binaryfoo.tlv.Tag;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A set of rules for interpreting a set of tags.
+ */
 public class TagMetaData {
 
     private final Map<String, TagInfo> metadata = new HashMap<String, TagInfo>();
