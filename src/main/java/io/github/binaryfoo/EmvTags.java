@@ -4,9 +4,7 @@ import io.github.binaryfoo.decoders.*;
 import io.github.binaryfoo.tlv.Tag;
 
 import static io.github.binaryfoo.decoders.Decoders.DOL;
-import static io.github.binaryfoo.decoders.PrimitiveDecoder.ASCII;
-import static io.github.binaryfoo.decoders.PrimitiveDecoder.BASE_10;
-import static io.github.binaryfoo.decoders.PrimitiveDecoder.HEX;
+import static io.github.binaryfoo.decoders.PrimitiveDecoder.*;
 
 public class EmvTags {
 
@@ -70,7 +68,7 @@ public class EmvTags {
     public static final Tag ISSUER_SCRIPT_TERMPLATE_1 = newTag("71", "issuer script termplate 1", HEX);
     public static final Tag ISSUER_SCRIPT_TERMPLATE_2 = newTag("72", "issuer script termplate 2", HEX);
     public static final Tag APPLICATION_LABEL = newTag("50", "application label", ASCII);
-    public static final Tag DEDICATED_FILE_NAME = newTag("84", "dedicated file name", HEX);
+    public static final Tag DEDICATED_FILE_NAME = newTag("84", "dedicated file name", SOMETIMES_ASCII);
     public static final Tag APPLICATION_PRIORITY_INDICATOR = newTag("87", "application priority indicator", HEX);
     public static final Tag CA_PUBLIC_KEY_INDEX = newTag("8F", "ca public key index", HEX);
     public static final Tag TRACK_2_EQUIVALENT_DATA = newTag("57", "track 2 equivalent data", HEX);
