@@ -64,7 +64,10 @@ public class DecodedData {
 	public List<DecodedData> getChildren() {
 		return children;
 	}
-	
+	public DecodedData getChild(int index) {
+		return children.get(index);
+	}
+
 	public boolean isComposite() {
 		return children != null && !children.isEmpty();
 	}
