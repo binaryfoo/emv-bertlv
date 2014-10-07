@@ -38,7 +38,7 @@ public class VisaCardVerificationResultsDecoder implements Decoder {
         addIfSet(0x00000100, "Offline static data authentication failed on last transaction and transaction declined offline", cvr, decoded, startIndexInBytes, 2);
         int scriptsProcessedOnLastTransaction = cvr & 0x000000f0;
         if (scriptsProcessedOnLastTransaction > 0) {
-            decoded.add(value(scriptsProcessedOnLastTransaction + " Issuer Script Commands processed on last transaction", startIndexInBytes,3));
+            decoded.add(value((scriptsProcessedOnLastTransaction >> 4) + " Issuer Script Commands processed on last transaction", startIndexInBytes,3));
         }
         addIfSet(0x00000008, "Issuer Script processing failed on last transaction", cvr, decoded, startIndexInBytes, 3);
         addIfSet(0x00000004, "Offline dynamic data authentication failed on last transaction and transaction declined offline", cvr, decoded, startIndexInBytes, 3);

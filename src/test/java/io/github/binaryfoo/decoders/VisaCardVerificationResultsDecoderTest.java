@@ -27,4 +27,11 @@ public class VisaCardVerificationResultsDecoderTest {
             new DecodedData("", "(Byte 3 Bit 4) Issuer Authentication failure on last online transaction", startIndex + 2, startIndex + 3)
         )));
     }
+
+    @Test
+    public void issuerScriptCount() throws Exception {
+        assertThat(decoder.decode("00000010", 0, new DecodeSession()).get(2).getDecodedData(), is("1 Issuer Script Commands processed on last transaction"));
+        assertThat(decoder.decode("00000020", 0, new DecodeSession()).get(2).getDecodedData(), is("2 Issuer Script Commands processed on last transaction"));
+        assertThat(decoder.decode("000000F0", 0, new DecodeSession()).get(2).getDecodedData(), is("15 Issuer Script Commands processed on last transaction"));
+    }
 }
