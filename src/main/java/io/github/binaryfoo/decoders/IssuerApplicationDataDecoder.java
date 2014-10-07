@@ -11,9 +11,7 @@ public class IssuerApplicationDataDecoder implements Decoder {
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         try {
-            if (input.startsWith("06")) {
-                return decodeVisaIad(input, startIndexInBytes, decodeSession);
-            }
+            return decodeVisaIad(input, startIndexInBytes, decodeSession);
         } catch (Exception ignored) {
         }
         return Collections.emptyList();

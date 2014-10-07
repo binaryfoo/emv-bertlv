@@ -125,6 +125,16 @@ public class EmvTags {
     public static final Tag DDOL = newTag("9F49", "DDOL", "dynamic data authentication DOL", DOL);
     public static final Tag NON_TLV_RESPONSE_TEMPLATE = newTag("80", "Fixed response template", "Fixed response template", new ResponseFormat1Decoder());
 
+    static {
+        newTag("9F13", "Last online ATC value", BASE_10);
+        newTag("9F14", "Lower consecutive floor limit", BASE_10);
+        newTag("9F23", "Upper consecutive floor limit", BASE_10);
+        newTag("9F52", "Application Default Action", HEX);
+        newTag("9F54", "Cumulative Total Transaction Amount Limit", BASE_10);
+        newTag("9F55", "Geographic Indicator", HEX);
+        newTag("9F5C", "Cumulative Total Transaction Amount Upper Limit", HEX);
+    }
+
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
         return newTag(METADATA, hexString, shortName, longName, decoder);
     }

@@ -10,6 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+/**
+ * An element in the decoding. Could be a TLV object with children.
+ */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class DecodedData {
 	private final String rawData;
@@ -41,6 +44,9 @@ public class DecodedData {
 		return decodedData.length() >= 60 ? decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) : decodedData;
 	}
 
+    /**
+     * Not a great name. Used as a label for the decode data.
+     */
 	public String getRawData() {
 		return rawData;
 	}
@@ -52,7 +58,11 @@ public class DecodedData {
 	public int getEndIndex() {
 		return endIndex;
 	}
-	
+
+    /**
+     * For an element with children this is usually the hex value (ie the real raw data).
+     * For an element without children this is the decoded value: ascii, numeric, enumerated or even just hex.
+     */
 	public String getDecodedData() {
 		return isComposite() ? trim(decodedData) : decodedData;
 	}
