@@ -133,6 +133,7 @@ public class EmvTags {
         newTag("9F54", "Cumulative Total Transaction Amount Limit", BASE_10);
         newTag("9F55", "Geographic Indicator", HEX);
         newTag("9F5C", "Cumulative Total Transaction Amount Upper Limit", HEX);
+        newTag("DF4F", "JIS 2 Equivalent Data", HEX);
     }
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
