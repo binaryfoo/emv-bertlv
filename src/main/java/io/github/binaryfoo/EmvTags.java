@@ -92,7 +92,7 @@ public class EmvTags {
     public static final Tag PDOL = newTag("9F38", "PDOL", "Processing DOL", DOL);
     public static final Tag CDOL_1 = newTag("8C", "CDOL 1", "Data object list 1", DOL);
     public static final Tag CDOL_2 = newTag("8D", "CDOL 2", "Data object list 2", DOL);
-    public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "application usage control", HEX);
+    public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "application usage control", new AppUsageControlDecoder());
     public static final Tag CARD_APPLICATION_VERSION_NUMBER = newTag("9F08", "card application version number", HEX);
     public static final Tag IAC_DEFAULT = newTag("9F0D", "IAC default", Decoders.TVR);
     public static final Tag IAC_DENIAL = newTag("9F0E", "IAC denial", Decoders.TVR);
