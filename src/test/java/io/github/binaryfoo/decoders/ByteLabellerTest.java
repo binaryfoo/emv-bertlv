@@ -1,9 +1,14 @@
 package io.github.binaryfoo.decoders;
 
+import io.github.binaryfoo.DecodedData;
 import org.junit.Test;
 
+import java.util.List;
+
+import static io.github.binaryfoo.BoundsMatcher.hasBounds;
 import static io.github.binaryfoo.decoders.ByteLabeller.labelFor;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class ByteLabellerTest {
@@ -27,5 +32,36 @@ public class ByteLabellerTest {
         assertThat(labelFor("04"), containsString("Bit 3"));
         assertThat(labelFor("02"), containsString("Bit 2"));
         assertThat(labelFor("01"), containsString("Bit 1"));
+    }
+
+    @Test
+    public void decodeBits() throws Exception {
+        int startIndexInBytes = 3;
+        List<DecodedData> decoded = new ByteLabeller().decode("0080", startIndexInBytes, new DecodeSession());
+        assertThat(decoded.size(), is(16));
+        assertThat(decoded.get(0).getRawData(), is("Byte 1, Bit 8 = 0"));
+        assertThat(decoded.get(0), hasBounds(3, 4));
+        assertThat(decoded.get(8).getRawData(), is("Byte 2, Bit 8 = 1"));
+        assertThat(decoded.get(8), hasBounds(4, 5));
+        assertThat(decoded.get(15).getRawData(), is("Byte 2, Bit 1 = 0"));
+        assertThat(decoded.get(15), hasBounds(4, 5));
+    }
+
+    @Test
+    public void decodeAllOnes() throws Exception {
+        List<DecodedData> decoded = new ByteLabeller().decode("ffff", 0, new DecodeSession());
+        assertThat(decoded.size(), is(16));
+        for (int i = 0; i < 16; i++) {
+            assertThat(decoded.get(i).getRawData(), is(String.format("Byte %d, Bit %d = 1", i/8 + 1, 8 - i%8)));
+        }
+    }
+
+    @Test
+    public void decodeAllZeroes() throws Exception {
+        List<DecodedData> decoded = new ByteLabeller().decode("0000", 0, new DecodeSession());
+        assertThat(decoded.size(), is(16));
+        for (int i = 0; i < 16; i++) {
+            assertThat(decoded.get(i).getRawData(), is(String.format("Byte %d, Bit %d = 0", i/8 + 1, 8 - i%8)));
+        }
     }
 }

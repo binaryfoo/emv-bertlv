@@ -1,9 +1,6 @@
 package io.github.binaryfoo;
 
-import io.github.binaryfoo.decoders.DataObjectListDecoder;
-import io.github.binaryfoo.decoders.DecodeSession;
-import io.github.binaryfoo.decoders.PopulatedDOLDecoder;
-import io.github.binaryfoo.decoders.TLVDecoder;
+import io.github.binaryfoo.decoders.*;
 import io.github.binaryfoo.decoders.apdu.*;
 import io.github.binaryfoo.tlv.Tag;
 
@@ -43,6 +40,7 @@ public class RootDecoder {
                 new GetChallengeAPDUDecoder(),
                 new PutDataAPDUDecoder()
         )));
+        ROOT_TAG_INFO.put("bit-string", new TagInfo("Bits", "EMV Bit String", new ByteLabeller()));
     }
     static {
         TAG_META_SETS.put("EMV", EmvTags.METADATA);
