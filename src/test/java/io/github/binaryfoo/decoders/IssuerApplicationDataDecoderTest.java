@@ -62,9 +62,9 @@ public class IssuerApplicationDataDecoderTest {
 
     @Test
     public void decodeMasterCardValue2() throws Exception {
-        List<DecodedData> decoded = decoder.decode("0010A08003220000BDC300000000000000FF", 0, new DecodeSession());
+        List<DecodedData> decoded = decoder.decode("0110A08001222000067500000000000000FF00000000000000FF", 0, new DecodeSession());
         assertThat(decoded.get(2).getRawData(), is("Card verification results"));
-        assertThat(decoded.get(2).getDecodedData(), is("A08003220000"));
+        assertThat(decoded.get(2).getDecodedData(), is("A08001222000"));
     }
 
     private List<DecodedData> expectedCvrChildrenFor(String input) {

@@ -13,7 +13,7 @@ public class IssuerApplicationDataDecoder implements Decoder {
     public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         try {
             // should do something better to tell the difference like use the session
-            if (input.length() == 36) {
+            if (input.length() == 36 || input.length() == 52) {
                 return decodeMChipIad(input, startIndexInBytes, decodeSession);
             }
             return decodeVisaIad(input, startIndexInBytes, decodeSession);
