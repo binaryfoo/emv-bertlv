@@ -8,9 +8,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class IssuerApplicationDataDecoder implements Decoder {
+
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         try {
+            // should do something better to tell the difference like use the session
+            if (input.length() == 36) {
+                return decodeMChipIad(input, startIndexInBytes, decodeSession);
+            }
             return decodeVisaIad(input, startIndexInBytes, decodeSession);
         } catch (Exception ignored) {
         }
@@ -19,6 +24,8 @@ public class IssuerApplicationDataDecoder implements Decoder {
 
     /*
      * From Visa Contactless Payment Specification v2.1
+     *
+     * Also seems to apply for AMEX and JCB to some extent.
      */
     private List<DecodedData> decodeVisaIad(String input, int startIndexInBytes, DecodeSession decodeSession) {
         List<DecodedData> decoded = new ArrayList<DecodedData>();
@@ -38,6 +45,27 @@ public class IssuerApplicationDataDecoder implements Decoder {
                 decoded.add(new DecodedData("Issuer discretionary data", idd, startIndexInBytes + 8, startIndexInBytes + 1 + iddLength));
             }
         }
+        return decoded;
+    }
+
+    /*
+     * From A.24 Issuer Application Data, M/Chip 4 Issuer Guide to Debit and Credit Parameter Management • December 2004
+     * Probably a tad outdated...
+     *
+     * TODO: Decode CVR using A.19 CVR (Card Verification Results), M/Chip 4 Issuer Guide to Debit and Credit Parameter Management • December 2004
+     */
+    private List<DecodedData> decodeMChipIad(String input, int startIndexInBytes, DecodeSession decodeSession) {
+        List<DecodedData> decoded = new ArrayList<DecodedData>();
+        String kdi = input.substring(0, 2); // like dki but different?
+        decoded.add(new DecodedData("Key Derivation index", kdi, startIndexInBytes, startIndexInBytes + 1));
+        String cvn = input.substring(2, 4);
+        decoded.add(new DecodedData("Cryptogram version number", cvn, startIndexInBytes + 1, startIndexInBytes + 2));
+        String cvr = input.substring(4, 16);
+        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 2, startIndexInBytes + 8));
+        String dac = input.substring(16, 20);
+        decoded.add(new DecodedData("DAC/ICC Dynamic Number 2 Bytes", dac, startIndexInBytes + 8, startIndexInBytes + 10));
+        String counters = input.substring(20, 36);
+        decoded.add(new DecodedData("Plaintext/Encrypted Counters", counters, startIndexInBytes + 10, startIndexInBytes + 18));
         return decoded;
     }
 

@@ -52,16 +52,19 @@ public class IssuerApplicationDataDecoderTest {
     @Test
     public void decodeMasterCardValue() throws Exception {
         List<DecodedData> decoded = decoder.decode("0110A78005022000693800000001999300FF", 0, new DecodeSession());
-        // need spec
-//        assertThat(decoded.get(2).getRawData(), is("Card verification results"));
-//        assertThat(decoded.get(2).getDecodedData(), is("0460040280"));
+        assertThat(decoded.get(2).getRawData(), is("Card verification results"));
+        assertThat(decoded.get(2).getDecodedData(), is("A78005022000"));
+        assertThat(decoded.get(3).getRawData(), is("DAC/ICC Dynamic Number 2 Bytes"));
+        assertThat(decoded.get(3).getDecodedData(), is("6938"));
+        assertThat(decoded.get(4).getRawData(), is("Plaintext/Encrypted Counters"));
+        assertThat(decoded.get(4).getDecodedData(), is("00000001999300FF"));
     }
 
     @Test
     public void decodeMasterCardValue2() throws Exception {
         List<DecodedData> decoded = decoder.decode("0010A08003220000BDC300000000000000FF", 0, new DecodeSession());
-//        assertThat(decoded.get(2).getRawData(), is("Card verification results"));
-//        assertThat(decoded.get(2).getDecodedData(), is("0460040280"));
+        assertThat(decoded.get(2).getRawData(), is("Card verification results"));
+        assertThat(decoded.get(2).getDecodedData(), is("A08003220000"));
     }
 
     private List<DecodedData> expectedCvrChildrenFor(String input) {
