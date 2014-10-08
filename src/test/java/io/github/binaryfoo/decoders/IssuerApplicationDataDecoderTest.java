@@ -46,11 +46,23 @@ public class IssuerApplicationDataDecoderTest {
     public void decodeJcbValue() throws Exception {
         List<DecodedData> decoded = decoder.decode("0701010460040280", 0, new DecodeSession());
         assertThat(decoded.get(2).getRawData(), is("Card verification results"));
+        assertThat(decoded.get(2).getDecodedData(), is("0460040280"));
     }
 
-    // mastercard 0110A78005022000693800000001999300FF
+    @Test
+    public void decodeMasterCardValue() throws Exception {
+        List<DecodedData> decoded = decoder.decode("0110A78005022000693800000001999300FF", 0, new DecodeSession());
+        // need spec
+//        assertThat(decoded.get(2).getRawData(), is("Card verification results"));
+//        assertThat(decoded.get(2).getDecodedData(), is("0460040280"));
+    }
 
-    // mastercard 0010A08003220000BDC300000000000000FF
+    @Test
+    public void decodeMasterCardValue2() throws Exception {
+        List<DecodedData> decoded = decoder.decode("0010A08003220000BDC300000000000000FF", 0, new DecodeSession());
+//        assertThat(decoded.get(2).getRawData(), is("Card verification results"));
+//        assertThat(decoded.get(2).getDecodedData(), is("0460040280"));
+    }
 
     private List<DecodedData> expectedCvrChildrenFor(String input) {
         return new VisaCardVerificationResultsDecoder().decode(input, 5 + 3, new DecodeSession());
