@@ -13,6 +13,7 @@ public class IssuerApplicationDataDecoder implements Decoder {
         try {
             return decodeVisaIad(input, startIndexInBytes, decodeSession);
         } catch (Exception ignored) {
+            ignored.printStackTrace();
         }
         return Collections.emptyList();
     }
@@ -30,8 +31,9 @@ public class IssuerApplicationDataDecoder implements Decoder {
         decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 3, startIndexInBytes + 7, new VisaCardVerificationResultsDecoder().decode(cvr, startIndexInBytes + 3, decodeSession)));
         if (input.length() > 14) {
             int iddLength = Integer.parseInt(input.substring(14, 16), 16);
-            if (iddLength > 0) {
-                String idd = input.substring(16, 16 + iddLength * 2);
+            int endIndex = 16 + iddLength * 2;
+            if ((iddLength > 0) && (endIndex <= input.length())) {
+                String idd = input.substring(16, endIndex);
                 decoded.add(new DecodedData("Issuer discretionary data", idd, startIndexInBytes + 8, startIndexInBytes + 1 + iddLength));
             }
         }
