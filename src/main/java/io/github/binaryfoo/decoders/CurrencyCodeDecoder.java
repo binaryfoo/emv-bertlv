@@ -1,5 +1,7 @@
 package io.github.binaryfoo.decoders;
 
+import io.github.binaryfoo.io.ClasspathIO;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,15 +28,10 @@ public class CurrencyCodeDecoder implements PrimitiveDecoder {
 
     private Map<String, String> load() {
         Map<String, String> codes = new HashMap<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(CurrencyCodeDecoder.class.getClassLoader().getResourceAsStream("numeric-currency-list.csv")))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String numeric = line.substring(0, 3);
-                String alpha = line.substring(5);
-                codes.put(numeric, alpha);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for (String line : ClasspathIO.readLines("numeric-currency-list.csv")) {
+            String numeric = line.substring(0, 3);
+            String alpha = line.substring(5);
+            codes.put(numeric, alpha);
         }
         return codes;
     }

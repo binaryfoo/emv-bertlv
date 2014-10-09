@@ -1,5 +1,6 @@
 package io.github.binaryfoo.decoders.apdu;
 
+import io.github.binaryfoo.io.ClasspathIO;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -13,16 +14,12 @@ public class ResponseCode {
 
     private static final List<ResponseCode> codes = new ArrayList<>();
     static {
-        try (InputStream in = ResponseCode.class.getClassLoader().getResourceAsStream("r-apdu-status.txt")) {
-            for (String line : IOUtils.readLines(in)) {
-                codes.add(new ResponseCode(
-                        line.substring(0, 2),
-                        line.substring(3, 5),
-                        line.substring(6, 7),
-                        line.substring(8)));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load codes", e);
+        for (String line : ClasspathIO.readLines("r-apdu-status.txt")) {
+            codes.add(new ResponseCode(
+                    line.substring(0, 2),
+                    line.substring(3, 5),
+                    line.substring(6, 7),
+                    line.substring(8)));
         }
     }
 

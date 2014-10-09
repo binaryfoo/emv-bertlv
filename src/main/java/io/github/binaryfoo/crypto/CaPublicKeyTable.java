@@ -1,5 +1,6 @@
 package io.github.binaryfoo.crypto;
 
+import io.github.binaryfoo.io.ClasspathIO;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -11,17 +12,13 @@ public class CaPublicKeyTable {
 
     private static final List<CaPublicKey> keys = new ArrayList<>();
     static {
-        try (InputStream in = CaPublicKeyTable.class.getClassLoader().getResourceAsStream("ca-public-keys.txt")) {
-            for (String line : IOUtils.readLines(in)) {
-                String[] fields = line.split("\\t");
-                String exponent = fields[1];
-                String index = fields[2];
-                String aid = fields[3];
-                String modulus = fields[4];
-                keys.add(new CaPublicKey(aid, index, exponent, modulus));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load codes", e);
+        for (String line : ClasspathIO.readLines("ca-public-keys.txt")) {
+            String[] fields = line.split("\\t");
+            String exponent = fields[1];
+            String index = fields[2];
+            String aid = fields[3];
+            String modulus = fields[4];
+            keys.add(new CaPublicKey(aid, index, exponent, modulus));
         }
     }
 
