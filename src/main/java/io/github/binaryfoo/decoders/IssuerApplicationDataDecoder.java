@@ -51,8 +51,6 @@ public class IssuerApplicationDataDecoder implements Decoder {
     /*
      * From A.24 Issuer Application Data, M/Chip 4 Issuer Guide to Debit and Credit Parameter Management • December 2004
      * Probably a tad outdated...
-     *
-     * TODO: Decode CVR using A.19 CVR (Card Verification Results), M/Chip 4 Issuer Guide to Debit and Credit Parameter Management • December 2004
      */
     private List<DecodedData> decodeMChipIad(String input, int startIndexInBytes, DecodeSession decodeSession) {
         List<DecodedData> decoded = new ArrayList<DecodedData>();
@@ -61,7 +59,7 @@ public class IssuerApplicationDataDecoder implements Decoder {
         String cvn = input.substring(2, 4);
         decoded.add(new DecodedData("Cryptogram version number", cvn, startIndexInBytes + 1, startIndexInBytes + 2));
         String cvr = input.substring(4, 16);
-        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 2, startIndexInBytes + 8));
+        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 2, startIndexInBytes + 8, new EmvBitStringDecoder("fields/mastercard-cvr.txt").decode(cvr, startIndexInBytes + 2, decodeSession)));
         String dac = input.substring(16, 20);
         decoded.add(new DecodedData("DAC/ICC Dynamic Number 2 Bytes", dac, startIndexInBytes + 8, startIndexInBytes + 10));
         String counters = input.substring(20, 36);

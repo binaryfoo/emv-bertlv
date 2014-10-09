@@ -58,6 +58,7 @@ public class IssuerApplicationDataDecoderTest {
         assertThat(decoded.get(3).getDecodedData(), is("6938"));
         assertThat(decoded.get(4).getRawData(), is("Plaintext/Encrypted Counters"));
         assertThat(decoded.get(4).getDecodedData(), is("00000001999300FF"));
+        System.out.println(decoded.get(2));
     }
 
     @Test

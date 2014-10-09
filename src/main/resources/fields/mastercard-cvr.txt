@@ -1,0 +1,40 @@
+# A.19 CVR, M/Chip 4 Issuer Guide to Debit and Credit Parameter Management, December 2004
+
+(1,8)=0 & (1,7)=0 : AAC Returned in Second Generate AC
+(1,8)=0 & (1,7)=1 : TC Returned in Second Generate AC
+(1,8)=1 & (1,7)=0 : Second Generate AC not requested
+(1,6)=0 & (1,5)=0 : AAC Returned in First Generate AC
+(1,6)=0 & (1,5)=1 : TC Returned in First Generate AC
+(1,6)=1 & (1,5)=0 : ARQC Returned in First Generate AC
+(1,3)=1 : Offline PIN Verification Performed
+(1,2)=1 : Offline Encrypted PIN Verification Performed
+(1,1)=1 : Offline PIN Verification Successful
+
+(2,8)=1 : DDA Returned
+(2,7)=1 : Combined DDA/AC Generation Returned In First Generate AC
+(2,6)=1 : Combined DDA/AC Generation Returned In Second Generate AC
+(2,5)=1 : Issuer Authentication Performed
+(2,4)=1 : CIAC-Default Skipped On CAT3
+
+(3,8-5) : Right nibble of Script Counter
+(3,4-1) : Right nibble of PIN Try Counter
+
+(4,7)=1 : Unable To Go Online Indicated
+(4,6)=1 : Offline PIN Verification Not Performed
+(4,5)=1 : Offline PIN Verification Failed
+(4,4)=1 : PTL Exceeded
+(4,3)=1 : International Transaction
+(4,2)=1 : Domestic Transaction
+(4,1)=1 : Terminal Erroneously Considers Offline PIN OK
+
+(5,8)=1 : Lower Consecutive Offline Limit Exceeded
+(5,7)=1 : Upper Consecutive Offline Limit Exceeded
+(5,6)=1 : Lower Cumulative Offline Limit Exceeded
+(5,5)=1 : Upper Cumulative Offline Limit Exceeded
+(5,4)=1 : Go Online On Next Transaction Was Set
+(5,3)=1 : Issuer Authentication Failed
+(5,2)=1 : Script Received
+(5,1)=1 : Script Failed
+
+(6,2)=1 : Match Found In Additional Check Table
+(6,1)=1 : No Match Found In Additional Check Table

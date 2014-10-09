@@ -2,9 +2,7 @@ package io.github.binaryfoo.bit;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItem;
