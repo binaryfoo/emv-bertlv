@@ -45,7 +45,7 @@ public class EmvBit implements Comparable<EmvBit> {
 
     @Override
     public String toString() {
-        return String.format("Byte %d Bit %d = %d", byteNumber, bitNumber, set ? 1 : 0);
+        return String.format("Byte %d, Bit %d = %d", byteNumber, bitNumber, set ? 1 : 0);
     }
 
     public static Set<EmvBit> fromHex(String hex) {
