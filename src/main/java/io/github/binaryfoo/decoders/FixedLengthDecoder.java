@@ -63,11 +63,12 @@ public class FixedLengthDecoder implements Decoder {
 	}
 
     public String getTableAsEmvBitString() {
+        String s = "";
         for (BitMapping m : bits) {
             Set<EmvBit> emvBits = EmvBit.fromHex(m.bitAsHexString);
-            System.out.println(EmvBits.toConfigString(EmvBits.reduceToOnBits(emvBits)) + " : " + m.description);
+            s += EmvBits.toConfigString(EmvBits.reduceToOnBits(emvBits)) + " : " + m.description + "\n";
         }
-        return "";
+        return s;
     }
 
     private static class BitMapping {

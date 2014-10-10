@@ -1,5 +1,6 @@
 package io.github.binaryfoo;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -8,6 +9,13 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class RootDecoderTest {
+
+    private RootDecoder rootDecoder;
+
+    @Before
+    public void setUp() throws Exception {
+        rootDecoder = new RootDecoder();
+    }
 
     @Test
     public void keepTryingWhenDecodeFailsOnOneAPDU() throws Exception {
@@ -52,7 +60,14 @@ public class RootDecoderTest {
         assertThat(decoded.get(0).getEndIndex(), is(14));
     }
 
+    @Test
+    public void decodeAIP() throws Exception {
+        List<DecodedData> decoded = rootDecoder.decode("4000", "EMV", EmvTags.APPLICATION_INTERCHANGE_PROFILE.toString());
+        assertThat(decoded.get(0).getRawData(), is("4000 (Byte 1 Bit 7)"));
+        assertThat(decoded.get(0).getDecodedData(), is("SDA supported"));
+    }
+
     private List<DecodedData> decodeApdus(String apdus) {
-        return new RootDecoder().decode(apdus, "EMV", "apdu-sequence");
+        return rootDecoder.decode(apdus, "EMV", "apdu-sequence");
     }
 }
