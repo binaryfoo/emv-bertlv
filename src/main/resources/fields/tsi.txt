@@ -1,0 +1,8 @@
+# Annex C6, EMV 4.3 Book 3
+
+(1,8)=1 : Offline data authentication was performed
+(1,7)=1 : Cardholder verification was performed
+(1,6)=1 : Card risk management was performed
+(1,5)=1 : Issuer authentication was performed
+(1,4)=1 : Terminal risk management was performed
+(1,3)=1 : Script processing was performed
