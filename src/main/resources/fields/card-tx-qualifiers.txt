@@ -1,0 +1,9 @@
+(1,8)=1 : Online PIN required
+(1,7)=1 : Signature required
+(1,6)=1 : Go online if offline data auth fails and reader is online capable
+(1,5)=1 : Switch interface if offline data auth fails and reader suports VIS
+(1,4)=1 : Go online if application expired
+(1,3)=1 : Switch interface for cash
+(1,2)=1 : Switch interface for cashback
+(2,8)=1 : Consumer device CVM performed
+(2,7)=1 : Card supports issuer update processing at the POS

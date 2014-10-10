@@ -1,0 +1,12 @@
+(1,8)=1 : AEIPS contact mode supported
+(1,7)=1 : Expresspay Magstripe Mode supported
+(1,6)=1 : Expresspay EMV full online mode supported
+(1,5)=1 : Expresspay EMV partial online mode supported
+(1,4)=1 : Expresspay Mobile Supported
+(1,2)=1 : Signature supported
+(2,8)=1 : Mobile CVM supported
+(2,7)=1 : Online PIN supported
+(2,6)=1 : Signature
+(2,5)=1 : Plaintext Offline PIN
+(3,8)=1 : Terminal is offline only
+(3,7)=1 : CVM Required

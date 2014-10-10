@@ -1,14 +1,7 @@
 package io.github.binaryfoo.decoders;
 
-public class AmexCardInterfaceCapabilitiesDecoder extends FixedLengthDecoder {
+public class AmexCardInterfaceCapabilitiesDecoder extends EmvBitStringDecoder {
     public AmexCardInterfaceCapabilitiesDecoder() {
-        super(4,
-                "8000", "Keyed Data Entry Supported (Embossed or Printed PAN)",
-                "4000", "Physical Magnetic Stripe Supported",
-                "2000", "Contact EMV Interface Supported",
-                "1000", "Contactless EMV Interface Supported",
-                "0800", "Mobile Interface Supported"
-                );
+        super("fields/amex-card-interface-capabilities.txt", true);
     }
-
 }

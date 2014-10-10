@@ -1,0 +1,5 @@
+(1,8)=1 : Keyed Data Entry Supported (Embossed or Printed PAN)
+(1,7)=1 : Physical Magnetic Stripe Supported
+(1,6)=1 : Contact EMV Interface Supported
+(1,5)=1 : Contactless EMV Interface Supported
+(1,4)=1 : Mobile Interface Supported
