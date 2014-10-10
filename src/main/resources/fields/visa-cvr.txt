@@ -1,0 +1,27 @@
+# pD-26 Visa Contactless Payment Specification, Version 2.1
+# merged with Visa Integrated Circuit Card Card Specification, Version 1.4.0 pA-12
+
+(2,8)=0 & (2,7)=0 : AAC Returned in Second GENERATE AC
+(2,8)=0 & (2,7)=1 : TC Returned in Second GENERATE AC
+(2,8)=1 & (2,7)=0 : Second GENERATE AC not requested
+(2,6)=0 & (2,5)=0 : AAC Returned in GPO/first GENERATE AC
+(2,6)=0 & (2,5)=1 : TC Returned in GPO/first GENERATE AC
+(2,6)=1 & (2,5)=0 : ARQC Returned in GPO/first GENERATE AC
+(2,4)=1 : Issuer authentication performed and failed
+(2,3)=1 : Offline PIN Verification Performed
+(2,2)=1 : Offline Encrypted PIN Verification Performed
+(2,1)=1 : Offline PIN Verification Successful
+
+(3,8)=1 : Last online transaction not completed
+(3,7)=1 : Pin try limit exceeded
+(3,6)=1 : Exceeded velocity checking counters
+(3,5)=1 : New card
+(3,4)=1 : Issuer Authentication failure on last online transaction
+(3,3)=1 : Issuer Authentication not performed after online authorization
+(3,2)=1 : Application blocked by card because PIN Try Limit exceeded
+(3,1)=1 : Offline static data authentication failed on last transaction and transaction declined offline
+
+(4,8-5) : Issuer Script Commands processed on last transaction
+(4,4)=1 : Issuer Script processing failed on last transaction
+(4,3)=1 : Offline dynamic data authentication failed on last transaction and transaction declined offline
+(4,2)=1 : Offline dynamic data authentication performed

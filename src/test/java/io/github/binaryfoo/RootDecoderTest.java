@@ -49,7 +49,8 @@ public class RootDecoderTest {
 
         DecodedData decodedCvr = decodedIAD.getChildren().get(2);
         assertThat(decodedCvr.getRawData(), is("Card verification results"));
-        assertThat(decodedCvr.getChildren().get(2).getDecodedData(), is("(Byte 2 Bit 3) Offline PIN performed"));
+        assertThat(decodedCvr.getChildren().get(2).getRawData(), is("Byte 2 Bit 3 = 1"));
+        assertThat(decodedCvr.getChildren().get(2).getDecodedData(), is("Offline PIN Verification Performed"));
     }
 
     @Test
