@@ -14,12 +14,12 @@ public class SignedStaticDataRecovererTest {
         CaPublicKey caPublicKey = CaPublicKeyTable.getEntry("A000000025", "04");
         byte[] issuerBytes = new SignedDataRecoverer().recover(encryptedIssuerCert, caPublicKey);
         String decodedIssuerKey = new IssuerPublicKeyDecoder().decode(issuerBytes, caPublicKey.getModulus().length);
-        System.out.println(decodedIssuerKey);
+//        System.out.println(decodedIssuerKey);
 
         String signedStaticData = "06A6EB2D8F0B52D9B5241C497EC585B014AE265BE4F56CC07C94353A4AC19E60397150215ECB7EBD467802B856FDD712005013846544F644417838792169C76F";
         String issuerKey = "8D691CF05A0B48A5CFCB4FE2B935971BF5FAB9DBDA375F1F3115B8D64E672B052FE523827C1B14CD54B54B645150A78FAFD9E8175C576B1DA2D7B6FA" + "D2487161";
         byte[] staticDataBytes = new SignedDataRecoverer().recover(signedStaticData, "03", issuerKey);
-        System.out.println(ISOUtil.hexString(staticDataBytes));
+//        System.out.println(ISOUtil.hexString(staticDataBytes));
 //        String decodedSSD = new ICCPublicKeyDecoder().decode(staticDataBytes, ISOUtil.hex2byte(issuerKey).length);
 //        System.out.println(decodedSSD);
     }

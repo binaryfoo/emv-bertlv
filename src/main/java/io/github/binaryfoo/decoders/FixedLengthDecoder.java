@@ -2,9 +2,12 @@ package io.github.binaryfoo.decoders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import io.github.binaryfoo.DecodedData;
 import io.github.binaryfoo.Decoder;
+import io.github.binaryfoo.bit.EmvBit;
+import io.github.binaryfoo.bit.EmvBits;
 import io.github.binaryfoo.tlv.ISOUtil;
 
 public class FixedLengthDecoder implements Decoder {
@@ -58,8 +61,16 @@ public class FixedLengthDecoder implements Decoder {
 		}
 		return bitsSetInString;
 	}
-	
-	private static class BitMapping {
+
+    public String getTableAsEmvBitString() {
+        for (BitMapping m : bits) {
+            Set<EmvBit> emvBits = EmvBit.fromHex(m.bitAsHexString);
+            System.out.println(EmvBits.toConfigString(EmvBits.reduceToOnBits(emvBits)) + " : " + m.description);
+        }
+        return "";
+    }
+
+    private static class BitMapping {
 		private final long bit;
 		private final String bitAsHexString;
 		private final String description;

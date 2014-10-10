@@ -1,6 +1,7 @@
 package io.github.binaryfoo.decoders.bit;
 
 import io.github.binaryfoo.bit.EmvBit;
+import io.github.binaryfoo.bit.EmvBits;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,13 +18,16 @@ public class EnumeratedBitStringField implements BitStringField {
     }
 
     @Override
-    public String getPositionDescription() {
-        return toLabel(field);
+    public String getPositionIn(Set<EmvBit> bitString) {
+        if (bitString == null) {
+            return toLabel(field, true);
+        }
+        return EmvBit.toHex(field, EmvBits.getByteCount(bitString)) + " (" + toLabel(field, field.size() > 1) + ")";
     }
 
     @Override
-    public String getValueIn(Set<EmvBit> bitstring) {
-        if (intersects(field, bitstring)) {
+    public String getValueIn(Set<EmvBit> bitString) {
+        if (intersects(field, bitString)) {
             return value;
         }
         return null;
@@ -45,13 +49,17 @@ public class EnumeratedBitStringField implements BitStringField {
         return intersection.size() == targetBits.size();
     }
 
-    private String toLabel(Set<EmvBit> bits) {
+    private String toLabel(Set<EmvBit> bits, boolean includeValue) {
         StringBuilder b = new StringBuilder();
         for (EmvBit bit : bits) {
             if (b.length() > 0) {
                 b.append(", ");
             }
-            b.append(bit.toLabel(false));
+            if (includeValue) {
+                b.append(bit.toLabel(false));
+            } else {
+                b.append("Byte ").append(bit.getByteNumber()).append(" Bit ").append(bit.getBitNumber());
+            }
         }
         return b.toString();
     }

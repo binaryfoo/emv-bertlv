@@ -59,7 +59,7 @@ public class IssuerApplicationDataDecoder implements Decoder {
         String cvn = input.substring(2, 4);
         decoded.add(new DecodedData("Cryptogram version number", cvn, startIndexInBytes + 1, startIndexInBytes + 2));
         String cvr = input.substring(4, 16);
-        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 2, startIndexInBytes + 8, new EmvBitStringDecoder("fields/mastercard-cvr.txt").decode(cvr, startIndexInBytes + 2, decodeSession)));
+        decoded.add(new DecodedData("Card verification results", cvr, startIndexInBytes + 2, startIndexInBytes + 8, new MastercardCVRDecoder().decode(cvr, startIndexInBytes + 2, decodeSession)));
         String dac = input.substring(16, 20);
         decoded.add(new DecodedData("DAC/ICC Dynamic Number 2 Bytes", dac, startIndexInBytes + 8, startIndexInBytes + 10));
         String counters = input.substring(20, 36);

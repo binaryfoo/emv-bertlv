@@ -1,5 +1,6 @@
 package io.github.binaryfoo.bit;
 
+import io.github.binaryfoo.tlv.ISOUtil;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -62,6 +63,19 @@ public class EmvBit implements Comparable<EmvBit> {
             }
         }
         return set;
+    }
+
+    public static String toHex(Set<EmvBit> bits, int fieldLengthInBytes) {
+        byte[] bytes = new byte[fieldLengthInBytes];
+        for (EmvBit bit : bits) {
+            if (bit.isSet()) {
+                int byteIndex = bit.getByteNumber() - 1;
+                byte b = bytes[byteIndex];
+                b |= 1 << bit.getBitNumber()-1;
+                bytes[byteIndex] = b;
+            }
+        }
+        return ISOUtil.hexString(bytes);
     }
 
     @Override

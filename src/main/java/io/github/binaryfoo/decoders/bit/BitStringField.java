@@ -5,8 +5,8 @@ import io.github.binaryfoo.bit.EmvBit;
 import java.util.Set;
 
 public interface BitStringField {
-    String getPositionDescription();
-    String getValueIn(Set<EmvBit> bitstring);
+    String getPositionIn(Set<EmvBit> bits);
+    String getValueIn(Set<EmvBit> bits);
     int getStartBytesOffset();
     int getLengthInBytes();
 }

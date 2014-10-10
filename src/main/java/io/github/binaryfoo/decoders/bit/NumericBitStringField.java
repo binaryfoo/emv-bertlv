@@ -23,7 +23,7 @@ public class NumericBitStringField implements BitStringField {
     }
 
     @Override
-    public String getPositionDescription() {
+    public String getPositionIn(Set<EmvBit> bits) {
         return String.format("Byte %d Bits %d-%d", byteNumber, firstBit, lastBit);
     }
 

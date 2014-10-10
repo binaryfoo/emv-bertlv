@@ -1,15 +1,13 @@
 package io.github.binaryfoo.decoders;
 
 import io.github.binaryfoo.DecodedData;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
 import static io.github.binaryfoo.BoundsMatcher.hasBounds;
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -29,6 +27,14 @@ public class EmvBitStringDecoderTest {
     }
 
     @Test
+    public void canIncludeHexStringInFieldDescription() throws Exception {
+        EmvBitStringDecoder decoder = decoderFor("(1,8)=1 & (1,7)=0 : Two", true);
+
+        List<DecodedData> decoded = decoder.decode("8000", 0, null);
+        assertThat(decoded.get(0).getRawData(), is("8000 (Byte 1 Bit 8 = 1, Byte 1 Bit 7 = 0)"));
+    }
+
+    @Test
     public void decodeNumericField() throws Exception {
         EmvBitStringDecoder decoder = decoderFor("(1,8-5) : A number\n");
 
@@ -44,7 +50,37 @@ public class EmvBitStringDecoderTest {
         decoderFor("# comment\n\n\n");
     }
 
+    @Test
+    public void maxLength() throws Exception {
+        EmvBitStringDecoder oneByteDecoder = decoderFor("(1,1)=1:A");
+        assertThat(oneByteDecoder.getMaxLength(), is(2));
+
+        EmvBitStringDecoder twoByteDecoder = decoderFor("(1,8)=0:A\n(2,8)=1:A\n");
+        assertThat(twoByteDecoder.getMaxLength(), is(4));
+    }
+
+    @Test
+    public void validate() {
+        EmvBitStringDecoder decoder = decoderFor("(1,8)=0:A\n(2,8)=1:A\n");
+        String lengthErrorMessage = "Value must be exactly 4 characters";
+        assertEquals(lengthErrorMessage, decoder.validate("000"));
+        assertEquals(lengthErrorMessage, decoder.validate("00000"));
+        assertEquals(lengthErrorMessage, decoder.validate(null));
+        assertEquals(lengthErrorMessage, decoder.validate(""));
+
+        String charactersErrorMessage = "Value must contain only the characters 0-9 and A-F";
+        assertEquals(charactersErrorMessage, decoder.validate("xxxx"));
+
+        assertEquals(null, decoder.validate("0000"));
+        assertEquals(null, decoder.validate("1111"));
+        assertEquals(null, decoder.validate("ffff"));
+    }
+
     private EmvBitStringDecoder decoderFor(String s) {
-        return new EmvBitStringDecoder((new ByteArrayInputStream(s.getBytes())));
+        return decoderFor(s, false);
+    }
+
+    private EmvBitStringDecoder decoderFor(String s, boolean showFieldHexInDecode) {
+        return new EmvBitStringDecoder((new ByteArrayInputStream(s.getBytes())), showFieldHexInDecode);
     }
 }

@@ -7,12 +7,12 @@ import io.github.binaryfoo.decoders.bit.BitStringField;
 import io.github.binaryfoo.decoders.bit.EnumeratedBitStringField;
 import io.github.binaryfoo.decoders.bit.NumericBitStringField;
 import io.github.binaryfoo.io.ClasspathIO;
+import io.github.binaryfoo.tlv.ISOUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,24 +26,36 @@ public class EmvBitStringDecoder implements Decoder {
     private static final Pattern NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)-(\\d+)\\)\\s*");
 
     private final List<BitStringField> bitMappings = new ArrayList<>();
+    private final int lengthInCharacters;
+    private final boolean showFieldHexInDecode;
 
-    public EmvBitStringDecoder(String fileName) {
-        this(ClasspathIO.open(fileName));
+    public EmvBitStringDecoder(String fileName, boolean showFieldHexInDecode) {
+        this(ClasspathIO.open(fileName), showFieldHexInDecode);
     }
 
-    public EmvBitStringDecoder(InputStream input) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (StringUtils.isBlank(line) || line.startsWith("#")) {
-                    continue;
+    public EmvBitStringDecoder(InputStream input, boolean showFieldHexInDecode) {
+        this.showFieldHexInDecode = showFieldHexInDecode;
+        try {
+            for (String line : IOUtils.readLines(input)) {
+                if (StringUtils.isNotBlank(line) && !line.startsWith("#")) {
+                    String[] fields = line.split("\\s*:\\s*", 2);
+                    bitMappings.add(parseField(fields[0], fields[1]));
                 }
-                String[] fields = line.split("\\s*:\\s*", 2);
-                bitMappings.add(parseField(fields[0], fields[1]));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(input);
         }
+        this.lengthInCharacters = findMaxLengthInBytes() * 2;
+    }
+
+    private int findMaxLengthInBytes() {
+        int maxLength = 0;
+        for (BitStringField mapping : bitMappings) {
+            maxLength = Math.max(mapping.getStartBytesOffset() + mapping.getLengthInBytes(), maxLength);
+        }
+        return maxLength;
     }
 
     private BitStringField parseField(String key, String label) {
@@ -92,20 +104,26 @@ public class EmvBitStringDecoder implements Decoder {
             String v = field.getValueIn(bits);
             if (v != null) {
                 int fieldStartIndex = startIndexInBytes + field.getStartBytesOffset();
-                decoded.add(new DecodedData(field.getPositionDescription(), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()));
+                decoded.add(new DecodedData(field.getPositionIn(showFieldHexInDecode ? bits : null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()));
             }
         }
         return decoded;
     }
 
     @Override
-    public String validate(String input) {
+    public String validate(String bitString) {
+        if (bitString == null || bitString.length() != lengthInCharacters) {
+            return String.format("Value must be exactly %d characters", lengthInCharacters);
+        }
+        if (!ISOUtil.isValidHexString(bitString)) {
+            return "Value must contain only the characters 0-9 and A-F";
+        }
         return null;
     }
 
     @Override
     public int getMaxLength() {
-        return 0;
+        return lengthInCharacters;
     }
 
 }

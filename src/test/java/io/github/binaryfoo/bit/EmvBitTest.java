@@ -14,7 +14,6 @@ public class EmvBitTest {
     @Test
     public void decodeBits() throws Exception {
         Set<EmvBit> decoded = EmvBit.fromHex("0080");
-        System.out.println(decoded);
         assertThat(decoded.size(), is(16));
         assertThat(decoded, hasItem(new EmvBit(1, 8, false)));
         assertThat(decoded, hasItem(new EmvBit(2, 8, true)));
