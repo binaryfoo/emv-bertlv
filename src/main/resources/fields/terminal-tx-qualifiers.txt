@@ -1,0 +1,12 @@
+(1,8)=1 : MSD supported
+(1,6)=1 : qVSDC supported
+(1,5)=1 : EMV contact chip supported
+(1,4)=1 : Offline only reader
+(1,3)=1 : Online PIN supported
+(1,2)=1 : Signature supported
+(1,1)=1 : Offline data auth for online transactions supported
+(2,8)=1 : Online cryptogram required
+(2,7)=1 : CVM required
+(2,6)=1 : Contact chip offline pin supported
+(3,8)=1 : Issuer update processing supported
+(3,7)=1 : Mobile device functionality supported

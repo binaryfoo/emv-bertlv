@@ -1,0 +1,12 @@
+# Annex C2, EMV 4.3 Book 3
+
+(1,8)=1 : Valid for domestic cash transactions
+(1,7)=1 : Valid for international cash transactions
+(1,6)=1 : Valid for domestic goods
+(1,5)=1 : Valid for international goods
+(1,4)=1 : Valid for domestic services
+(1,3)=1 : Valid for international services
+(1,2)=1 : Valid at ATMs
+(1,1)=1 : Valid at terminals other than ATMs
+(2,8)=1 : Domestic cashback allowed
+(2,7)=1 : International cashback allowed
