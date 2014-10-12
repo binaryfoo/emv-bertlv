@@ -1,0 +1,8 @@
+# bit masked with 9F35 in the GPO R-APDU
+
+(1,8)=0 & (1,7)=0 : Expresspay 1.0
+(1,8)=0 & (1,7)=1 : Expresspay 2.0 MSD
+(1,8)=1 & (1,7)=0 : Expresspay 2.0 EMV & MSD
+(1,8)=1 & (1,7)=1 : Expresspay Mobile - EMV
+(1,4)=0 : CVM Not Required
+(1,4)=1 : CVM Required
