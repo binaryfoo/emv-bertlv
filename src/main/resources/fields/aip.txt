@@ -6,3 +6,8 @@
 (1,4)=1 : Terminal risk management is to be performed
 (1,3)=1 : Issuer authentication is supported
 (1,1)=1 : CDA supported
+
+# From Table 11, Amex Expresspay Terminal Specification 3.0
+(2,8)=0 : Magstripe Mode Only Supported
+(2,8)=1 : EMV and Magstripe Modes Supported
+(2,7)=1 : Expresspay Mobile supported
