@@ -54,10 +54,14 @@ public class EmvBit implements Comparable<EmvBit> {
     }
 
     public static Set<EmvBit> fromHex(String hex) {
+        return fromHex(hex, 1);
+    }
+
+    public static Set<EmvBit> fromHex(String hex, int firstByteNumber) {
         Set<EmvBit> set = new TreeSet<>();
         for (int i = 0; i < hex.length(); i += 2) {
             int b = Integer.parseInt(hex.substring(i, i + 2), 16);
-            int byteNumber = (i / 2) + 1;
+            int byteNumber = (i / 2) + firstByteNumber;
             for (int j = 7; j >= 0; j--) {
                 set.add(new EmvBit(byteNumber, j + 1, (b >> j & 0x1) == 1));
             }

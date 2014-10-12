@@ -16,8 +16,8 @@
 (2,5)=1 : Issuer Authentication Performed
 (2,4)=1 : CIAC-Default Skipped On CAT3
 
-(3,8-5) : Right nibble of Script Counter
-(3,4-1) : Right nibble of PIN Try Counter
+(3,8-5)=INT : Right nibble of Script Counter
+(3,4-1)=INT : Right nibble of PIN Try Counter
 
 (4,7)=1 : Unable To Go Online Indicated
 (4,6)=1 : Offline PIN Verification Not Performed

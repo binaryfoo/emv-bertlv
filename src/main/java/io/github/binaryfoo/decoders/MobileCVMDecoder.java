@@ -6,7 +6,7 @@ import io.github.binaryfoo.Decoder;
 import java.util.ArrayList;
 import java.util.List;
 
-// Table 12: Mobile CVM Results (Tag 9F71) Expresspay 3.0¡
+// Table 12: Mobile CVM Results (Tag 9F71) Expresspay 3.0
 public class MobileCVMDecoder implements Decoder {
 
     @Override

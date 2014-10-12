@@ -14,15 +14,8 @@ import java.util.regex.Pattern;
 public class EmvBitStringParser {
 
     private static final Pattern ENUMERATED_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)\\)=(\\d+)\\s*");
-    private static final Pattern NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)-(\\d+)\\)\\s*");
-
-    public static BitStringField parseField(String key, String label) {
-        if (key.contains("-")) {
-            return parseNumericField(key, label);
-        } else {
-            return parseEnumeratedField(key, label);
-        }
-    }
+    private static final Pattern NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)-(\\d+)\\)=INT\\s*");
+    private static final Pattern FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+)\\)=0x([0-9a-fA-F]{2})\\s*");
 
     public static List<BitStringField> parse(List<String> lines) throws IOException {
         List<BitStringField> bitMappings = new ArrayList<>();
@@ -33,6 +26,16 @@ public class EmvBitStringParser {
             }
         }
         return bitMappings;
+    }
+
+    private static BitStringField parseField(String key, String label) {
+        if (key.contains("-")) {
+            return parseNumericField(key, label);
+        } else if (key.contains(",")) {
+            return parseEnumeratedField(key, label);
+        } else {
+            return parseFullByteField(key, label);
+        }
     }
 
     private static BitStringField parseNumericField(String key, String label) {
@@ -63,5 +66,16 @@ public class EmvBitStringParser {
         int bitNumber = Integer.parseInt(matcher.group(2));
         boolean bitValue = matcher.group(3).equals("1");
         return new EmvBit(byteNumber, bitNumber, bitValue);
+    }
+
+    private static BitStringField parseFullByteField(String key, String label) {
+        Matcher matcher = FULL_BYTE_FIELD_PATTERN.matcher(key);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Not a valid full byte field mapping [" + key + "]");
+        }
+        int byteNumber = Integer.parseInt(matcher.group(1));
+        String hexValue = matcher.group(2);
+        Set<EmvBit> bits = EmvBit.fromHex(hexValue, byteNumber);
+        return new FullByteField(bits, byteNumber, hexValue, label);
     }
 }

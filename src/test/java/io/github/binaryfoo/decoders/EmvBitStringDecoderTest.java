@@ -4,10 +4,13 @@ import io.github.binaryfoo.DecodedData;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import java.util.List;
 
 import static io.github.binaryfoo.BoundsMatcher.hasBounds;
+import static io.github.binaryfoo.DecodedMatcher.decodedAs;
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -36,13 +39,23 @@ public class EmvBitStringDecoderTest {
 
     @Test
     public void decodeNumericField() throws Exception {
-        EmvBitStringDecoder decoder = decoderFor("(1,8-5) : A number\n");
+        EmvBitStringDecoder decoder = decoderFor("(1,8-5)=INT : A number\n");
 
         int startIndex = 4;
         List<DecodedData> decoded = decoder.decode("C000", startIndex, null);
         assertThat(decoded.get(0).getRawData(), is("Byte 1 Bits 8-5"));
         assertThat(decoded.get(0).getDecodedData(), is("A number = 12"));
         assertThat(decoded.get(0), hasBounds(startIndex, startIndex + 1));
+    }
+
+    @Test
+    public void decodeFullByteMatchField() throws Exception {
+        EmvBitStringDecoder decoder = decoderFor("(1)=0x01 : Bit 1\n(1)=0x3F : Three F\n(2)=0x81 : Four\n");
+
+        assertThat(decoder.decode("01", 0, null), hasItem(decodedAs("Byte 1 = 0x01", "Bit 1")));
+        assertThat(decoder.decode("3F", 0, null), hasItem(decodedAs("Byte 1 = 0x3F", "Three F")));
+        assertThat(decoder.decode("00", 0, null), is(Collections.<DecodedData>emptyList()));
+        assertThat(decoder.decode("0081", 0, null), hasItem(decodedAs("Byte 2 = 0x81", "Four")));
     }
 
     @Test

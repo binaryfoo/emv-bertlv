@@ -37,4 +37,13 @@ public class EmvBitTest {
             assertThat(decoded.get(i), is(new EmvBit(i/8 + 1, 8 - i%8, false)));
         }
     }
+
+    @Test
+    public void fromHexWithFirstByteNumber() throws Exception {
+        Set<EmvBit> bits = EmvBit.fromHex("00FF", 2);
+        int bitsSeen = 0;
+        for (EmvBit bit : bits) {
+            assertThat(bit.getByteNumber(), is(2 + (bitsSeen++/8)));
+        }
+    }
 }

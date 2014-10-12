@@ -21,7 +21,7 @@
 (3,2)=1 : Application blocked by card because PIN Try Limit exceeded
 (3,1)=1 : Offline static data authentication failed on last transaction and transaction declined offline
 
-(4,8-5) : Issuer Script Commands processed on last transaction
+(4,8-5)=INT : Issuer Script Commands processed on last transaction
 (4,4)=1 : Issuer Script processing failed on last transaction
 (4,3)=1 : Offline dynamic data authentication failed on last transaction and transaction declined offline
 (4,2)=1 : Offline dynamic data authentication performed
