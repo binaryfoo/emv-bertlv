@@ -1,0 +1,11 @@
+#Table 12: Mobile CVM Results (Tag 9F71) Expresspay 3.0
+
+(1)=0x01 : Mobile CVM Performed
+(1)=0x3F : No CVM Performed
+
+(2)=0x00 : Mobile CVM Not Required
+(2)=0x03 : Terminal Required CVM
+
+(3)=0x01 : Mobile CVM Failed
+(3)=0x02 : Mobile CVM Successful
+(3)=0x03 : Mobile CVM Blocked
