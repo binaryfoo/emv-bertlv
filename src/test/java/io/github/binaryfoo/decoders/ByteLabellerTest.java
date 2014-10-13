@@ -6,10 +6,10 @@ import org.junit.Test;
 import java.util.List;
 
 import static io.github.binaryfoo.BoundsMatcher.hasBounds;
-import static io.github.binaryfoo.decoders.ByteLabeller.labelFor;
+import static io.github.binaryfoo.bit.BitPackage.labelFor;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ByteLabellerTest {
 

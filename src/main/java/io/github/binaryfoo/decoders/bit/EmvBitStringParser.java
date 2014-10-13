@@ -1,5 +1,6 @@
 package io.github.binaryfoo.decoders.bit;
 
+import io.github.binaryfoo.bit.BitPackage;
 import io.github.binaryfoo.bit.EmvBit;
 import org.apache.commons.lang.StringUtils;
 
@@ -75,7 +76,7 @@ public class EmvBitStringParser {
         }
         int byteNumber = Integer.parseInt(matcher.group(1));
         String hexValue = matcher.group(2);
-        Set<EmvBit> bits = EmvBit.fromHex(hexValue, byteNumber);
+        Set<EmvBit> bits = BitPackage.fromHex(hexValue, byteNumber);
         return new FullByteField(bits, byteNumber, hexValue, label);
     }
 }

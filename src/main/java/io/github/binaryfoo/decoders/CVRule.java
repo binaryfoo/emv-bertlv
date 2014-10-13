@@ -34,10 +34,10 @@ public class CVRule {
 	public enum VerificationMethod {
 		Fail(0x00, "Fail"),
 		PlainPinByIcc(0x01, "Plain PIN by ICC"),
-		EncryptedPinOnline(0x02, "Encrytped PIN online"),
+		EncryptedPinOnline(0x02, "Encrypted PIN online"),
 		PlainPinByIccPlusSignature(0x03, "Plain PIN by ICC + signature"),
-		EncryptedPinByIcc(0x04, "Encrytped PIN by ICC"),
-		EncryptedPinByIccPlusSignature(0x05, "Encrytped PIN by ICC + signature"),
+		EncryptedPinByIcc(0x04, "Encrypted PIN by ICC"),
+		EncryptedPinByIccPlusSignature(0x05, "Encrypted PIN by ICC + signature"),
 		Signature(0x1E, "Signature"),
 		NoCvmRequired(0x1F, "No CVM required");
 		

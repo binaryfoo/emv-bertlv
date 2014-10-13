@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import java.util.Set;
 
-import static io.github.binaryfoo.bit.EmvBits.getByteCount;
-import static io.github.binaryfoo.bit.EmvBits.setOf;
-import static io.github.binaryfoo.bit.EmvBits.toConfigString;
+import static io.github.binaryfoo.bit.BitPackage.getByteCount;
+import static io.github.binaryfoo.bit.BitPackage.setOf;
+import static io.github.binaryfoo.bit.BitPackage.toConfigString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -25,7 +25,7 @@ public class EmvBitsTest {
 
     @Test
     public void count() throws Exception {
-        assertThat(getByteCount(EmvBit.fromHex("01")), is(1));
-        assertThat(getByteCount(EmvBit.fromHex("0000")), is(2));
+        assertThat(getByteCount(BitPackage.fromHex("01")), is(1));
+        assertThat(getByteCount(BitPackage.fromHex("0000")), is(2));
     }
 }

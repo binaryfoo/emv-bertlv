@@ -9,7 +9,6 @@ import java.util.List;
 
 import static io.github.binaryfoo.BoundsMatcher.hasBounds;
 import static io.github.binaryfoo.DecodedMatcher.decodedAs;
-import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;

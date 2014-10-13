@@ -2,6 +2,7 @@ package io.github.binaryfoo.decoders;
 
 import io.github.binaryfoo.DecodedData;
 import io.github.binaryfoo.Decoder;
+import io.github.binaryfoo.bit.BitPackage;
 import io.github.binaryfoo.bit.EmvBit;
 import io.github.binaryfoo.decoders.bit.BitStringField;
 import io.github.binaryfoo.decoders.bit.EmvBitStringParser;
@@ -48,7 +49,7 @@ public class EmvBitStringDecoder implements Decoder {
     @Override
     public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
         List<DecodedData> decoded = new ArrayList<>();
-        Set<EmvBit> bits = EmvBit.fromHex(input);
+        Set<EmvBit> bits = BitPackage.fromHex(input);
         for (BitStringField field : bitMappings) {
             String v = field.getValueIn(bits);
             if (v != null) {

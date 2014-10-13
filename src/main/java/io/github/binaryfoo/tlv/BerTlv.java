@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO: convert to kotlin when M9 is out making platformStatic available
+// http://blog.jetbrains.com/kotlin/2014/10/making-platform-interop-even-smoother
 public abstract class BerTlv {
 
     private final Tag tag;

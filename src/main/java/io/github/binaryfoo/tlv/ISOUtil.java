@@ -1,5 +1,7 @@
 package io.github.binaryfoo.tlv;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.regex.Pattern;
 
 public class ISOUtil {
@@ -11,11 +13,11 @@ public class ISOUtil {
      * @param b - byte array
      * @return String representation
      */
-    public static String hexString(byte[] b) {
+    public static @NotNull String hexString(byte[] b) {
         return hexString(b, 0, b.length);
     }
 
-    public static String hexString(byte[] b, int offset, int len) {
+    public static @NotNull String hexString(byte[] b, int offset, int len) {
         StringBuffer d = new StringBuffer(b.length * 2);
         for (int i=0; i<len; i++) {
             char hi = Character.forDigit ((b[offset+i] >> 4) & 0x0F, 16);
@@ -43,7 +45,7 @@ public class ISOUtil {
      * @param s source string (with Hex representation)
      * @return byte array
      */
-    public static byte[] hex2byte (String s) {
+    public static @NotNull byte[] hex2byte (String s) {
         if (s.length() % 2 == 0) {
             return hex2byte (s.getBytes(), 0, s.length() >> 1);
         } else {

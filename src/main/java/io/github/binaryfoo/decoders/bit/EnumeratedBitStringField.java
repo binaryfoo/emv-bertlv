@@ -1,7 +1,7 @@
 package io.github.binaryfoo.decoders.bit;
 
+import io.github.binaryfoo.bit.BitPackage;
 import io.github.binaryfoo.bit.EmvBit;
-import io.github.binaryfoo.bit.EmvBits;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,7 @@ public class EnumeratedBitStringField implements BitStringField {
         if (bitString == null) {
             return toLabel(field, true);
         }
-        return EmvBit.toHex(field, EmvBits.getByteCount(bitString)) + " (" + toLabel(field, field.size() > 1) + ")";
+        return BitPackage.toHex(field, BitPackage.getByteCount(bitString)) + " (" + toLabel(field, field.size() > 1) + ")";
     }
 
     @Override
