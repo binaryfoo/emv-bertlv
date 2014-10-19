@@ -25,6 +25,6 @@ public class DecodedMatcher extends TypeSafeMatcher<DecodedData> {
     @Override
     public void describeTo(Description description) {
         description.appendText("raw ").appendValue(raw);
-        description.appendText(" decoded ").appendValue(decoded);
+        description.appendText(" constructed ").appendValue(decoded);
     }
 }

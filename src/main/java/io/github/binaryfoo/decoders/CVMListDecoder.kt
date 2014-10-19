@@ -19,7 +19,7 @@ public class CVMListDecoder : Decoder {
         for (i in LENGTH_OF_AMOUNT_FIELDS_IN_CHARACTERS..input.length-LENGTH_OF_CV_RULE step LENGTH_OF_CV_RULE) {
             val ruleAsHexString = input[i, i+LENGTH_OF_CV_RULE].toString()
             val rule = CVRule(ruleAsHexString)
-            decodedData.add(DecodedData(ruleAsHexString, rule.getDescription(x, y), startIndexInBytes + i / 2, startIndexInBytes + (i + LENGTH_OF_CV_RULE) / 2))
+            decodedData.add(DecodedData.primitive(ruleAsHexString, rule.getDescription(x, y), startIndexInBytes + i / 2, startIndexInBytes + (i + LENGTH_OF_CV_RULE) / 2))
         }
         return decodedData
     }

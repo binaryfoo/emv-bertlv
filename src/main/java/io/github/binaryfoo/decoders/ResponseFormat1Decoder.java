@@ -9,7 +9,6 @@ import io.github.binaryfoo.tlv.Tag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ResponseFormat1Decoder implements Decoder {
@@ -41,7 +40,7 @@ public class ResponseFormat1Decoder implements Decoder {
     private DecodedData decode(Tag tag, String value, int startIndexInBytes, int length, DecodeSession decodeSession) {
         TagMetaData tagMetaData = decodeSession.getTagMetaData();
         List<DecodedData> children = tagMetaData.get(tag).getDecoder().decode(value, startIndexInBytes, decodeSession);
-        return new DecodedData(tag, tag.toString(tagMetaData), tagMetaData.get(tag).decodePrimitiveTlvValue(value), startIndexInBytes, startIndexInBytes + length, children);
+        return DecodedData.fromTlv(tag, tag.toString(tagMetaData), tagMetaData.get(tag).decodePrimitiveTlvValue(value), startIndexInBytes, startIndexInBytes + length, children);
     }
 
     @Override

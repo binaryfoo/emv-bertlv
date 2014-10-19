@@ -23,15 +23,19 @@ public class DecodedData {
     private final Tag tag;
     private List<HexDumpElement> hexDump;
 
-    public DecodedData(String rawData, String decodedData, int startIndex, int endIndex) {
-		this(null, rawData, decodedData, startIndex, endIndex, Collections.<DecodedData>emptyList());
-	}
-
-    public DecodedData(String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
-        this(null, rawData, decodedData, startIndex, endIndex, children);
+    public static DecodedData primitive(String rawData, String decodedData, int startIndex, int endIndex) {
+        return new DecodedData(null, rawData, decodedData, startIndex, endIndex, Collections.<DecodedData>emptyList());
     }
 
-    public DecodedData(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+    public static DecodedData constructed(String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+        return new DecodedData(null, rawData, decodedData, startIndex, endIndex, children);
+    }
+
+    public static DecodedData fromTlv(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
+        return new DecodedData(tag, rawData, decodedData, startIndex, endIndex, children);
+    }
+
+    private DecodedData(Tag tag, String rawData, String decodedData, int startIndex, int endIndex, List<DecodedData> children) {
         this.tag = tag;
         this.rawData = rawData;
         this.decodedData = decodedData;

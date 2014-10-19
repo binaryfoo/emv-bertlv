@@ -14,6 +14,6 @@ public class ReadRecordAPDUDecoder implements CommandAPDUDecoder {
         String recordNumber = input.substring(4, 6);
         int referenceControlParameter = Integer.parseInt(input.substring(6, 8), 16);
         int sfi = (referenceControlParameter & 0x000000f8) >> 3;
-        return new DecodedData("C-APDU: Read Record", "number " + recordNumber + " SFI " + sfi, startIndexInBytes, startIndexInBytes + 5);
+        return DecodedData.primitive("C-APDU: Read Record", "number " + recordNumber + " SFI " + sfi, startIndexInBytes, startIndexInBytes + 5);
     }
 }

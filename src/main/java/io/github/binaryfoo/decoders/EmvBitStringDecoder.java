@@ -55,7 +55,7 @@ public class EmvBitStringDecoder implements Decoder {
             String v = field.getValueIn(bits);
             if (v != null) {
                 int fieldStartIndex = startIndexInBytes + field.getStartBytesOffset();
-                decoded.add(new DecodedData(field.getPositionIn(showFieldHexInDecode ? bits : null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()));
+                decoded.add(DecodedData.primitive(field.getPositionIn(showFieldHexInDecode ? bits : null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()));
             }
         }
         return decoded;

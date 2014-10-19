@@ -13,6 +13,6 @@ public class InternalAuthenticateAPDUDecoder implements CommandAPDUDecoder {
     public DecodedData decode(String input, int startIndexInBytes, DecodeSession session) {
         int length = Integer.parseInt(input.substring(8, 10), 16);
         String data = input.substring(10, 10 + length * 2);
-        return new DecodedData("C-APDU: Internal Authenticate", data, startIndexInBytes, startIndexInBytes + 6 + length);
+        return DecodedData.primitive("C-APDU: Internal Authenticate", data, startIndexInBytes, startIndexInBytes + 6 + length);
     }
 }

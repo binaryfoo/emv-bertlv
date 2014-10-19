@@ -15,7 +15,7 @@ public class ByteLabeller : Decoder {
         val decoded = ArrayList<DecodedData>()
         for (bit in fromHex(input)) {
             val byteIndex = startIndexInBytes + bit.byteNumber - 1
-            decoded.add(DecodedData(bit.toString(), "", byteIndex, byteIndex + 1))
+            decoded.add(DecodedData.primitive(bit.toString(), "", byteIndex, byteIndex + 1))
         }
         return decoded
     }

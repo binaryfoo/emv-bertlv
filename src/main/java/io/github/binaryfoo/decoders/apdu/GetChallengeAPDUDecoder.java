@@ -11,6 +11,6 @@ public class GetChallengeAPDUDecoder implements CommandAPDUDecoder {
 
     @Override
     public DecodedData decode(String input, int startIndexInBytes, DecodeSession session) {
-        return new DecodedData("C-APDU: Get Challenge", "", startIndexInBytes, startIndexInBytes + 5);
+        return DecodedData.primitive("C-APDU: Get Challenge", "", startIndexInBytes, startIndexInBytes + 5);
     }
 }

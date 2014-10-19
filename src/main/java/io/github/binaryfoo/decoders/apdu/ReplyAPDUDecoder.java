@@ -34,7 +34,7 @@ public class ReplyAPDUDecoder {
             DecodedData payload = children.get(0);
             endIndex = payload.getEndIndex() + 2;
         }
-        return new DecodedData("R-APDU", decodedData, startIndexInBytes, endIndex, children);
+        return DecodedData.constructed("R-APDU", decodedData, startIndexInBytes, endIndex, children);
     }
 
     private void addToSession(DecodeSession session, List<DecodedData> children, List<Tag> tags) {

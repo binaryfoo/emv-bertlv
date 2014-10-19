@@ -12,6 +12,6 @@ public class PutDataAPDUDecoder implements CommandAPDUDecoder {
     @Override
     public DecodedData decode(String input, int startIndexInBytes, DecodeSession session) {
         int length = Integer.parseInt(input.substring(8, 10), 16);
-        return new DecodedData("C-APDU: Put Data", "", startIndexInBytes, startIndexInBytes + 5 + length);
+        return DecodedData.primitive("C-APDU: Put Data", "", startIndexInBytes, startIndexInBytes + 5 + length);
     }
 }

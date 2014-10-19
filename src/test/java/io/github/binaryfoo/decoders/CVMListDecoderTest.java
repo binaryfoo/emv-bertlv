@@ -23,9 +23,9 @@ public class CVMListDecoderTest {
 	@Test
 	public void testListWithXBasedRule() {
 		List<DecodedData> expected = Arrays.asList(
-				new DecodedData("0207", "Encrypted PIN online, If transaction in application currency and >= X, FAIL (x = 200)", 8, 10),
-				new DecodedData("1E00", "Signature, Always, FAIL", 10, 12)
-		);
+                DecodedData.primitive("0207", "Encrypted PIN online, If transaction in application currency and >= X, FAIL (x = 200)", 8, 10),
+                DecodedData.primitive("1E00", "Signature, Always, FAIL", 10, 12)
+        );
 		List<DecodedData> actual = decoder.decode("000000C80000000002071E00", 0, new DecodeSession());
 		assertEquals(expected, actual);
 	}

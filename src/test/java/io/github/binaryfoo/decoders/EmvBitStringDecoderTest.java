@@ -22,7 +22,7 @@ public class EmvBitStringDecoderTest {
                                                  "(2,1)=1 : Three");
 
         int startIndex = 4;
-        List<DecodedData> decoded = decoder.decode("C000", startIndex, null);
+        List<DecodedData> decoded = decoder.decode("C000", startIndex, new DecodeSession());
         assertThat(decoded.get(0).getRawData(), is("Byte 1 Bit 8 = 1, Byte 1 Bit 7 = 1"));
         assertThat(decoded.get(0).getDecodedData(), is("One"));
         assertThat(decoded.get(0), hasBounds(startIndex, startIndex + 1));
@@ -32,7 +32,7 @@ public class EmvBitStringDecoderTest {
     public void canIncludeHexStringInFieldDescription() throws Exception {
         EmvBitStringDecoder decoder = decoderFor("(1,8)=1 & (1,7)=0 : Two", true);
 
-        List<DecodedData> decoded = decoder.decode("8000", 0, null);
+        List<DecodedData> decoded = decoder.decode("8000", 0, new DecodeSession());
         assertThat(decoded.get(0).getRawData(), is("8000 (Byte 1 Bit 8 = 1, Byte 1 Bit 7 = 0)"));
     }
 
@@ -41,7 +41,7 @@ public class EmvBitStringDecoderTest {
         EmvBitStringDecoder decoder = decoderFor("(1,8-5)=INT : A number\n");
 
         int startIndex = 4;
-        List<DecodedData> decoded = decoder.decode("C000", startIndex, null);
+        List<DecodedData> decoded = decoder.decode("C000", startIndex, new DecodeSession());
         assertThat(decoded.get(0).getRawData(), is("Byte 1 Bits 8-5"));
         assertThat(decoded.get(0).getDecodedData(), is("A number = 12"));
         assertThat(decoded.get(0), hasBounds(startIndex, startIndex + 1));
@@ -51,10 +51,10 @@ public class EmvBitStringDecoderTest {
     public void decodeFullByteMatchField() throws Exception {
         EmvBitStringDecoder decoder = decoderFor("(1)=0x01 : Bit 1\n(1)=0x3F : Three F\n(2)=0x81 : Four\n");
 
-        assertThat(decoder.decode("01", 0, null), hasItem(decodedAs("Byte 1 = 0x01", "Bit 1")));
-        assertThat(decoder.decode("3F", 0, null), hasItem(decodedAs("Byte 1 = 0x3F", "Three F")));
-        assertThat(decoder.decode("00", 0, null), is(Collections.<DecodedData>emptyList()));
-        assertThat(decoder.decode("0081", 0, null), hasItem(decodedAs("Byte 2 = 0x81", "Four")));
+        assertThat(decoder.decode("01", 0, new DecodeSession()), hasItem(decodedAs("Byte 1 = 0x01", "Bit 1")));
+        assertThat(decoder.decode("3F", 0, new DecodeSession()), hasItem(decodedAs("Byte 1 = 0x3F", "Three F")));
+        assertThat(decoder.decode("00", 0, new DecodeSession()), is(Collections.<DecodedData>emptyList()));
+        assertThat(decoder.decode("0081", 0, new DecodeSession()), hasItem(decodedAs("Byte 2 = 0x81", "Four")));
     }
 
     @Test

@@ -31,7 +31,7 @@ public class PopulatedDOLDecoder : Decoder {
             val tagInfo = tagMetaData!!.get(tag)
             val valueAsHexString = ISOUtil.hexString(value)
             val children = tagInfo!!.getDecoder()!!.decode(valueAsHexString, offset, session)
-            val decodedData = DecodedData(tag.toString(tagMetaData), tagInfo.decodePrimitiveTlvValue(valueAsHexString), offset, offset + value.size, children)
+            val decodedData = DecodedData.constructed(tag.toString(tagMetaData), tagInfo.decodePrimitiveTlvValue(valueAsHexString), offset, offset + value.size, children)
             decoded.add(decodedData)
             offset += value.size
         }

@@ -20,7 +20,7 @@ public class SelectCommandAPDUDecoder implements CommandAPDUDecoder {
         } else {
             name = new String(ISOUtil.hex2byte(name));
         }
-        return new DecodedData("C-APDU: Select",  name, startIndexInBytes, startIndexInBytes + 5 + length + 1);
+        return DecodedData.primitive("C-APDU: Select", name, startIndexInBytes, startIndexInBytes + 5 + length + 1);
     }
 
 }

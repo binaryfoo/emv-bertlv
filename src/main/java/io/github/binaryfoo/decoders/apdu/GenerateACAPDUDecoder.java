@@ -27,7 +27,7 @@ public class GenerateACAPDUDecoder implements CommandAPDUDecoder {
         boolean cda = (cid & 0x10) == 0x10;
         String populatedCDOL = input.substring(10, 10 + length * 2);
         List<DecodedData> decodedPopulatedCDOL = decodeCDOLElements(session, populatedCDOL, startIndexInBytes + 5);
-        return new DecodedData("C-APDU: Generate AC (" + cryptogramType + (cda ? "+CDA" : "") + ")", "CDOL " + populatedCDOL, startIndexInBytes, startIndexInBytes + 5 + length + 1, decodedPopulatedCDOL);
+        return DecodedData.constructed("C-APDU: Generate AC (" + cryptogramType + (cda ? "+CDA" : "") + ")", "CDOL " + populatedCDOL, startIndexInBytes, startIndexInBytes + 5 + length + 1, decodedPopulatedCDOL);
     }
     private String parseCryptogramType(byte b) {
         if ((b & 0x40) == 0x40) {
