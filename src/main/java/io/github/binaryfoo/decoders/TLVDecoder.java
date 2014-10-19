@@ -10,11 +10,12 @@ import io.github.binaryfoo.TagMetaData;
 import io.github.binaryfoo.tlv.BerTlv;
 import io.github.binaryfoo.tlv.ISOUtil;
 import io.github.binaryfoo.tlv.Tag;
+import org.jetbrains.annotations.NotNull;
 
 public class TLVDecoder implements Decoder {
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
+	public List<DecodedData> decode(@NotNull String input, int startIndexInBytes, @NotNull DecodeSession decodeSession) {
 		List<BerTlv> list = BerTlv.parseList(ISOUtil.hex2byte(input), true);
 		return decodeTlvs(list, startIndexInBytes, decodeSession);
 	}

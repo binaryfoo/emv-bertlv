@@ -9,6 +9,7 @@ import io.github.binaryfoo.decoders.bit.EmvBitStringParser;
 import io.github.binaryfoo.io.ClasspathIO;
 import io.github.binaryfoo.tlv.ISOUtil;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +48,7 @@ public class EmvBitStringDecoder implements Decoder {
     }
 
     @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
+    public List<DecodedData> decode(@NotNull String input, int startIndexInBytes, @NotNull DecodeSession decodeSession) {
         List<DecodedData> decoded = new ArrayList<>();
         Set<EmvBit> bits = BitPackage.fromHex(input);
         for (BitStringField field : bitMappings) {

@@ -6,6 +6,7 @@ import io.github.binaryfoo.EmvTags;
 import io.github.binaryfoo.TagMetaData;
 import io.github.binaryfoo.decoders.apdu.APDUCommand;
 import io.github.binaryfoo.tlv.Tag;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ResponseFormat1Decoder implements Decoder {
     @Override
-    public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
+    public List<DecodedData> decode(@NotNull String input, int startIndexInBytes, @NotNull DecodeSession decodeSession) {
         if (decodeSession.getCommand() == APDUCommand.GetProcessingOptions) {
             String aip = input.substring(0, 4);
             String afl = input.substring(4);

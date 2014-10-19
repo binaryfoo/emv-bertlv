@@ -29,15 +29,15 @@ public data class EmvBit(val byteNumber: Int, val bitNumber: Int, val set: Boole
     }
 
     override fun compareTo(other: EmvBit): Int {
-        val byteOrder = Integer.compare(byteNumber, other.byteNumber)
+        val byteOrder = byteNumber.compareTo(other.byteNumber)
         if (byteOrder != 0) {
             return byteOrder
         }
-        val bitOrder = Integer.compare(other.bitNumber, bitNumber)
+        val bitOrder = other.bitNumber.compareTo(bitNumber)
         if (bitOrder != 0) {
             return bitOrder
         }
-        return java.lang.Boolean.compare(set, other.set)
+        return set.compareTo(other.set)
     }
 }
 

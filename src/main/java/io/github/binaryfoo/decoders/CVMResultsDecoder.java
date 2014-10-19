@@ -6,13 +6,14 @@ import java.util.List;
 import io.github.binaryfoo.DecodedData;
 import io.github.binaryfoo.Decoder;
 import io.github.binaryfoo.tlv.ISOUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class CVMResultsDecoder implements Decoder {
 
 	private static final int FIELD_LENGTH = 6;
 
 	@Override
-	public List<DecodedData> decode(String input, int startIndexInBytes, DecodeSession decodeSession) {
+	public List<DecodedData> decode(@NotNull String input, int startIndexInBytes, @NotNull DecodeSession decodeSession) {
 		CVRule rule = new CVRule(input.substring(0, 4));
 		String result = input.substring(4, 6);
 		return Arrays.asList(
