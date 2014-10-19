@@ -26,7 +26,7 @@ class ConstructedBerTlv(tag: Tag, private val children: List<BerTlv>) : BerTlv(t
 
     override fun findTlv(tag: Tag): BerTlv? {
         for (tlv in children) {
-            if (Arrays.equals(tlv.tag.getBytes(), tag.getBytes())) {
+            if (tlv.tag == tag) {
                 return tlv
             }
         }
@@ -36,7 +36,7 @@ class ConstructedBerTlv(tag: Tag, private val children: List<BerTlv>) : BerTlv(t
     override fun findTlvs(tag: Tag): List<BerTlv> {
         val matches = ArrayList<BerTlv>()
         for (tlv in children) {
-            if (Arrays.equals(tlv.tag.getBytes(), tag.getBytes())) {
+            if (tlv.tag == tag) {
                 matches.add(tlv)
             }
         }

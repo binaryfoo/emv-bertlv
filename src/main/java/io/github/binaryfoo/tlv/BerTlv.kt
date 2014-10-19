@@ -9,7 +9,7 @@ public abstract class BerTlv(public val tag: Tag) {
 
     public fun toBinary(): ByteArray {
         val value = getValue()
-        val encodedTag = tag.getBytes()
+        val encodedTag = tag.bytes
         val encodedLength = getLength(value)
 
         val b = ByteBuffer.allocate(encodedTag.size + encodedLength.size + value.size)
@@ -145,7 +145,7 @@ public abstract class BerTlv(public val tag: Tag) {
 
         // Specification Update No. 69, 2009, Padding of BER-TLV Encoded Constructed Data Objects
         private fun isPaddingByte(tag: Tag): Boolean {
-            return tag.getBytes().size == 1 && tag.getBytes()[0] == 0.toByte()
+            return tag.bytes.size == 1 && tag.bytes[0] == 0.toByte()
         }
 
         private fun parseLength(data: ByteBuffer): Int {

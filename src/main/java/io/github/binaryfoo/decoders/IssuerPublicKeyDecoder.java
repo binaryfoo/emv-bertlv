@@ -18,7 +18,6 @@ public class IssuerPublicKeyDecoder {
         b.append("Public key length: ").append(publicKeyLength).append(" (").append(i).append(")").append('\n');
         b.append("Public key exponent length: ").append(ISOUtil.hexString(recovered, 14, 1)).append('\n');
         b.append("Public key: ").append(ISOUtil.hexString(recovered, 15, byteLengthOfCAModulus-36)).append('\n');
-        System.out.println("i = " + i + " " + byteLengthOfCAModulus);
         b.append("          : ").append(ISOUtil.hexString(recovered, 15, i)).append('\n');
         b.append("Hash: ").append(ISOUtil.hexString(recovered, 15 + byteLengthOfCAModulus-36, 20)).append('\n');
         b.append("Trailer: ").append(ISOUtil.hexString(recovered, 15+byteLengthOfCAModulus-36+20, 1)).append('\n');
