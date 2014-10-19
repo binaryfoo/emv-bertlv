@@ -9,6 +9,9 @@ https://code.google.com/p/javaemvreader/
 Command coding at APDU level:
 http://www.wrankl.de/SCTables/SCTables.html
 
+Overview of ATR and application selection
+* http://dexterous-programmer.blogspot.com.au/2012/04/emv-transaction-step-1-application.html
+
 Release and deploy (from http://central.sonatype.org/pages/apache-maven.html#performing-a-release-deployment):
 mvn release:clean release:prepare
 mvn release:perform
