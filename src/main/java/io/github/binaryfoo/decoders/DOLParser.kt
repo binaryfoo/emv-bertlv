@@ -18,7 +18,7 @@ public class DOLParser {
         while (buffer.hasRemaining()) {
             val tag = Tag.parse(buffer)
             val length = buffer.get()
-            elements.add(DOLElement(tag!!, length.toInt()))
+            elements.add(DOLElement(tag, length.toInt()))
         }
         return elements
     }
