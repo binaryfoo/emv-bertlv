@@ -4,6 +4,10 @@ import io.github.binaryfoo.DecodedData;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 
@@ -93,6 +97,17 @@ public class EmvBitStringDecoderTest {
     }
 
     private EmvBitStringDecoder decoderFor(String s, boolean showFieldHexInDecode) {
-        return new EmvBitStringDecoder((new ByteArrayInputStream(s.getBytes())), showFieldHexInDecode);
+        File f = null;
+        try {
+            f = new File("target/classes/EmvBitStringDecoderThisIsFarFromIdeal.txt");
+            Files.write(f.toPath(), s.getBytes());
+            return new EmvBitStringDecoder(f.getName(), showFieldHexInDecode);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (f != null) {
+                f.delete();
+            }
+        }
     }
 }
