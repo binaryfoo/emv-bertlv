@@ -45,7 +45,7 @@ public abstract class BerTlv(public val tag: Tag) {
         if (value == null) {
             return byteArray(0.toByte())
         }
-        if (value.size <= 127) {
+        if (value.size <= 0x7F) {
             length = byteArray(value.size.toByte())
         } else {
             val wanted = value.size
@@ -60,7 +60,7 @@ public abstract class BerTlv(public val tag: Tag) {
                 }
             }
             length = ByteArray(needed + 1)
-            length[0] = (128 or needed).toByte()
+            length[0] = (0x80 or needed).toByte()
             for (i in 1..length.size - 1) {
                 length[length.size - i] = ((wanted shr (8 * (i - 1))) and 255).toByte()
             }
@@ -151,10 +151,10 @@ public abstract class BerTlv(public val tag: Tag) {
         private fun parseLength(data: ByteBuffer): Int {
             val lengthByte = data.get().toInt()
             var dataLength = 0
-            if ((lengthByte and 128) == 128) {
-                var numberOfBytesToEncodeLength = (lengthByte and 127)
+            if ((lengthByte and 0x80) == 0x80) {
+                var numberOfBytesToEncodeLength = (lengthByte and 0x7F)
                 while (numberOfBytesToEncodeLength > 0) {
-                    dataLength += (data.get().toInt() and 255)
+                    dataLength += (data.get().toInt() and 0xFF)
 
                     if (numberOfBytesToEncodeLength > 1) {
                         dataLength *= 256
