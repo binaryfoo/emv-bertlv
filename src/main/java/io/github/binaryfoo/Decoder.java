@@ -5,6 +5,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Idea being children are shown in a tree structure.
+ */
 public interface Decoder {
 
     /**

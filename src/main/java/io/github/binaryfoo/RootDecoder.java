@@ -23,10 +23,10 @@ public class RootDecoder {
         putTag(EmvTags.CVM_RESULTS, EmvTags.METADATA);
         putTag(QVsdcTags.CARD_TX_QUALIFIERS, QVsdcTags.METADATA);
         putTag(QVsdcTags.TERMINAL_TX_QUALIFIERS, QVsdcTags.METADATA);
-        ROOT_TAG_INFO.put("dol", new TagInfo("DOL", "Data Object List", new DataObjectListDecoder()));
-        ROOT_TAG_INFO.put("filled-dol", new TagInfo("Filled DOL", "Data Object List", new PopulatedDOLDecoder()));
-        ROOT_TAG_INFO.put("constructed", new TagInfo("TLV Data", "Constructed TLV data", new TLVDecoder()));
-        ROOT_TAG_INFO.put("apdu-sequence", new TagInfo("APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(
+        ROOT_TAG_INFO.put("dol", TagInfo.treeStructured("DOL", "Data Object List", new DataObjectListDecoder()));
+        ROOT_TAG_INFO.put("filled-dol", TagInfo.treeStructured("Filled DOL", "Data Object List", new PopulatedDOLDecoder()));
+        ROOT_TAG_INFO.put("constructed", TagInfo.treeStructured("TLV Data", "Constructed TLV data", new TLVDecoder()));
+        ROOT_TAG_INFO.put("apdu-sequence", TagInfo.treeStructured("APDUs", "Sequence of Command/Reply APDUs", new APDUSequenceDecoder(
                 new ReplyAPDUDecoder(new TLVDecoder()),
                 new SelectCommandAPDUDecoder(),
                 new GetProcessingOptionsCommandAPDUDecoder(),
@@ -40,7 +40,7 @@ public class RootDecoder {
                 new GetChallengeAPDUDecoder(),
                 new PutDataAPDUDecoder()
         )));
-        ROOT_TAG_INFO.put("bit-string", new TagInfo("Bits", "EMV Bit String", new ByteLabeller()));
+        ROOT_TAG_INFO.put("bit-string", TagInfo.treeStructured("Bits", "EMV Bit String", new ByteLabeller()));
     }
     static {
         TAG_META_SETS.put("EMV", EmvTags.METADATA);

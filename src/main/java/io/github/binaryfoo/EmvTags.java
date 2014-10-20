@@ -156,7 +156,7 @@ public class EmvTags {
 
     protected static Tag newTag(TagMetaData metaData, String hexString, String name, PrimitiveDecoder primitiveDecoder) {
         Tag tag = Tag.fromHex(hexString);
-        metaData.put(tag, new TagInfo(name, null, Decoders.PRIMITIVE, primitiveDecoder));
+        metaData.put(tag, new TagInfo(name, name, Decoders.PRIMITIVE, primitiveDecoder));
         return tag;
     }
 
