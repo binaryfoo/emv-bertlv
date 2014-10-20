@@ -26,7 +26,7 @@ public class PopulatedDOLDecoder : Decoder {
         for (element in elements) {
             val value = ByteArray(element.length)
             values.get(value)
-            val tagMetaData = session.getTagMetaData()
+            val tagMetaData = session.tagMetaData
             val tag = element.tag
             val tagInfo = tagMetaData!!.get(tag)
             val valueAsHexString = ISOUtil.hexString(value)

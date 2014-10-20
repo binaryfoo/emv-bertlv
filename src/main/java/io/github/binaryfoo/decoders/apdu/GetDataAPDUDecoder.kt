@@ -12,6 +12,6 @@ public class GetDataAPDUDecoder : CommandAPDUDecoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): DecodedData {
         val tagHex = input.substring(4, 8)
         val tag = Tag.fromHex(tagHex)
-        return DecodedData.primitive("C-APDU: GetData", tag.toString(session.getTagMetaData()), startIndexInBytes, startIndexInBytes + 5)
+        return DecodedData.primitive("C-APDU: GetData", tag.toString(session.tagMetaData!!), startIndexInBytes, startIndexInBytes + 5)
     }
 }

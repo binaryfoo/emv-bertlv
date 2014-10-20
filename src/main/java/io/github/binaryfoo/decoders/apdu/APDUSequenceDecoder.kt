@@ -19,7 +19,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                 val commandDecoder = getCommandDecoder(line)
                 val decoded: DecodedData
                 if (commandDecoder != null) {
-                    session.setCurrentCommand(commandDecoder.getCommand())
+                    session.currentCommand = commandDecoder.getCommand()
                     decoded = commandDecoder.decode(line, runningStartIndexInBytes, session)
                 } else {
                     decoded = replyDecoder.decode(line, runningStartIndexInBytes, session)

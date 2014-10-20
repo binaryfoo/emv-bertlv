@@ -24,7 +24,7 @@ public class RootDecoder {
      */
     public fun decode(value: String, meta: String, tagInfo: TagInfo): List<DecodedData> {
         val decodeSession = DecodeSession()
-        decodeSession.setTagMetaData(getTagMetaData(meta))
+        decodeSession.tagMetaData = getTagMetaData(meta)
         return tagInfo.decoder.decode(value, 0, decodeSession)
     }
 

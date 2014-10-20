@@ -26,7 +26,7 @@ public class TLVDecoder : Decoder {
             val length = berTlv.toBinary().size
             val contentEndIndex = currentStartIndex + length
             val compositeStartElementIndex = currentStartIndex + tag.bytes.size + berTlv.getLengthInBytesOfEncodedLength()
-            val tagMetaData = decodeSession.getTagMetaData()
+            val tagMetaData = decodeSession.tagMetaData!!
             if (tag.isConstructed()) {
                 decodedItems.add(DecodedData.fromTlv(tag, tag.toString(tagMetaData), valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)))
             } else {
