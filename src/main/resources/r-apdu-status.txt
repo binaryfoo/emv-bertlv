@@ -5,7 +5,7 @@
 62,81,W,Part of returned data may be corrupted
 62,82,W,End of file/record reached before reading Le bytes
 62,83,W,Selected file invalidated
-62,84,W,Selected file is not valid. FCI not formated according to ISO
+62,84,W,Selected file is not valid. FCI not formatted according to ISO
 62,85,W,No Purse Engine enslaved for R3bc
 62,A2,W,Wrong R-MAC
 62,A4,W,Card locked (during reset( ))
