@@ -5,6 +5,7 @@ import io.github.binaryfoo.decoders.apdu.APDUCommand
 import io.github.binaryfoo.tlv.Tag
 
 import java.util.HashMap
+import io.github.binaryfoo.tlv.BerTlv
 
 public class DecodeSession : HashMap<Tag, String>() {
 
@@ -18,5 +19,13 @@ public class DecodeSession : HashMap<Tag, String>() {
 
     public fun setFirstGenerateACCommand(firstGenerateACCommand: Boolean) {
         this.firstGenerateACCommand = firstGenerateACCommand
+    }
+
+    public fun findTag(tag: Tag): String? {
+        return this[tag]
+    }
+
+    public fun rememberTags(tlvs: List<BerTlv>) {
+        tlvs.forEach { this[it.tag] = it.getValueAsHexString() }
     }
 }
