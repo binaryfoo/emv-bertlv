@@ -8,7 +8,7 @@ import io.github.binaryfoo.tlv.Tag;
 import static io.github.binaryfoo.decoders.PrimitiveDecoder.HEX;
 
 public class QVsdcTags extends EmvTags {
-    public static final TagMetaData METADATA = new TagMetaData(EmvTags.METADATA);
+    public static final TagMetaData METADATA = TagMetaData.copy(EmvTags.METADATA);
 
     public static final Tag TERMINAL_TX_QUALIFIERS = newTag("9F66", "TTQ", "Terminal transaction qualifiers", new TerminalTxQualifiersDecoder());
     public static final Tag CARD_TX_QUALIFIERS = newTag("9F6C", "CTQ", "Card transaction qualifiers", new CardTxQualifiersDecoder());

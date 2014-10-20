@@ -4,7 +4,7 @@ import io.github.binaryfoo.decoders.*;
 import io.github.binaryfoo.tlv.Tag;
 
 public class AmexTags extends EmvTags {
-    public static final TagMetaData METADATA = new TagMetaData(EmvTags.METADATA);
+    public static final TagMetaData METADATA = TagMetaData.copy(EmvTags.METADATA);
 
     public static final Tag TERMINAL_TX_CAPABILITIES = newTag("9F6E", "Terminal transaction capabilities", new AmexTerminalCapabilitiesDecoder());
     public static final Tag EXPRESSPAY_TERMINAL_CAPABILITIES = newTag("9F6D", "XP Terminal capabilities", new AmexTerminalTxCapabilitiesDecoder());

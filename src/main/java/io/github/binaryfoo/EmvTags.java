@@ -8,7 +8,7 @@ import static io.github.binaryfoo.decoders.PrimitiveDecoder.*;
 
 public class EmvTags {
 
-    public static final TagMetaData METADATA = new TagMetaData();
+    public static final TagMetaData METADATA = TagMetaData.empty();
 
     public static final Tag RECOGNISE_CARD_SUPPORTED_OPTIONS = newTag("DF8178", "recognise card supported options", HEX);
     public static final Tag ASCII_CODE_TABLE_INDEX = newTag("DF8172", "ascii code table index", HEX);

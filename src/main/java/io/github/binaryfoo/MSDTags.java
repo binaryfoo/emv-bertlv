@@ -9,7 +9,7 @@ import static io.github.binaryfoo.decoders.PrimitiveDecoder.BASE_10;
 import static io.github.binaryfoo.decoders.PrimitiveDecoder.HEX;
 
 public class MSDTags extends EmvTags {
-    public static final TagMetaData METADATA = new TagMetaData(EmvTags.METADATA);
+    public static final TagMetaData METADATA = TagMetaData.copy(EmvTags.METADATA);
 
     public static final Tag MSD_TRACK_1 = newTag("56", "track 1", ASCII);
     public static final Tag MSD_TRACK_2 = newTag("9F6B", "track 2", HEX);
