@@ -5,5 +5,5 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
 
 trait Annotater {
-    fun createNotes(decodeSession: DecodeSession): String?
+    fun createNotes(session: DecodeSession): String?
 }

@@ -88,13 +88,17 @@ public class RootDecoderTest {
                 "Serial number: 0006B0\n" +
                 "Hash algorithm: 01\n" +
                 "Public key algorithm: 01\n" +
-                "Public key length: 70 (112)\n" +
+                "Public key length: 112\n" +
                 "Public key exponent length: 01\n" +
                 "Public key: BD46CCE01464D4C4269D4CC5FB616119C4354ED18C85A936F9C44A7B0EED96AD97DB59D84B05A6E250631BA79FA7D75B07DD4586CE7700C64FFBB60EDB15E29C715D771C948999187EAEDF60CE18FE67E99C8BCE9DE31655E7EB9B692F502573CA65B7A7C167F86D9AAB90A9\n" +
-                "          : BD46CCE01464D4C4269D4CC5FB616119C4354ED18C85A936F9C44A7B0EED96AD97DB59D84B05A6E250631BA79FA7D75B07DD4586CE7700C64FFBB60EDB15E29C715D771C948999187EAEDF60CE18FE67E99C8BCE9DE31655E7EB9B692F502573CA65B7A7C167F86D9AAB90A9F9D10CF1\n" +
                 "Hash: F9D10CF1387465F4FCAD14EEFDAFEE10A50B7C08\n" +
                 "Trailer: BC\n"));
-        // TODO assert signed static data has notes
+        assertThat(DecodedData.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA, decoded).getNotes(), is("Header: 6A\n" +
+                "Format: 03\n" +
+                "Hash Algorithm: 01\n" +
+                "Data Auth Code: 0001\n" +
+                "Hash: F6E1F5D3652F06C2D5F9E6599AE8ED5BE1D575CF\n" +
+                "Trailer: BC\n"));
     }
 
     private List<DecodedData> decodeApdus(String apdus) {

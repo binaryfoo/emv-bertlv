@@ -8,12 +8,22 @@ import io.github.binaryfoo.decoders.DecodeSession
 import java.util.ArrayList
 import io.github.binaryfoo.decoders.IssuerPublicKeyDecoder
 import io.github.binaryfoo.EmvTags
+import io.github.binaryfoo.DecodedData
+import io.github.binaryfoo.Decoder
+import io.github.binaryfoo.HexDumpFactory
+import io.github.binaryfoo.decoders.DecodeSession
+
+import java.util.ArrayList
+import io.github.binaryfoo.decoders.IssuerPublicKeyDecoder
+import io.github.binaryfoo.EmvTags
+import io.github.binaryfoo.decoders.SignedStaticApplicationDataDecoder
 
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
     private val hexDumpFactory = HexDumpFactory()
     private val annotators = mapOf(
-        EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE to IssuerPublicKeyDecoder()
+        EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE to IssuerPublicKeyDecoder(),
+        EmvTags.SIGNED_STATIC_APPLICATION_DATA to SignedStaticApplicationDataDecoder()
     )
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
@@ -56,7 +66,10 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
         for ((tag, processor) in annotators) {
             val d = DecodedData.findForTag(tag, decoded)
             if (d != null) {
-                d.notes = processor.createNotes(session)
+                try {
+                    d.notes = processor.createNotes(session)
+                } catch(e: Exception) {
+                }
             }
         }
         return decoded
