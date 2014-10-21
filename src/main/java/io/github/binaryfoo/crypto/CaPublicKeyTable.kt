@@ -15,11 +15,11 @@ public class CaPublicKeyTable {
             val fields = line.split("\\t")
             val exponent = fields[1]
             val index = fields[2]
-            val aid = fields[3]
+            val rid = fields[3]
             val modulus = fields[4]
-            CaPublicKey(aid, index, exponent, modulus)
+            CaPublicKey(rid, index, exponent, modulus)
         }
 
-        platformStatic public fun getEntry(aid: String, index: String): CaPublicKey? = keys.firstOrNull { it.aid == aid && it.index == index }
+        platformStatic public fun getEntry(aid: String, index: String): CaPublicKey? = keys.firstOrNull { it.rid == aid && it.index == index }
     }
 }

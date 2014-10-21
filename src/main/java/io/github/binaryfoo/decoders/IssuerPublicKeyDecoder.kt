@@ -13,9 +13,9 @@ public class IssuerPublicKeyDecoder : Annotater {
     override fun createNotes(decodeSession: DecodeSession): String? {
         val keyIndex = decodeSession.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)
         val certificate = decodeSession.findTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
-        val aid = extractAid(decodeSession.findTag(EmvTags.DEDICATED_FILE_NAME))
-        if (keyIndex != null && certificate != null && aid != null) {
-            val caPublicKey = crypto.CaPublicKeyTable.getEntry(aid, keyIndex)
+        val rid = extractRid(decodeSession.findTag(EmvTags.DEDICATED_FILE_NAME))
+        if (keyIndex != null && certificate != null && rid != null) {
+            val caPublicKey = crypto.CaPublicKeyTable.getEntry(rid, keyIndex)
             if (caPublicKey != null) {
                 val recovered = SignedDataRecoverer().recover(certificate, caPublicKey)
                 val certificateRemainder = decodeSession.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
@@ -46,5 +46,5 @@ public class IssuerPublicKeyDecoder : Annotater {
         return b.toString()
     }
 
-    fun extractAid(fileName: String?) = fileName?.substring(0, 10)
+    fun extractRid(fileName: String?) = fileName?.substring(0, 10)
 }

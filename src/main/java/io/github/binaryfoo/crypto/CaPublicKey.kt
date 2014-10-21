@@ -2,7 +2,7 @@ package io.github.binaryfoo.crypto
 
 import io.github.binaryfoo.tlv.ISOUtil
 
-public data class CaPublicKey(val aid: String, val index: String, exponent: String, modulus: String) {
+public data class CaPublicKey(val rid: String, val index: String, exponent: String, modulus: String) {
     public val exponent: ByteArray
     public val modulus: ByteArray
 
