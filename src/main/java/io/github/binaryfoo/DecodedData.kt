@@ -27,6 +27,7 @@ public data class DecodedData(
         val startIndex: Int, // in bytes
         val endIndex: Int, // in bytes
         val children: List<DecodedData> = listOf()) {
+    public var notes: String? = null
     public var hexDump: List<HexDumpElement>? = null
 
     private fun trim(decodedData: String): String {
@@ -71,6 +72,23 @@ public data class DecodedData(
 
         platformStatic public fun fromTlv(tag: Tag, rawData: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
             return DecodedData(tag, rawData, decodedData, startIndex, endIndex, children)
+        }
+
+        platformStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {
+            decoded.forEach {
+                if (it.tag == tag) {
+                    return it
+                }
+                val match = it.children.findForTag(tag)
+                if (match != null) {
+                    return match
+                }
+            }
+            return null
+        }
+
+        public fun List<DecodedData>.findForTag(tag: Tag): DecodedData? {
+            return findForTag(tag, this)
         }
     }
 

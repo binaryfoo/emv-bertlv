@@ -3,8 +3,28 @@ package io.github.binaryfoo.decoders
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
 import io.github.binaryfoo.tlv.ISOUtil
+import io.github.binaryfoo.decoders.annotator.Annotater
+import io.github.binaryfoo.tlv.BerTlv
+import io.github.binaryfoo.EmvTags
+import io.github.binaryfoo.crypto
 
-public class IssuerPublicKeyDecoder : Decoder {
+public class IssuerPublicKeyDecoder : Annotater {
+
+    override fun createNotes(decodeSession: DecodeSession): String? {
+        val keyIndex = decodeSession.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)
+        val certificate = decodeSession.findTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
+        val aid = extractAid(decodeSession.findTag(EmvTags.DEDICATED_FILE_NAME))
+        if (keyIndex != null && certificate != null && aid != null) {
+            val caPublicKey = crypto.CaPublicKeyTable.getEntry(aid, keyIndex)
+            if (caPublicKey != null) {
+                val recovered = SignedDataRecoverer().recover(certificate, caPublicKey)
+                val certificateRemainder = decodeSession.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
+                // TODO store public key for further decryption
+                return decode(recovered, caPublicKey.modulus.size)
+            }
+        }
+        return null
+    }
 
     public fun decode(recovered: ByteArray, byteLengthOfCAModulus: Int): String {
         val b = StringBuilder()
@@ -26,15 +46,5 @@ public class IssuerPublicKeyDecoder : Decoder {
         return b.toString()
     }
 
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData>? {
-        return null
-    }
-
-    override fun validate(input: String): String? {
-        return null
-    }
-
-    override fun getMaxLength(): Int {
-        return Integer.MAX_VALUE
-    }
+    fun extractAid(fileName: String?) = fileName?.substring(0, 10)
 }

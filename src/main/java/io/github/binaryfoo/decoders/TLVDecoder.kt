@@ -14,7 +14,6 @@ public class TLVDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
         val list = BerTlv.parseList(ISOUtil.hex2byte(input), true)
-        decodeSession.rememberTags(list)
         return decodeTlvs(list, startIndexInBytes, decodeSession)
     }
 
@@ -36,6 +35,7 @@ public class TLVDecoder : Decoder {
             }
             currentStartIndex += length
         }
+        decodeSession.rememberTags(list)
         return decodedItems
     }
 

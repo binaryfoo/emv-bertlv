@@ -6,10 +6,15 @@ import io.github.binaryfoo.HexDumpFactory
 import io.github.binaryfoo.decoders.DecodeSession
 
 import java.util.ArrayList
+import io.github.binaryfoo.decoders.IssuerPublicKeyDecoder
+import io.github.binaryfoo.EmvTags
 
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
     private val hexDumpFactory = HexDumpFactory()
+    private val annotators = mapOf(
+        EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE to IssuerPublicKeyDecoder()
+    )
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         var runningStartIndexInBytes = startIndexInBytes
@@ -31,7 +36,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                 list.add(DecodedData.primitive(line, "Failed to decode: " + e.getMessage(), 0, 0))
             }
         }
-        return list
+        return postProcess(list, session)
     }
 
     private fun getCommandDecoder(input: String): CommandAPDUDecoder? {
@@ -45,5 +50,15 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
 
     override fun getMaxLength(): Int {
         return Integer.MAX_VALUE
+    }
+
+    fun postProcess(decoded: List<DecodedData>, session: DecodeSession): List<DecodedData> {
+        for ((tag, processor) in annotators) {
+            val d = DecodedData.findForTag(tag, decoded)
+            if (d != null) {
+                d.notes = processor.createNotes(session)
+            }
+        }
+        return decoded
     }
 }
