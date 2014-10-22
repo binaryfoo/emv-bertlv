@@ -25,10 +25,10 @@ public class MSDTags extends EmvTags {
     public static final Tag MSD_APPLICATION_VERSION_NUMBER = newTag("9F6C", "application version number", HEX);
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
-        return newTag(METADATA, hexString, shortName, longName, decoder);
+        return METADATA.newTag(hexString, shortName, longName, decoder);
     }
 
     private static Tag newTag(String hexString, String name, PrimitiveDecoder primitiveDecoder) {
-        return newTag(METADATA, hexString, name, primitiveDecoder);
+        return METADATA.newTag(hexString, name, name, primitiveDecoder);
     }
 }

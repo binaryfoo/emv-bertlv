@@ -23,7 +23,7 @@ public class EmvTags {
     public static final Tag AID_TABLE = newTag("E5", "AID table", HEX);
     public static final Tag POS_ENTRY_MODE = newTag("9F39", "pos entry mode", HEX);
     public static final Tag TERMINAL_APPLICATION_VERSION_NUMBER = newTag("9F09", "terminal application version number", HEX);
-    public static final Tag DEFAULT_DDOL = newTag("DF5D", "Default DDOL", "Default DDOL", DOL);
+    public static final Tag DEFAULT_DDOL = newTag("DF5D", "Default DDOL", "Default dynamic data auth object list", DOL);
     public static final Tag TAC_DENIAL = newTag("DF57", "TAC denial", Decoders.TVR);
     public static final Tag TAC_ONLINE = newTag("DF58", "TAC online", Decoders.TVR);
     public static final Tag TAC_DEFAULT = newTag("DF56", "TAC default", Decoders.TVR);
@@ -55,7 +55,7 @@ public class EmvTags {
     public static final Tag AMOUNT_AUTHORIZED = newTag("9F02", "amount authorized", HEX);
     public static final Tag AMOUNT_OTHER = newTag("9F03", "amount other", HEX);
     public static final Tag APPLICATION_INTERCHANGE_PROFILE = newTag("82", "AIP", "Application Interchange Profile", Decoders.AIP);
-    public static final Tag APPLICATION_TRANSACTION_COUNTER = newTag("9F36", "application transaction counter", BASE_10);
+    public static final Tag APPLICATION_TRANSACTION_COUNTER = newTag("9F36", "ATC", "application transaction counter", BASE_10);
     public static final Tag APPLICATION_CRYPTOGRAM = newTag("9F26", "application cryptogram", HEX);
     public static final Tag ISSUER_APPLICATION_DATA = newTag("9F10", "issuer application data", "issuer application data", new IssuerApplicationDataDecoder());
     public static final Tag TERMINAL_CURRENCY_CODE = newTag("5F2A", "terminal currency code", PrimitiveDecoder.CURRENCY_CODE);
@@ -89,9 +89,9 @@ public class EmvTags {
     public static final Tag FCI_PROPRIETARY_TEMPLATE = newTag("A5", "FCI proprietary template", HEX);
     public static final Tag AFL = newTag("94", "AFL", "Application File Locator", Decoders.AFL);
     public static final Tag APPLICATION_EFFECTIVE_DATE = newTag("5F25", "application effective date", HEX);
-    public static final Tag PDOL = newTag("9F38", "PDOL", "Processing DOL", DOL);
-    public static final Tag CDOL_1 = newTag("8C", "CDOL 1", "Data object list 1", DOL);
-    public static final Tag CDOL_2 = newTag("8D", "CDOL 2", "Data object list 2", DOL);
+    public static final Tag PDOL = newTag("9F38", "PDOL", "Processing data object list", DOL);
+    public static final Tag CDOL_1 = newTag("8C", "CDOL 1", "Card risk management data object list 1", DOL);
+    public static final Tag CDOL_2 = newTag("8D", "CDOL 2", "Card risk management data object list 2", DOL);
     public static final Tag APPLICATION_USAGE_CONTROL = newTag("9F07", "application usage control", new AppUsageControlDecoder());
     public static final Tag CARD_APPLICATION_VERSION_NUMBER = newTag("9F08", "card application version number", HEX);
     public static final Tag IAC_DEFAULT = newTag("9F0D", "IAC default", Decoders.TVR);
@@ -122,8 +122,8 @@ public class EmvTags {
     public static final Tag APPLICATION_CURRENCY_EXPONENT = newTag("9F44", "application currency exponent", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY = newTag("9F3B", "application reference currency", HEX);
     public static final Tag APPLICATION_REFERENCE_CURRENCY_EXPONENT = newTag("9F43", "application reference currency exponent", HEX);
-    public static final Tag DDOL = newTag("9F49", "DDOL", "dynamic data authentication DOL", DOL);
-    public static final Tag NON_TLV_RESPONSE_TEMPLATE = newTag("80", "Fixed response template", "Fixed response template", new ResponseFormat1Decoder());
+    public static final Tag DDOL = newTag("9F49", "DDOL", "dynamic data authentication data object list", DOL);
+    public static final Tag NON_TLV_RESPONSE_TEMPLATE = newTag("80", "Fixed response template", new ResponseFormat1Decoder());
 
     static {
         newTag("9F13", "Last online ATC value", BASE_10);
@@ -134,30 +134,24 @@ public class EmvTags {
         newTag("9F55", "Geographic Indicator", HEX);
         newTag("9F5C", "Cumulative Total Transaction Amount Upper Limit", HEX);
         newTag("DF4F", "JIS 2 Equivalent Data", HEX);
+        newTag("88", "SFI", "Short file identifier", HEX);
+        newTag("4F", "ADF", "Application dedicated file name", HEX);
     }
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
-        return newTag(METADATA, hexString, shortName, longName, decoder);
+        return METADATA.newTag(hexString, shortName, longName, decoder);
     }
 
     private static Tag newTag(String hexString, String longName, Decoder decoder) {
-        return newTag(METADATA, hexString, longName, longName, decoder);
+        return METADATA.newTag(hexString, longName, longName, decoder);
+    }
+
+    private static Tag newTag(String hexString, String shortName, String longName, PrimitiveDecoder primitiveDecoder) {
+        return METADATA.newTag(hexString, shortName, longName, primitiveDecoder);
     }
 
     private static Tag newTag(String hexString, String name, PrimitiveDecoder primitiveDecoder) {
-        return newTag(METADATA, hexString, name, primitiveDecoder);
-    }
-
-    protected static Tag newTag(TagMetaData metaData, String hexString, String shortName, String longName, Decoder decoder) {
-        Tag tag = Tag.fromHex(hexString);
-        metaData.put(tag, new TagInfo(shortName, longName, decoder, HEX));
-        return tag;
-    }
-
-    protected static Tag newTag(TagMetaData metaData, String hexString, String name, PrimitiveDecoder primitiveDecoder) {
-        Tag tag = Tag.fromHex(hexString);
-        metaData.put(tag, new TagInfo(name, name, Decoders.PRIMITIVE, primitiveDecoder));
-        return tag;
+        return METADATA.newTag(hexString, name, name, primitiveDecoder);
     }
 
 }

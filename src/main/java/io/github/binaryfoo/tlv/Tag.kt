@@ -49,7 +49,7 @@ public data class Tag(val bytes: ByteArray) {
     }
 
     public fun toString(tagMetaData: TagMetaData): String {
-        return ISOUtil.hexString(bytes) + " (" + tagMetaData.get(this).shortName + ")"
+        return ISOUtil.hexString(bytes) + " (" + tagMetaData.get(this).fullName + ")"
     }
 
     class object {

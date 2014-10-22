@@ -12,6 +12,11 @@ public data class TagInfo(
         val decoder: Decoder, // Decode the value of a BerTlv (primitive or constructed) to be included in the children field of a DecodedData.
         val primitiveDecoder: PrimitiveDecoder = PrimitiveDecoder.HEX) {
 
+    public val fullName: String
+    get() {
+        return if (longName.isEmpty() || longName == shortName) shortName else shortName + " - " + longName
+    }
+
     public fun getMaxLength(): Int {
         return decoder.getMaxLength()
     }

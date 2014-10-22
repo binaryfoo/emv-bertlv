@@ -18,6 +18,18 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
         }
     }
 
+    public fun newTag(hexString: String, shortName: String, longName: String, primitiveDecoder: PrimitiveDecoder): Tag {
+        val tag = Tag.fromHex(hexString)
+        put(tag, TagInfo(shortName, longName, Decoders.PRIMITIVE, primitiveDecoder))
+        return tag
+    }
+
+    public fun newTag(hexString: String, shortName: String, longName: String, decoder: Decoder): Tag {
+        val tag = Tag.fromHex(hexString)
+        put(tag, TagInfo(shortName, longName, decoder, PrimitiveDecoder.HEX))
+        return tag
+    }
+
     public fun get(tag: Tag): TagInfo {
         val tagInfo = metadata.get(tag.getHexString())
         if (tagInfo == null) {

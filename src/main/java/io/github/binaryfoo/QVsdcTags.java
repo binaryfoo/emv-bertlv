@@ -15,10 +15,10 @@ public class QVsdcTags extends EmvTags {
     public static final Tag CARD_AUTH_RELATED_DATA = newTag("9F69", "Card Authentication Related Data", HEX);
 
     private static Tag newTag(String hexString, String shortName, String longName, Decoder decoder) {
-        return newTag(METADATA, hexString, shortName, longName, decoder);
+        return METADATA.newTag(hexString, shortName, longName, decoder);
     }
 
     private static Tag newTag(String hexString, String name, PrimitiveDecoder primitiveDecoder) {
-        return newTag(METADATA, hexString, name, primitiveDecoder);
+        return METADATA.newTag(hexString, name, name, primitiveDecoder);
     }
 }

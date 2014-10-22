@@ -13,10 +13,10 @@ public class AmexTags extends EmvTags {
     public static final Tag CHECK_CURRENCY_CODE = newTag("9F66", "Single Transaction Value Limit Check – Dual Currency Code", PrimitiveDecoder.CURRENCY_CODE);
 
     private static Tag newTag(String hexString, String longName, Decoder decoder) {
-        return newTag(METADATA, hexString, longName, longName, decoder);
+        return METADATA.newTag(hexString, longName, longName, decoder);
     }
 
     private static Tag newTag(String hexString, String name, PrimitiveDecoder primitiveDecoder) {
-        return newTag(METADATA, hexString, name, primitiveDecoder);
+        return METADATA.newTag(hexString, name, name, primitiveDecoder);
     }
 }
