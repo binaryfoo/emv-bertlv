@@ -66,8 +66,8 @@ public class RootDecoder {
 
         // array because List<TagInfo> and friends seem to show up in .java as List<Object>
         // at least when using emv-bertlv as a library
-        platformStatic public fun getSupportedTags(): Array<TagInfo> {
-            return ROOT_TAG_INFO.values().copyToArray()
+        platformStatic public fun getSupportedTags(): Array<Map.Entry<String, TagInfo>> {
+            return ROOT_TAG_INFO.entrySet().copyToArray()
         }
 
         platformStatic public fun getAllTagMeta(): Set<String> {
