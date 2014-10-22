@@ -17,7 +17,7 @@ public class SignedDynamicApplicationDataDecoder : Annotater {
         if (iccKeyExponent != null && signedData != null && iccPublicKeyCertificate != null) {
             val recovered = SignedDataRecoverer().recover(signedData, iccKeyExponent, iccPublicKeyCertificate.fullKey)
             val dump = decode(recovered, iccPublicKeyCertificate.fullKey.size / 2)
-            decoded.findForValue(signedData)!!.notes = dump
+            decoded.findForValue(signedData)!!.notes = "Recovered using ICC public key:\n${dump}"
         }
     }
 

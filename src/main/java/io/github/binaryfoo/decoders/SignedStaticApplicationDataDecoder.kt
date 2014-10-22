@@ -21,7 +21,7 @@ public class SignedStaticApplicationDataDecoder : Annotater {
         if (issuerKeyExponent != null && signedStaticData != null && issuerPublicKeyCertificate != null) {
             val recovered = SignedDataRecoverer().recover(signedStaticData, issuerKeyExponent, issuerPublicKeyCertificate.fullKey)
             val dump = decode(recovered, issuerPublicKeyCertificate.fullKey.size / 2)
-            decoded.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)!!.notes = dump
+            decoded.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)!!.notes = "Recovered using Issuer public key:\n${dump}"
         }
     }
 

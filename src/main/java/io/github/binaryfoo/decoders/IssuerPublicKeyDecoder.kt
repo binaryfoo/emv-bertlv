@@ -27,7 +27,7 @@ public class IssuerPublicKeyDecoder : Annotater {
 
                 issuerPublicKeyCertificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
                 session.issuerPublicKeyCertificate = issuerPublicKeyCertificate
-                decoded.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)!!.notes = issuerPublicKeyCertificate.textDump
+                decoded.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)!!.notes = "Recovered using CA public key:\n${issuerPublicKeyCertificate.textDump}"
             }
         }
     }

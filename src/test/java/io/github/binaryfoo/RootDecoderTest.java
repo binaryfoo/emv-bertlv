@@ -79,7 +79,8 @@ public class RootDecoderTest {
                 "00 B2 06 0C 00\n" +
                 "70 76 9F 4A 01 82 93 70 27 6F 99 43 5D AC C0 20 C1 AB 9D 09 DA D7 6D 70 44 C6 D5 74 C9 F0 C0 5D A1 D6 68 94 EF A2 BF 9A 68 6E 1D FA 35 38 56 D6 CF 24 C7 68 7B 99 91 D6 3C 87 7F 09 26 42 40 41 09 63 56 E0 0E 24 BB F4 02 62 6A 37 D9 8E A4 25 08 FC 58 28 52 7A BE 1D 3F 2C 28 D6 0B C2 49 CF 20 38 C7 70 22 DF D5 92 3F 02 99 D6 05 48 23 86 ED 94 7E 8E CB B4 35 B6 90 00";
 
-        String recoveredIssuerCertificate = "Header: 6A\n" +
+        String recoveredIssuerCertificate = "Recovered using CA public key:\n" +
+                "Header: 6A\n" +
                 "Format: 02\n" +
                 "Identifier (PAN prefix): 35699900\n" +
                 "Expiry Date (MMYY): 1249\n" +
@@ -92,7 +93,8 @@ public class RootDecoderTest {
                 "Hash: F9D10CF1387465F4FCAD14EEFDAFEE10A50B7C08\n" +
                 "Trailer: BC\n";
 
-        String recoveredStaticSignedData = "Header: 6A\n" +
+        String recoveredStaticSignedData = "Recovered using Issuer public key:\n" +
+                "Header: 6A\n" +
                 "Format: 03\n" +
                 "Hash Algorithm: 01\n" +
                 "Data Auth Code: 0001\n" +
@@ -117,7 +119,8 @@ public class RootDecoderTest {
                 "00 88 00 00 1D 00 00 00 10 01 00 00 00 00 00 00 00 00 36 00 00 00 00 00 00 36 14 10 02 00 B7 7E 06 4F 00\n" + // Command: Internal Authenticate
                 "80 40 2E 52 9F B6 4E 6E 54 1D 01 2B 6B 05 B0 F3 25 4F 51 26 7A C9 0A 1F 27 45 77 38 74 28 8C 19 99 35 C3 B1 77 43 AC 8A CB E1 90 5B DA 92 FF D0 39 30 37 69 90 BF D7 BF 18 77 10 50 C5 D9 E7 04 81 38 90 00"; // Response: Signed Data
 
-        String recoveredDynamicSignedData = "Header: 6A\n" +
+        String recoveredDynamicSignedData = "Recovered using ICC public key:\n" +
+                "Header: 6A\n" +
                 "Format: 05\n" +
                 "Hash algorithm: 01\n" +
                 "Dynamic data length: 7\n" +

@@ -18,7 +18,7 @@ public class ICCPublicKeyDecoder : Annotater {
             val recoveredCertificate = decode(recovered, issuerPublicKeyCertificate.fullKey.size / 2)
             recoveredCertificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
             session.iccPublicKeyCertificate = recoveredCertificate
-            decoded.findForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)!!.notes = recoveredCertificate.textDump
+            decoded.findForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)!!.notes = "Recovered using issuer public key:\n${recoveredCertificate.textDump}" 
         }
     }
 
