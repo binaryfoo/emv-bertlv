@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import kotlin.platform.platformStatic
+import java.util.ArrayList
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -83,29 +84,35 @@ public data class DecodedData(
         }
 
         platformStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {
+            val matches = decoded.findAllForTag(tag)
+            return if (matches.empty) null else matches[0]
+        }
+
+        platformStatic public fun findAllForTag(tag: Tag, decoded: List<DecodedData>): List<DecodedData> {
+            var matches = ArrayList<DecodedData>()
             decoded.forEach {
                 if (it.tag == tag) {
-                    return it
+                    matches.add(it)
                 }
-                val match = it.children.findForTag(tag)
-                if (match != null) {
-                    return match
-                }
+                matches.addAll(it.children.findAllForTag(tag))
             }
-            return null
+            return matches
         }
 
         platformStatic public fun findForValue(value: String, decoded: List<DecodedData>): DecodedData? {
+            val matches = decoded.findAllForValue(value)
+            return if (matches.empty) null else matches[0]
+        }
+
+        platformStatic public fun findAllForValue(value: String, decoded: List<DecodedData>): List<DecodedData> {
+            var matches = ArrayList<DecodedData>()
             decoded.forEach {
                 if (it.fullDecodedData == value) {
-                    return it
+                    matches.add(it)
                 }
-                val match = it.children.findForValue(value)
-                if (match != null) {
-                    return match
-                }
+                matches.addAll(it.children.findAllForValue(value))
             }
-            return null
+            return matches
         }
 
     }
@@ -116,6 +123,14 @@ public fun List<DecodedData>.findForTag(tag: Tag): DecodedData? {
     return DecodedData.findForTag(tag, this)
 }
 
+public fun List<DecodedData>.findAllForTag(tag: Tag): List<DecodedData> {
+    return DecodedData.findAllForTag(tag, this)
+}
+
 public fun List<DecodedData>.findForValue(value: String): DecodedData? {
     return DecodedData.findForValue(value, this)
+}
+
+public fun List<DecodedData>.findAllForValue(value: String): List<DecodedData> {
+    return DecodedData.findAllForValue(value, this)
 }

@@ -9,6 +9,7 @@ import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.crypto
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.findForTag
+import io.github.binaryfoo.findAllForTag
 
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
@@ -27,7 +28,8 @@ public class IssuerPublicKeyDecoder : Annotater {
 
                 issuerPublicKeyCertificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
                 session.issuerPublicKeyCertificate = issuerPublicKeyCertificate
-                decoded.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)!!.notes = "Recovered using CA public key:\n${issuerPublicKeyCertificate.textDump}"
+                val notes = "Recovered using CA public key:\n${issuerPublicKeyCertificate.textDump}"
+                decoded.findAllForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE).forEach { it.notes = notes }
             }
         }
     }

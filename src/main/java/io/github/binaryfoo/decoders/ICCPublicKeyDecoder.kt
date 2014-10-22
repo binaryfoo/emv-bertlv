@@ -6,6 +6,7 @@ import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findForTag
+import io.github.binaryfoo.findAllForTag
 
 public class ICCPublicKeyDecoder : Annotater {
 
@@ -18,7 +19,8 @@ public class ICCPublicKeyDecoder : Annotater {
             val recoveredCertificate = decode(recovered, issuerPublicKeyCertificate.fullKey.size / 2)
             recoveredCertificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
             session.iccPublicKeyCertificate = recoveredCertificate
-            decoded.findForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)!!.notes = "Recovered using issuer public key:\n${recoveredCertificate.textDump}" 
+            val notes = "Recovered using issuer public key:\n${recoveredCertificate.textDump}"
+            decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE).forEach { it.notes = notes }
         }
     }
 

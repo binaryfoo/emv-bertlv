@@ -6,6 +6,7 @@ import io.github.binaryfoo.tlv.ISOUtil
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findForValue
 import io.github.binaryfoo.findForTag
+import io.github.binaryfoo.findAllForTag
 
 /**
  * EMV 4.3 Book 2, Table 7: Format of Data Recovered from Signed Static Application Data
@@ -20,8 +21,8 @@ public class SignedStaticApplicationDataDecoder : Annotater {
         val signedStaticData = session.findTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         if (issuerKeyExponent != null && signedStaticData != null && issuerPublicKeyCertificate != null) {
             val recovered = SignedDataRecoverer().recover(signedStaticData, issuerKeyExponent, issuerPublicKeyCertificate.fullKey)
-            val dump = decode(recovered, issuerPublicKeyCertificate.fullKey.size / 2)
-            decoded.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)!!.notes = "Recovered using Issuer public key:\n${dump}"
+            val notes = "Recovered using Issuer public key:\n" + decode(recovered, issuerPublicKeyCertificate.fullKey.size / 2)
+            decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA).forEach { it.notes = notes }
         }
     }
 
