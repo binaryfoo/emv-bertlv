@@ -11,7 +11,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder
 import kotlin.platform.platformStatic
 
 /**
- * An element in the decoding.
+ * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
+ * Each instance represents a single level in the hierarchy. Leaf nodes have no children.
  *
  * Examples:
  * <ul>
