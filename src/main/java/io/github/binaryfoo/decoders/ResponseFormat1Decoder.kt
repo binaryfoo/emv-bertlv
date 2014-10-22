@@ -29,7 +29,10 @@ public class ResponseFormat1Decoder : Decoder {
                     decode(EmvTags.APPLICATION_CRYPTOGRAM, applicationCryptogram, startIndexInBytes + 3, 8, session),
                     decode(EmvTags.ISSUER_APPLICATION_DATA, issuerApplicationData, startIndexInBytes + 11, (input.length() - 22) / 2, session))
         }
-        // TODO APDUCommand.InternalAuthenticate
+        if (session.currentCommand == APDUCommand.InternalAuthenticate) {
+            // 9F4B is only used for Format 2 responses to Internal authenticate
+            session.signedDynamicAppData = input
+        }
         return listOf()
     }
 

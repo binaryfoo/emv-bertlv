@@ -7,14 +7,15 @@ import io.github.binaryfoo.decoders.annotator.Annotater
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.crypto
-import io.github.binaryfoo.crypto.IssuerPublicKeyCertificate
+import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
+import io.github.binaryfoo.findForTag
 
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
  */
 public class IssuerPublicKeyDecoder : Annotater {
 
-    override fun createNotes(session: DecodeSession): String? {
+    override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val keyIndex = session.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)
         val certificate = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
         val rid = extractRid(session.findTag(EmvTags.DEDICATED_FILE_NAME))
@@ -26,13 +27,12 @@ public class IssuerPublicKeyDecoder : Annotater {
 
                 issuerPublicKeyCertificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
                 session.issuerPublicKeyCertificate = issuerPublicKeyCertificate
-                return issuerPublicKeyCertificate.textDump
+                decoded.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)!!.notes = issuerPublicKeyCertificate.textDump
             }
         }
-        return null
     }
 
-    public fun decode(recovered: ByteArray, byteLengthOfCAModulus: Int): IssuerPublicKeyCertificate {
+    public fun decode(recovered: ByteArray, byteLengthOfCAModulus: Int): RecoveredPublicKeyCertificate {
         val b = StringBuilder()
         b.append("Header: ").append(ISOUtil.hexString(recovered, 0, 1)).append('\n')
         b.append("Format: ").append(ISOUtil.hexString(recovered, 1, 1)).append('\n')
@@ -50,7 +50,7 @@ public class IssuerPublicKeyDecoder : Annotater {
         b.append("Public key: ").append(leftKeyPart).append('\n')
         b.append("Hash: ").append(ISOUtil.hexString(recovered, 15 + byteLengthOfCAModulus - 36, 20)).append('\n')
         b.append("Trailer: ").append(ISOUtil.hexString(recovered, 15 + byteLengthOfCAModulus - 36 + 20, 1)).append('\n')
-        return IssuerPublicKeyCertificate(b.toString(), exponentLength, leftKeyPart)
+        return RecoveredPublicKeyCertificate(b.toString(), exponentLength, leftKeyPart)
     }
 
     fun extractRid(fileName: String?) = fileName?.substring(0, 10)

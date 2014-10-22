@@ -17,13 +17,17 @@ import java.util.ArrayList
 import io.github.binaryfoo.decoders.IssuerPublicKeyDecoder
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.decoders.SignedStaticApplicationDataDecoder
+import io.github.binaryfoo.decoders.ICCPublicKeyDecoder
+import io.github.binaryfoo.decoders.SignedDynamicApplicationDataDecoder
 
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
     private val hexDumpFactory = HexDumpFactory()
-    private val annotators = mapOf(
-        EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE to IssuerPublicKeyDecoder(),
-        EmvTags.SIGNED_STATIC_APPLICATION_DATA to SignedStaticApplicationDataDecoder()
+    private val annotators = listOf(
+        IssuerPublicKeyDecoder(),
+        ICCPublicKeyDecoder(),
+        SignedStaticApplicationDataDecoder(),
+        SignedDynamicApplicationDataDecoder()
     )
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
@@ -46,7 +50,8 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                 list.add(DecodedData.primitive(line, "Failed to decode: " + e.getMessage(), 0, 0))
             }
         }
-        return postProcess(list, session)
+        postProcess(list, session)
+        return list
     }
 
     private fun getCommandDecoder(input: String): CommandAPDUDecoder? {
@@ -62,16 +67,9 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
         return Integer.MAX_VALUE
     }
 
-    fun postProcess(decoded: List<DecodedData>, session: DecodeSession): List<DecodedData> {
-        for ((tag, processor) in annotators) {
-            val d = DecodedData.findForTag(tag, decoded)
-            if (d != null) {
-                try {
-                    d.notes = processor.createNotes(session)
-                } catch(e: Exception) {
-                }
-            }
+    fun postProcess(decoded: List<DecodedData>, session: DecodeSession) {
+        for (processor in annotators) {
+            processor.createNotes(session, decoded)
         }
-        return decoded
     }
 }

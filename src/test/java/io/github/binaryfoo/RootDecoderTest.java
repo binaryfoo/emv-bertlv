@@ -100,6 +100,27 @@ public class RootDecoderTest {
                 "Trailer: BC\n"));
     }
 
+    @Test
+    public void decodeDynamicSignedData() throws Exception {
+        String apdus = "00 A4 04 00 08 A0 00 00 00 25 01 01 04 00\n" + // Command: select
+                "6F 2A 84 08 A0 00 00 00 25 01 01 04 A5 1E 50 04 41 4D 45 58 87 01 01 9F 38 12 9F 1A 02 9F 33 03 9F 40 05 9F 1B 04 9F 09 02 9F 35 01 90 00 \n" + // Response: has AID
+                "00 B2 01 0C 00\n" + // Command: read record
+                "70 81 A1 5F 20 1A 41 4D 45 58 20 54 45 53 54 43 41 52 44 20 20 20 20 20 20 20 20 20 20 20 20 20 57 13 37 42 45 45 54 00 00 1D 20 12 20 10 00 40 56 56 00 00 0F 8F 01 04 90 60 94 D2 56 91 DC 52 0C E1 82 B5 F0 28 EE D8 4E A0 78 35 23 A9 0F 77 2F C5 0A E6 4C 31 3A 2F B8 1D 09 95 4B BA F0 6F FF 1C 73 64 FB 17 14 F5 04 9D 78 CA F4 D7 7C 36 36 2B 2C 9A 59 73 03 A1 E2 9C A7 75 D0 74 1E 79 EE D5 8F 45 F2 CB 73 24 7A EF 14 1A 65 B8 46 48 39 FC B0 55 E3 2E 0C 2A 93 F4 9F 32 01 03 92 04 D2 48 71 61 90 00\n" + // Response: Issuer public key
+                "00 B2 04 0C 00\n" + // Command: read record
+                "70 81 8C 9F 46 40 35 2D 92 83 E0 E1 23 73 F1 8C BA CD 76 0A 3E 78 D0 04 99 0E A8 5E B2 4A DC B3 A0 93 26 AD AA 4A E7 CE DF 26 29 01 94 93 AE C4 67 98 9F 43 16 28 70 C9 48 BF 5B 43 D1 96 81 47 8C F0 5A B2 6D B5 9F 48 2A FE 6F 90 DD D4 32 B5 DB 1C DC FB AC 96 98 02 C6 4A 60 69 FD 26 7C 41 C1 AC 82 E3 8E A2 54 F4 AA 4B D0 9B 04 51 6C 19 E1 8A C5 9F 47 01 03 9F 49 15 9F 02 06 9F 03 06 9F 1A 02 95 05 5F 2A 02 9A 03 9C 01 9F 37 04 90 00\n" + // Response: ICC public key
+                "00 88 00 00 1D 00 00 00 10 01 00 00 00 00 00 00 00 00 36 00 00 00 00 00 00 36 14 10 02 00 B7 7E 06 4F 00\n" + // Command: Internal Authenticate
+                "80 40 2E 52 9F B6 4E 6E 54 1D 01 2B 6B 05 B0 F3 25 4F 51 26 7A C9 0A 1F 27 45 77 38 74 28 8C 19 99 35 C3 B1 77 43 AC 8A CB E1 90 5B DA 92 FF D0 39 30 37 69 90 BF D7 BF 18 77 10 50 C5 D9 E7 04 81 38 90 00"; // Response: Signed Data
+
+        List<DecodedData> decoded = decodeApdus(apdus.replace(" ", ""));
+        assertThat(decoded.get(decoded.size() - 1).getChild(0).getNotes(), is("Header: 6A\n" +
+                "Format: 05\n" +
+                "Hash algorithm: 01\n" +
+                "Dynamic data length: 7\n" +
+                "Dynamic data: 06112233445566\n" + // tad suspicious...
+                "Hash: 97C21EB1AA67291E00322913CE1C52CCF0D93200\n" +
+                "Trailer: BC\n"));
+    }
+
     private List<DecodedData> decodeApdus(String apdus) {
         return rootDecoder.decode(apdus, "EMV", "apdu-sequence");
     }

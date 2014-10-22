@@ -1,6 +1,9 @@
 package io.github.binaryfoo.crypto
 
-public data class IssuerPublicKeyCertificate(
+/**
+ * Covers by Issuer and ICC (chip card).
+ */
+public data class RecoveredPublicKeyCertificate(
         val textDump: String,
         val exponentLength: String,
         val leftKeyPart: String,

@@ -6,14 +6,16 @@ import io.github.binaryfoo.tlv.Tag
 
 import java.util.HashMap
 import io.github.binaryfoo.tlv.BerTlv
-import io.github.binaryfoo.crypto.IssuerPublicKeyCertificate
+import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 
 public class DecodeSession : HashMap<Tag, String>() {
 
     private var firstGenerateACCommand = true
     public var tagMetaData: TagMetaData? = null
     public var currentCommand: APDUCommand? = null
-    public var issuerPublicKeyCertificate: IssuerPublicKeyCertificate? = null
+    public var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
+    public var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
+    public var signedDynamicAppData: String? = null
 
     public fun isFirstGenerateACCommand(): Boolean {
         return firstGenerateACCommand

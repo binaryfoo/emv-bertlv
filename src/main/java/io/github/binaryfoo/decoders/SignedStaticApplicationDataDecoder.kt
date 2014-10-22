@@ -3,20 +3,26 @@ package io.github.binaryfoo.decoders
 import io.github.binaryfoo.decoders.annotator.Annotater
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.tlv.ISOUtil
+import io.github.binaryfoo.DecodedData
+import io.github.binaryfoo.findForValue
+import io.github.binaryfoo.findForTag
 
 /**
  * EMV 4.3 Book 2, Table 7: Format of Data Recovered from Signed Static Application Data
+ *
+ * Static data auth means CA (scheme) -> Issuer -> data. Chip has no RSA hardware. No replay attack prevention.
  */
 public class SignedStaticApplicationDataDecoder : Annotater {
-    override fun createNotes(session: DecodeSession): String? {
+
+    override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val issuerKeyExponent = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_EXPONENT)
-        val signedStaticData = session.findTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate
+        val signedStaticData = session.findTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         if (issuerKeyExponent != null && signedStaticData != null && issuerPublicKeyCertificate != null) {
             val recovered = SignedDataRecoverer().recover(signedStaticData, issuerKeyExponent, issuerPublicKeyCertificate.fullKey)
-            return decode(recovered, issuerPublicKeyCertificate.fullKey.size/2)
+            val dump = decode(recovered, issuerPublicKeyCertificate.fullKey.size / 2)
+            decoded.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)!!.notes = dump
         }
-        return null
     }
 
     fun decode(recovered: ByteArray, byteLengthOfIssuerModulus: Int): String {

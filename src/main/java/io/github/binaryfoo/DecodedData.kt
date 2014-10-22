@@ -87,9 +87,27 @@ public data class DecodedData(
             return null
         }
 
-        public fun List<DecodedData>.findForTag(tag: Tag): DecodedData? {
-            return findForTag(tag, this)
+        platformStatic public fun findForValue(value: String, decoded: List<DecodedData>): DecodedData? {
+            decoded.forEach {
+                if (it.fullDecodedData == value) {
+                    return it
+                }
+                val match = it.children.findForValue(value)
+                if (match != null) {
+                    return match
+                }
+            }
+            return null
         }
+
     }
 
+}
+
+public fun List<DecodedData>.findForTag(tag: Tag): DecodedData? {
+    return DecodedData.findForTag(tag, this)
+}
+
+public fun List<DecodedData>.findForValue(value: String): DecodedData? {
+    return DecodedData.findForValue(value, this)
 }
