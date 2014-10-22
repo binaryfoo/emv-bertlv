@@ -26,9 +26,16 @@ public data class DecodedData(
         val fullDecodedData: String,
         val startIndex: Int, // in bytes
         val endIndex: Int, // in bytes
-        val children: List<DecodedData> = listOf()) {
+        kids: List<DecodedData> = listOf()) {
     public var notes: String? = null
     public var hexDump: List<HexDumpElement>? = null
+    public val children: List<DecodedData> = kids
+    get() {
+        if ($children.isEmpty() && notes != null) {
+            return listOf(primitive("", notes!!, 0, 0))
+        }
+        return $children
+    }
 
     private fun trim(decodedData: String): String {
         return if (decodedData.length() >= 60) decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) else decodedData
