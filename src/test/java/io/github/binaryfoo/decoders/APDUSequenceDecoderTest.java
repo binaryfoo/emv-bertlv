@@ -4,7 +4,6 @@ import io.github.binaryfoo.DecodedData;
 import io.github.binaryfoo.Decoder;
 import io.github.binaryfoo.EmvTags;
 import io.github.binaryfoo.decoders.apdu.*;
-import org.easymock.classextension.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,24 +11,22 @@ import java.util.List;
 
 import static io.github.binaryfoo.BoundsMatcher.hasBounds;
 import static io.github.binaryfoo.DecodedMatcher.decodedAs;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class APDUSequenceDecoderTest extends EasyMockSupport {
+public class APDUSequenceDecoderTest {
 
     private DecodeSession session;
     private Decoder decoder;
 
     @Before
     public void setUp() throws Exception {
-        SelectCommandAPDUDecoder selectCommandAPDUDecoder = new SelectCommandAPDUDecoder();
         ReplyAPDUDecoder replyAPDUDecoder = new ReplyAPDUDecoder(new TLVDecoder());
-        GetProcessingOptionsCommandAPDUDecoder getProcessingOptionsCommandAPDUDecoder = new GetProcessingOptionsCommandAPDUDecoder();
-        decoder = new APDUSequenceDecoder(replyAPDUDecoder, selectCommandAPDUDecoder, getProcessingOptionsCommandAPDUDecoder);
+        decoder = new APDUSequenceDecoder(replyAPDUDecoder,
+                new SelectCommandAPDUDecoder(),
+                new GetProcessingOptionsCommandAPDUDecoder(),
+                new InternalAuthenticateAPDUDecoder());
         session = new DecodeSession();
         session.setTagMetaData(EmvTags.METADATA);
     }
@@ -38,9 +35,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
     public void testOneSelectCommand() throws Exception {
         String input = "00A4040007A000000004101000";
 
-        replayAll();
         List<DecodedData> list = decoder.decode(input, 0, session);
-        verifyAll();
         assertThat(list.size(), is(1));
         assertThat(list.get(0), is(decodedAs("C-APDU: Select", "AID A0000000041010")));
         assertThat(list.get(0), hasBounds(0, input.length()/2));
@@ -51,9 +46,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
     public void testOneGetProcessingOptionsCommand() throws Exception {
         String input = "80A8000002830000";
 
-        replayAll();
         List<DecodedData> list = decoder.decode(input, 0, session);
-        verifyAll();
         assertThat(list.size(), is(1));
         assertThat(list.get(0), is(decodedAs("C-APDU: GPO", "No PDOL included")));
         assertThat(list.get(0), hasBounds(0, input.length() / 2));
@@ -66,10 +59,7 @@ public class APDUSequenceDecoderTest extends EasyMockSupport {
         String line2 = "6F1C8407A0000000041010A511500F505043204D434420303420207632309000";
         String input = line1 + " " + line2;
 
-        replayAll();
         List<DecodedData> list = decoder.decode(input, 0, session);
-        verifyAll();
-
         assertThat(list.size(), is(2));
         assertThat(list.get(0), is(decodedAs("C-APDU: Select", "AID A0000000041010")));
         assertThat(list.get(0), hasBounds(0, line1.length() / 2));

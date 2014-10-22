@@ -12,12 +12,12 @@ import io.github.binaryfoo.tlv.Tag
 
 public class TLVDecoder : Decoder {
 
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val list = BerTlv.parseList(ISOUtil.hex2byte(input), true)
-        return decodeTlvs(list, startIndexInBytes, decodeSession)
+        return decodeTlvs(list, startIndexInBytes, session)
     }
 
-    private fun decodeTlvs(list: List<BerTlv>, startIndex: Int, decodeSession: DecodeSession): List<DecodedData> {
+    private fun decodeTlvs(list: List<BerTlv>, startIndex: Int, session: DecodeSession): List<DecodedData> {
         var currentStartIndex = startIndex
         val decodedItems = ArrayList<DecodedData>()
         for (berTlv in list) {
@@ -26,16 +26,16 @@ public class TLVDecoder : Decoder {
             val length = berTlv.toBinary().size
             val contentEndIndex = currentStartIndex + length
             val compositeStartElementIndex = currentStartIndex + tag.bytes.size + berTlv.getLengthInBytesOfEncodedLength()
-            val tagMetaData = decodeSession.tagMetaData!!
+            val tagMetaData = session.tagMetaData!!
             if (tag.isConstructed()) {
-                decodedItems.add(DecodedData.fromTlv(tag, tag.toString(tagMetaData), valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, decodeSession)))
+                decodedItems.add(DecodedData.fromTlv(tag, tag.toString(tagMetaData), valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, session)))
             } else {
                 val tagInfo = tagMetaData.get(tag)
-                decodedItems.add(DecodedData.fromTlv(tag, tag.toString(tagMetaData), tagInfo.decodePrimitiveTlvValue(valueAsHexString), currentStartIndex, contentEndIndex, tagInfo.decoder.decode(valueAsHexString, compositeStartElementIndex, decodeSession)))
+                decodedItems.add(DecodedData.fromTlv(tag, tag.toString(tagMetaData), tagInfo.decodePrimitiveTlvValue(valueAsHexString), currentStartIndex, contentEndIndex, tagInfo.decoder.decode(valueAsHexString, compositeStartElementIndex, session)))
             }
             currentStartIndex += length
         }
-        decodeSession.rememberTags(list)
+        session.rememberTags(list)
         return decodedItems
     }
 

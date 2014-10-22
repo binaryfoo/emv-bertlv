@@ -46,7 +46,7 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode
         return maxLength
     }
 
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val decoded = ArrayList<DecodedData>()
         val bits = fromHex(input)
         for (field in bitMappings) {
@@ -59,11 +59,11 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode
         return decoded
     }
 
-    override fun validate(bitString: String?): String? {
-        if (bitString == null || bitString.length() != maxLength) {
+    override fun validate(input: String?): String? {
+        if (input == null || input.length() != maxLength) {
             return "Value must be exactly ${maxLength} characters"
         }
-        if (!ISOUtil.isValidHexString(bitString)) {
+        if (!ISOUtil.isValidHexString(input)) {
             return "Value must contain only the characters 0-9 and A-F"
         }
         return null

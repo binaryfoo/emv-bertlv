@@ -54,7 +54,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
         return _commandDecoders.firstOrNull { it.getCommand() == command }
     }
 
-    override fun validate(input: String): String? {
+    override fun validate(input: String?): String? {
         return null
     }
 

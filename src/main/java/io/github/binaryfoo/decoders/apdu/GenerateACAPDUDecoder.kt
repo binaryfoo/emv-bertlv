@@ -58,7 +58,6 @@ public class GenerateACAPDUDecoder : CommandAPDUDecoder {
     }
 
     class object {
-
         private val LOG = Logger.getLogger(javaClass<GenerateACAPDUDecoder>().getName())
     }
 }

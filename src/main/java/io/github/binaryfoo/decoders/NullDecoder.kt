@@ -6,11 +6,11 @@ import io.github.binaryfoo.Decoder
 import java.util.Collections
 
 public class NullDecoder : Decoder {
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         return listOf()
     }
 
-    override fun validate(input: String): String? {
+    override fun validate(input: String?): String? {
         return null
     }
 

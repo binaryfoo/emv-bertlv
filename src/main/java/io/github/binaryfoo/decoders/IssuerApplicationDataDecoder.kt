@@ -8,13 +8,13 @@ import java.util.Collections
 
 public class IssuerApplicationDataDecoder : Decoder {
 
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         try {
             // should do something better to tell the difference like use the session
             if (input.length() == 36 || input.length() == 52) {
-                return decodeMChipIad(input, startIndexInBytes, decodeSession)
+                return decodeMChipIad(input, startIndexInBytes, session)
             }
-            return decodeVisaIad(input, startIndexInBytes, decodeSession)
+            return decodeVisaIad(input, startIndexInBytes, session)
         } catch (ignored: Exception) {
         }
 
@@ -66,7 +66,7 @@ public class IssuerApplicationDataDecoder : Decoder {
         return decoded
     }
 
-    override fun validate(input: String): String? {
+    override fun validate(input: String?): String? {
         return null
     }
 

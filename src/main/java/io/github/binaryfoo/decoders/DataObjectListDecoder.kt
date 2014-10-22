@@ -9,7 +9,7 @@ import java.nio.ByteBuffer
 import java.util.ArrayList
 
 public class DataObjectListDecoder : Decoder {
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val children = ArrayList<DecodedData>()
         val buffer = ByteBuffer.wrap(ISOUtil.hex2byte(input))
         var offset = startIndexInBytes
@@ -17,14 +17,14 @@ public class DataObjectListDecoder : Decoder {
             val tag = Tag.parse(buffer)
             val b = buffer.get()
             val newOffset = offset + tag.bytes.size + 1
-            children.add(DecodedData.primitive("", tag.toString(decodeSession.tagMetaData!!) + " " + b + " bytes", offset, newOffset))
+            children.add(DecodedData.primitive("", tag.toString(session.tagMetaData!!) + " " + b + " bytes", offset, newOffset))
             offset = newOffset
         }
         return children
     }
 
-    override fun validate(input: String): String? {
-        if (!input.matches("^[0-9A-Za-z]$")) {
+    override fun validate(input: String?): String? {
+        if (input != null && input.matches("^[0-9A-Za-z]$")) {
             return "Only A-Z and 0-9 are valid"
         }
         return null

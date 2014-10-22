@@ -12,7 +12,7 @@ import io.github.binaryfoo.tlv.ISOUtil
  */
 public class CVMListDecoder : Decoder {
 
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): MutableList<DecodedData>? {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val x = Integer.parseInt(input.substring(0, 8), 16)
         val y = Integer.parseInt(input.substring(8, 16), 16)
         val decodedData = ArrayList<DecodedData>()
@@ -28,14 +28,14 @@ public class CVMListDecoder : Decoder {
         return 1000
     }
 
-    override fun validate(bitString: String?): String? {
-        if (bitString == null || bitString.length() < LENGTH_OF_AMOUNT_FIELDS_IN_CHARACTERS) {
+    override fun validate(input: String?): String? {
+        if (input == null || input.length() < LENGTH_OF_AMOUNT_FIELDS_IN_CHARACTERS) {
             return "Value must be at least ${LENGTH_OF_AMOUNT_FIELDS_IN_CHARACTERS} characters"
         }
-        if (bitString.length() % LENGTH_OF_CV_RULE != 0) {
+        if (input.length() % LENGTH_OF_CV_RULE != 0) {
             return "Length must be a multiple of " + LENGTH_OF_CV_RULE
         }
-        if (!ISOUtil.isValidHexString(bitString)) {
+        if (!ISOUtil.isValidHexString(input)) {
             return "Value must contain only the characters 0-9 and A-F"
         }
         return null

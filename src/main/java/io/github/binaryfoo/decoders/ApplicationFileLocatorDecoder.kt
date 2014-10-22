@@ -10,7 +10,7 @@ import java.util.ArrayList
  */
 public class ApplicationFileLocatorDecoder : Decoder {
 
-    override fun decode(input: String, startIndexInBytes: Int, decodeSession: DecodeSession): List<DecodedData> {
+    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val decoded = ArrayList<DecodedData>()
         for (offset in 0..input.length-1 step 8) {
             val element = input.substring(offset, offset + 8)
@@ -23,7 +23,7 @@ public class ApplicationFileLocatorDecoder : Decoder {
         return decoded
     }
 
-    override fun validate(input: String): String? {
+    override fun validate(input: String?): String? {
         return null
     }
 
