@@ -6,6 +6,7 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.findForValue
 import io.github.binaryfoo.findAllForValue
+import io.github.binaryfoo.findForTag
 
 /**
  * Dynamic data auth means CA (scheme) -> Issuer -> ICC -> data
@@ -14,7 +15,7 @@ public class SignedDynamicApplicationDataDecoder : Annotater {
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val iccKeyExponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
         val iccPublicKeyCertificate = session.iccPublicKeyCertificate
-        val signedData = session.signedDynamicAppData
+        val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData
         if (iccKeyExponent != null && signedData != null && iccPublicKeyCertificate != null) {
             val recovered = SignedDataRecoverer().recover(signedData, iccKeyExponent, iccPublicKeyCertificate.fullKey)
             val notes = "Recovered using ICC public key:\n" + decode(recovered, iccPublicKeyCertificate.fullKey.size / 2)
