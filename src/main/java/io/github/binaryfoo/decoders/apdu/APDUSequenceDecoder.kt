@@ -40,8 +40,10 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                 if (commandDecoder != null) {
                     session.currentCommand = commandDecoder.getCommand()
                     decoded = commandDecoder.decode(line, runningStartIndexInBytes, session)
+                    decoded.category = "c-apdu"
                 } else {
                     decoded = replyDecoder.decode(line, runningStartIndexInBytes, session)
+                    decoded.category = "r-apdu"
                 }
                 decoded.hexDump = hexDumpFactory.splitIntoByteLengthStrings(line, runningStartIndexInBytes)
                 runningStartIndexInBytes = decoded.endIndex

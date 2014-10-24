@@ -30,6 +30,10 @@ public data class DecodedData(
         val endIndex: Int, // in bytes
         kids: List<DecodedData> = listOf()) {
     public var notes: String? = null
+    /**
+     * Allow Command and Response APDUs to be displayed specially.
+     */
+    public var category: String = ""
     public var hexDump: List<HexDumpElement>? = null
     public val children: List<DecodedData> = kids
     get() {

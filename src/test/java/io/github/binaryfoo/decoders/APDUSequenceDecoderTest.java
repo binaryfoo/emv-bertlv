@@ -64,9 +64,12 @@ public class APDUSequenceDecoderTest {
         assertThat(list.get(0), is(decodedAs("C-APDU: Select", "AID A0000000041010")));
         assertThat(list.get(0), hasBounds(0, line1.length() / 2));
         assertThat(list.get(0).getHexDump(), is(notNullValue()));
+        assertThat(list.get(0).getCategory(), is("c-apdu"));
+
         assertThat(list.get(1), is(decodedAs("R-APDU", "9000")));
         assertThat(list.get(1), hasBounds(line1.length()/2, line1.length()/2 + line2.length()/2));
         assertThat(list.get(1).getHexDump(), is(notNullValue()));
+        assertThat(list.get(1).getCategory(), is("r-apdu"));
     }
 
     @Test
