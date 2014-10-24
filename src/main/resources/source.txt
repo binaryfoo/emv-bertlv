@@ -1,1 +1,2 @@
 https://github.com/datasets/currency-codes/blob/master/data/codes-all.csv
+https://github.com/datasets/country-codes/blob/master/data/country-codes.csv

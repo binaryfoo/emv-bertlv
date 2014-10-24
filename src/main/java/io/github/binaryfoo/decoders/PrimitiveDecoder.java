@@ -7,6 +7,7 @@ public interface PrimitiveDecoder {
     PrimitiveDecoder SOMETIMES_ASCII = new SometimesAsciiPrimitiveDecoder();
     PrimitiveDecoder BASE_10 = new Base10PrimitiveDecoder();
     PrimitiveDecoder CURRENCY_CODE = new CurrencyCodeDecoder();
+    PrimitiveDecoder COUNTRY_CODE = new CountryCodeDecoder();
 
     String decode(String hexString);
 }
