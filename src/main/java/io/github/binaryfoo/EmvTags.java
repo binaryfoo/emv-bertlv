@@ -33,7 +33,7 @@ public class EmvTags {
     public static final Tag THRESHOLD_VALUE = newTag("DF5C", "threshold value", HEX);
     public static final Tag FINAL_SELECT_INITIATE_TX = newTag("DF3A", "final select initiate tx", HEX);
 //    public static final Tag TRANSACTION_CURRENCY_CODE = newTag("5F2A", "transaction currency code", HEX);
-    public static final Tag TERMINAL_COUNTRY_CODE = newTag("9F1A", "terminal country code", HEX);
+    public static final Tag TERMINAL_COUNTRY_CODE = newTag("9F1A", "terminal country code", PrimitiveDecoder.COUNTRY_CODE);
     public static final Tag TRANSACTION_CURRENCY_EXPONENT = newTag("5F36", "transaction currency exponent", HEX);
     public static final Tag MERCHANT_ID = newTag("9F16", "merchant id", ASCII);
     public static final Tag MERCHANT_CATEGORY_CODE = newTag("9F15", "merchant category code", HEX);
@@ -76,7 +76,7 @@ public class EmvTags {
     public static final Tag TRACK_1_DISCRETIONARY_DATA = newTag("9F1F", "track 1 discretionary data", ASCII);
     public static final Tag TRACK_2_DISCRETIONARY_DATA = newTag("9F20", "track 2 discretionary data", HEX);
     public static final Tag CARD_EXPIRY = newTag("5F24", "card expiry", HEX);
-    public static final Tag ISSUER_COUNTRY_CODE = newTag("5F28", "issuer country code", HEX);
+    public static final Tag ISSUER_COUNTRY_CODE = newTag("5F28", "issuer country code", PrimitiveDecoder.COUNTRY_CODE);
     public static final Tag PAN_SEQUENCE_NUMBER = newTag("5F34", "PAN sequence number", HEX);
     public static final Tag PAN = newTag("5A", "PAN", HEX);
     public static final Tag AUTHORISATION_RESPONSE_CODE = newTag("8A", "authorisation response code", ASCII);

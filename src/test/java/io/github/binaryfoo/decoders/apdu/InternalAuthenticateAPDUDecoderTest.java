@@ -44,7 +44,7 @@ public class InternalAuthenticateAPDUDecoderTest {
         List<DecodedData> ddolValues = decodedData.getChildren();
         assertThat(ddolValues.get(0), is(decodedAs(AMOUNT_AUTHORIZED.toString(METADATA), "000000100100")));
         assertThat(ddolValues.get(1), is(decodedAs(AMOUNT_OTHER.toString(METADATA), "000000000000")));
-        assertThat(ddolValues.get(2), is(decodedAs(TERMINAL_COUNTRY_CODE.toString(METADATA), "0036")));
+        assertThat(ddolValues.get(2), is(decodedAs(TERMINAL_COUNTRY_CODE.toString(METADATA), "AUS (Australia)")));
         assertThat(ddolValues.get(3), is(decodedAs(TERMINAL_VERIFICATION_RESULTS.toString(METADATA), "0000000000")));
         assertThat(ddolValues.get(4), is(decodedAs(TERMINAL_CURRENCY_CODE.toString(METADATA), "AUD (Australian Dollar)")));
         assertThat(ddolValues.get(5), is(decodedAs(TRANSACTION_DATE.toString(METADATA), "141002")));

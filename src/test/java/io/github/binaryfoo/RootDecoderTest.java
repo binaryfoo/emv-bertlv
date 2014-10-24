@@ -79,7 +79,7 @@ public class RootDecoderTest {
                 "00 B2 06 0C 00\n" +
                 "70 76 9F 4A 01 82 93 70 27 6F 99 43 5D AC C0 20 C1 AB 9D 09 DA D7 6D 70 44 C6 D5 74 C9 F0 C0 5D A1 D6 68 94 EF A2 BF 9A 68 6E 1D FA 35 38 56 D6 CF 24 C7 68 7B 99 91 D6 3C 87 7F 09 26 42 40 41 09 63 56 E0 0E 24 BB F4 02 62 6A 37 D9 8E A4 25 08 FC 58 28 52 7A BE 1D 3F 2C 28 D6 0B C2 49 CF 20 38 C7 70 22 DF D5 92 3F 02 99 D6 05 48 23 86 ED 94 7E 8E CB B4 35 B6 90 00";
 
-        String recoveredIssuerCertificate = "Recovered using CA public key:\n" +
+        String recoveredIssuerCertificate = "Recovered using CA public key (A000000065,0F):\n" +
                 "Header: 6A\n" +
                 "Format: 02\n" +
                 "Identifier (PAN prefix): 35699900\n" +
