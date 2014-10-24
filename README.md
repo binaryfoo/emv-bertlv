@@ -10,7 +10,7 @@ Dependency Information:
         
 In [Maven Central](https://repo1.maven.org/maven2/io/github/binaryfoo/emv-bertlv/).        
 
-Used in a little [tool](http://tvr-decoder.appspot.com/t/home) hosted on Google's AppEngine.
+Used in a little [tool](http://tvr-decoder.appspot.com/t/home) hosted on Google's AppEngine. The for which lives in another [repo](https://github.com/wcurrie/emv-bertlv-tools).
 
 The tests provide some idea of what kind of data this code can decipher. The [EMVCo](http://www.emvco.com/specifications.aspx) website has the full (1000+ page) specs. Add to that the Visa, Mastercard and Amex documents.
 
