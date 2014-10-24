@@ -69,7 +69,10 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
 
     fun postProcess(decoded: List<DecodedData>, session: DecodeSession) {
         for (processor in annotators) {
-            processor.createNotes(session, decoded)
+            try {
+                processor.createNotes(session, decoded)
+            } catch(e: Exception) {
+            }
         }
     }
 }

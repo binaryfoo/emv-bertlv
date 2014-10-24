@@ -7,10 +7,6 @@ import java.math.BigInteger
 
 public class SignedDataRecoverer {
 
-    public fun recover(signed: String, key: CaPublicKey): ByteArray {
-        return recover(ISOUtil.hex2byte(signed), key.exponent, key.modulus)
-    }
-
     public fun recover(signed: String, exponent: String, modulus: String): ByteArray {
         return recover(ISOUtil.hex2byte(signed), ISOUtil.hex2byte(exponent), ISOUtil.hex2byte(modulus))
     }
@@ -19,6 +15,20 @@ public class SignedDataRecoverer {
         val biSigned = BigInteger(1, signed)
         val biExponent = BigInteger(exponent)
         val bigModulus = BigInteger(1, modulus)
-        return biSigned.modPow(biExponent, bigModulus).toByteArray()
+        val recovered = biSigned.modPow(biExponent, bigModulus).toByteArray()
+        verify(recovered)
+        return recovered
     }
+
+    private fun verify(recovered: ByteArray) {
+        val header = recovered[0].toInt()
+        if (header != 0x6A) {
+            throw IllegalStateException("Recover failed: bad header byte ${Integer.toHexString(header)}")
+        }
+        val footer = recovered[recovered.lastIndex].toInt() and 0xFF
+        if (footer != 0xBC) {
+            throw IllegalStateException("Recover failed: bad footer byte ${Integer.toHexString(footer)}")
+        }
+    }
+
 }
