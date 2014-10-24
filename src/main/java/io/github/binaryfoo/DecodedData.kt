@@ -2,7 +2,6 @@ package io.github.binaryfoo
 
 import java.util.Collections
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.github.binaryfoo.hex.HexDumpElement
 import io.github.binaryfoo.tlv.Tag
 import org.apache.commons.lang.StringUtils
@@ -21,7 +20,6 @@ import java.util.ArrayList
  *     <li>A primitive value interpreted as a bit string, like TVR, where the children are the "on" bits.</li>
  * </ul>
  */
-JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public data class DecodedData(
         val tag: Tag?,
         val rawData: String, // Not a great name. Used as a label for the decoded data.
