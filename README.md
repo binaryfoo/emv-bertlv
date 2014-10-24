@@ -5,7 +5,7 @@ Dependency Information:
         <dependency>
             <groupId>io.github.binaryfoo</groupId>
             <artifactId>emv-bertlv</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
         
 In [Maven Central](https://repo1.maven.org/maven2/io/github/binaryfoo/emv-bertlv/).        
