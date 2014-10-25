@@ -13,6 +13,6 @@ public class ReadRecordAPDUDecoderTest {
     public void testDecode() throws Exception {
         DecodedData decoded = new ReadRecordAPDUDecoder().decode("00B2011400", 0, new DecodeSession());
         assertThat(decoded.getRawData(), is("C-APDU: Read Record"));
-        assertThat(decoded.getDecodedData(), is("number 01 SFI 2"));
+        assertThat(decoded.getDecodedData(), is("SFI 2 record 1"));
     }
 }

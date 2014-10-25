@@ -12,6 +12,11 @@ http://www.wrankl.de/SCTables/SCTables.html
 Overview of ATR and application selection
 * http://dexterous-programmer.blogspot.com.au/2012/04/emv-transaction-step-1-application.html
 
+Full trace http://www.openscdp.org/scripts/tutorial/emv/index.html
+
+Relationship between ASN.1 and BER/TLV
+Canonical spec for BER TLV is X.690 (http://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf)
+
 Release and deploy (from http://central.sonatype.org/pages/apache-maven.html#performing-a-release-deployment):
 mvn release:clean release:prepare
 mvn release:perform

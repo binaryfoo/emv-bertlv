@@ -17,8 +17,8 @@ public class ApplicationFileLocatorDecoder : Decoder {
             val sfi = Integer.parseInt(element.substring(0, 2), 16) shr 3
             val firstRecord = Integer.parseInt(element.substring(2, 4))
             val lastRecord = Integer.parseInt(element.substring(4, 6))
-            val range = firstRecord.toString() + (if (lastRecord == firstRecord) "" else "-" + lastRecord)
-            decoded.add(DecodedData.primitive("", "SFI " + sfi + " number " + range, startIndexInBytes + (offset / 2), startIndexInBytes + (offset / 2) + 4))
+            val decoding = "SFI $sfi " + (if (lastRecord == firstRecord) "record $firstRecord" else "records $firstRecord-$lastRecord")
+            decoded.add(DecodedData.primitive("", decoding, startIndexInBytes + (offset / 2), startIndexInBytes + (offset / 2) + 4))
         }
         return decoded
     }
