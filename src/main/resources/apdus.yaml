@@ -1,0 +1,25 @@
+Select:
+ short: Pick the app that further commands apply to. Also used to poll for support for a given scheme.
+ long: In theory (maybe even practice) cards can be issued with mulitple apps. Select picks which set of files subsequent commands will be directed to.
+
+GetProcessingOptions:
+ short: Get Processing Options
+ long: A sort of feature negotiation handshake and how the terminal finds out what data it should read.
+
+ReadRecord:
+ short: Read from the card's file system a record identified by the pair (SFI, record number).
+ long: >
+   SFI = short file indicator. "Short" in that it's only meaningful when combined with an application id (provided by in the select command).
+   Each file has multiple records. Hence the record id. What each file contains is somewhat up to the issuer.
+
+GenerateAC:
+  short: Generate some bits that demonstrate to the issuer that the card is legitimate.
+  long: Uses a symmetric key shared between the card and issuer. The key is derived using the PAN and card sequence number.
+
+ExternalAuthenticate:
+  short: Let the card verifier the issuer's response.
+  long:
+
+InternalAuthenticate:
+  short: Produces a cryptogram used in magstripe mode contactless
+  long: Similar to GenerateAC but for the weaker magstripe mode.

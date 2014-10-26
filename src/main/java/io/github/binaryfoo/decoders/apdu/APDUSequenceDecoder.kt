@@ -19,6 +19,8 @@ import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.decoders.SignedStaticApplicationDataDecoder
 import io.github.binaryfoo.decoders.ICCPublicKeyDecoder
 import io.github.binaryfoo.decoders.SignedDynamicApplicationDataDecoder
+import io.github.binaryfoo.decoders.annotator
+import io.github.binaryfoo.decoders.annotator.BackgroundReading
 
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
@@ -41,6 +43,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                     session.currentCommand = commandDecoder.getCommand()
                     decoded = commandDecoder.decode(line, runningStartIndexInBytes, session)
                     decoded.category = "c-apdu"
+                    decoded.backgroundReading = BackgroundReading.readingFor(commandDecoder.getCommand())
                 } else {
                     decoded = replyDecoder.decode(line, runningStartIndexInBytes, session)
                     decoded.category = "r-apdu"

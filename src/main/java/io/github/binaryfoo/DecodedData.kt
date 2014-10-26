@@ -10,6 +10,7 @@ import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 import kotlin.platform.platformStatic
 import java.util.ArrayList
+import java.util.LinkedList
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -30,6 +31,7 @@ public data class DecodedData(
         val endIndex: Int, // in bytes
         kids: List<DecodedData> = listOf()) {
     public var notes: String? = null
+    public var backgroundReading: Map<String, String?>? = null
     /**
      * Allow Command and Response APDUs to be displayed specially.
      */

@@ -6,7 +6,7 @@ import io.github.binaryfoo.decoders.DecodeSession
 /**
  * Read a record (bucket of bits) from the card's file system. The record is identified by the pair (SFI, record number).
  *
- * SFI being the "short" file indicator. Short in that it's only meaningful to the card's file system when combined with an application id (provided by the terminal selecting the app).
+ * SFI = short file indicator. "Short" in that it's only meaningful to the card's file system when combined with an application id (provided by the terminal selecting the app).
  * In this language each file has multiple records. Hence the record id. File names in a typical desktop OS are somewhat more helpful to people but since we're dealing with a
  * machine to machine conversation here numbers make sense.
  */

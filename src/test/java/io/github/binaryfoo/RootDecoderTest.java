@@ -8,6 +8,7 @@ import java.util.List;
 import static io.github.binaryfoo.DecodedMatcher.decodedAs;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class RootDecoderTest {
@@ -131,6 +132,14 @@ public class RootDecoderTest {
         List<DecodedData> decoded = decodeApdus(apdus.replace(" ", ""));
         assertThat(decoded.get(decoded.size() - 1).getChild(0).getNotes(), is(recoveredDynamicSignedData));
         assertThat(decoded.get(decoded.size() - 1).getChild(0).getChildren(), hasItem(decodedAs("", recoveredDynamicSignedData)));
+    }
+
+    @Test
+    public void addsBackgroundReadingToReadRecordCommand() throws Exception {
+        String apdus = "00B2011400";
+
+        List<DecodedData> decoded = decodeApdus(apdus);
+        assertThat(decoded.get(0).getBackgroundReading(), is(notNullValue()));
     }
 
     private List<DecodedData> decodeApdus(String apdus) {
