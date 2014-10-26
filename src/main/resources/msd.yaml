@@ -1,0 +1,53 @@
+56:
+ name: track 1
+ primitiveDecoder: AsciiPrimitiveDecoder
+ scheme: MSD
+
+9F60:
+ name: CVC3 track 1
+ primitiveDecoder: Base10PrimitiveDecoder
+ scheme: MSD
+
+9F61:
+ name: CVC3 track 2
+ primitiveDecoder: Base10PrimitiveDecoder
+ scheme: MSD
+
+9F6B:
+ name: track 2
+ scheme: MSD
+
+9F62:
+ name: position of CVC3 in track 1
+ scheme: MSD
+
+9F63:
+ name: position of UN and ATC in track 1
+ scheme: MSD
+
+9F6C:
+ name: application version number
+ scheme: MSD
+
+9F64:
+ name: number of digits from ATC in track 1
+ scheme: MSD
+
+9F65:
+ name: position of CVC3 in track 2
+ scheme: MSD
+
+9F66:
+ name: position of UN and ATC in track 2
+ scheme: MSD
+
+9F67:
+ name: number of digits from ATC in track 2
+ scheme: MSD
+
+9F68:
+ name: CVM List
+ longName: Cardholder Verification Method List
+ decoder: CVMListDecoder
+ scheme: MSD
+

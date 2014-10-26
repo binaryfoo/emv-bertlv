@@ -42,13 +42,13 @@ public class InternalAuthenticateAPDUDecoderTest {
         String input = "00 88 00 00 1D 000000100100 000000000000 0036 0000000000 0036 141002 00 B77E064F 00".replace(" ", "");
         DecodedData decodedData = internalAuthenticateAPDUDecoder.decode(input, 0, session);
         List<DecodedData> ddolValues = decodedData.getChildren();
-        assertThat(ddolValues.get(0), is(decodedAs(AMOUNT_AUTHORIZED.toString(METADATA), "000000100100")));
-        assertThat(ddolValues.get(1), is(decodedAs(AMOUNT_OTHER.toString(METADATA), "000000000000")));
-        assertThat(ddolValues.get(2), is(decodedAs(TERMINAL_COUNTRY_CODE.toString(METADATA), "AUS (Australia)")));
-        assertThat(ddolValues.get(3), is(decodedAs(TERMINAL_VERIFICATION_RESULTS.toString(METADATA), "0000000000")));
-        assertThat(ddolValues.get(4), is(decodedAs(TERMINAL_CURRENCY_CODE.toString(METADATA), "AUD (Australian Dollar)")));
-        assertThat(ddolValues.get(5), is(decodedAs(TRANSACTION_DATE.toString(METADATA), "141002")));
-        assertThat(ddolValues.get(6), is(decodedAs(TRANSACTION_TYPE.toString(METADATA), "00")));
-        assertThat(ddolValues.get(7), is(decodedAs(UNPREDICTABLE_NUMBER.toString(METADATA), "B77E064F")));
+        assertThat(ddolValues.get(0), is(decodedAs("9F02 (amount authorized)", "000000100100")));
+        assertThat(ddolValues.get(1), is(decodedAs("9F03 (amount other)", "000000000000")));
+        assertThat(ddolValues.get(2), is(decodedAs("9F1A (terminal country code)", "AUS (Australia)")));
+        assertThat(ddolValues.get(3), is(decodedAs("95 (TVR - Terminal Verification Results)", "0000000000")));
+        assertThat(ddolValues.get(4), is(decodedAs("5F2A (terminal currency code)", "AUD (Australian Dollar)")));
+        assertThat(ddolValues.get(5), is(decodedAs("9A (transaction date)", "141002")));
+        assertThat(ddolValues.get(6), is(decodedAs("9C (transaction type)", "00")));
+        assertThat(ddolValues.get(7), is(decodedAs("9F37 (unpredictable number)", "B77E064F")));
     }
 }

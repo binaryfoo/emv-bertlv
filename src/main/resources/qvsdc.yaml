@@ -1,0 +1,16 @@
+9F69:
+ name: Card Authentication Related Data
+ scheme: QVSDC
+
+9F6C:
+ name: CTQ
+ longName: Card transaction qualifiers
+ decoder: CardTxQualifiersDecoder
+ scheme: QVSDC
+
+9F66:
+ name: TTQ
+ longName: Terminal transaction qualifiers
+ decoder: TerminalTxQualifiersDecoder
+ scheme: QVSDC
+

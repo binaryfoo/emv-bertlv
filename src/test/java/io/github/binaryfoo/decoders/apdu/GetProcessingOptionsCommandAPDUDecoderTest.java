@@ -24,8 +24,8 @@ public class GetProcessingOptionsCommandAPDUDecoderTest {
         assertThat(decoded.getRawData(), is("C-APDU: GPO"));
         List<DecodedData> children = decoded.getChildren();
         List<DecodedData> expectedDecodedTTQ = QVsdcTags.METADATA.get(QVsdcTags.TERMINAL_TX_QUALIFIERS).getDecoder().decode("36000000", 7, new DecodeSession());
-        assertThat(children, hasItem(DecodedData.constructed(QVsdcTags.TERMINAL_TX_QUALIFIERS.toString(QVsdcTags.METADATA), "36000000", 7, 11, expectedDecodedTTQ)));
-        assertThat(children, hasItem(DecodedData.primitive(EmvTags.UNPREDICTABLE_NUMBER.toString(EmvTags.METADATA), "0008E4C8", 36, 40)));
+        assertThat(children, hasItem(DecodedData.constructed("9F66 (TTQ - Terminal transaction qualifiers)", "36000000", 7, 11, expectedDecodedTTQ)));
+        assertThat(children, hasItem(DecodedData.primitive("9F37 (unpredictable number)", "0008E4C8", 36, 40)));
     }
 
     @Test

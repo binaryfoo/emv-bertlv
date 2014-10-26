@@ -1,0 +1,25 @@
+9F70:
+ name: Card interface capabilities
+ decoder: AmexCardInterfaceCapabilitiesDecoder
+ scheme: AMEX
+
+9F71:
+ name: Mobile CVM Results
+ decoder: MobileCVMDecoder
+ scheme: AMEX
+
+9F6D:
+ name: XP Terminal capabilities
+ decoder: AmexTerminalTxCapabilitiesDecoder
+ scheme: AMEX
+
+9F66:
+ name: Single Transaction Value Limit Check – Dual Currency Code
+ primitiveDecoder: CurrencyCodeDecoder
+ scheme: AMEX
+
+9F6E:
+ name: Terminal transaction capabilities
+ decoder: AmexTerminalCapabilitiesDecoder
+ scheme: AMEX
+

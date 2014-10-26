@@ -21,9 +21,9 @@ public class GenerateACAPDUDecoderTest {
         int startIndex = 6;
         DecodedData decoded = new GenerateACAPDUDecoder().decode(input, startIndex, session);
         assertThat(decoded.getRawData(), is("C-APDU: Generate AC (TC+CDA)"));
-        assertThat(decoded.getChildren(), hasItem(DecodedData.primitive(EmvTags.AMOUNT_AUTHORIZED.toString(EmvTags.METADATA), "000000010001", startIndex + 5, startIndex + 11)));
+        assertThat(decoded.getChildren(), hasItem(DecodedData.primitive("9F02 (amount authorized)", "000000010001", startIndex + 5, startIndex + 11)));
         List<DecodedData> expectedDecodedCVMResults = EmvTags.METADATA.get(EmvTags.CVM_RESULTS).getDecoder().decode("5E0300", startIndex + 45, new DecodeSession());
-        assertThat(decoded.getChildren(), hasItem(DecodedData.constructed(EmvTags.CVM_RESULTS.toString(EmvTags.METADATA), "5E0300", startIndex + 45, startIndex + 48, expectedDecodedCVMResults)));
+        assertThat(decoded.getChildren(), hasItem(DecodedData.constructed("9F34 (CVM Results - Cardholder Verification Results)", "5E0300", startIndex + 45, startIndex + 48, expectedDecodedCVMResults)));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class GenerateACAPDUDecoderTest {
 
         DecodedData secondDecoded = new GenerateACAPDUDecoder().decode(second, 0, session);
         assertThat(secondDecoded.getRawData(), is("C-APDU: Generate AC (TC)"));
-        assertThat(secondDecoded.getChildren(), hasItem(DecodedData.primitive(EmvTags.ISSUER_AUTHENTICATION_DATA.toString(EmvTags.METADATA), "11223344556677880000", 5, 15)));
-        assertThat(secondDecoded.getChildren(), hasItem(DecodedData.primitive(EmvTags.ICC_DYNAMIC_NUMBER.toString(EmvTags.METADATA), "0000000000000000", 26, 34)));
+        assertThat(secondDecoded.getChildren(), hasItem(DecodedData.primitive("91 (issuer authentication data)", "11223344556677880000", 5, 15)));
+        assertThat(secondDecoded.getChildren(), hasItem(DecodedData.primitive("9F4C (ICC dynamic number)", "0000000000000000", 26, 34)));
     }
 }

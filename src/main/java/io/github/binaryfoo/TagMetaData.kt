@@ -5,6 +5,15 @@ import io.github.binaryfoo.tlv.Tag
 
 import java.util.HashMap
 import kotlin.platform.platformStatic
+import java.io.IOException
+import java.io.PrintWriter
+import java.io.FileWriter
+import io.github.binaryfoo.io.ClasspathIO
+import org.yaml.snakeyaml.Yaml
+import java.util.LinkedHashMap
+import org.yaml.snakeyaml.Loader
+import org.yaml.snakeyaml.resolver.Resolver
+import org.yaml.snakeyaml.Dumper
 
 /**
  * A set of rules for interpreting a set of tags.
@@ -13,8 +22,12 @@ import kotlin.platform.platformStatic
 public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
 
     public fun put(tag: Tag, tagInfo: TagInfo) {
-        if (metadata.put(tag.getHexString(), tagInfo) != null) {
-            throw IllegalArgumentException("Duplicate entry for " + tag.getHexString())
+        put(tag.getHexString(), tagInfo)
+    }
+
+    private fun put(tag: String, tagInfo: TagInfo) {
+        if (metadata.put(tag, tagInfo) != null) {
+            throw IllegalArgumentException("Duplicate entry for $tag")
         }
     }
 
@@ -38,6 +51,14 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
         return tagInfo
     }
 
+    public fun join(other: TagMetaData): TagMetaData {
+        val joined = copy(other)
+        for ((tag, info) in metadata) {
+            joined.put(tag, info)
+        }
+        return joined
+    }
+
     class object {
         platformStatic public fun empty(): TagMetaData {
             return TagMetaData(HashMap())
@@ -47,5 +68,44 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
             return TagMetaData(HashMap(metadata.metadata))
         }
 
+        platformStatic public fun load(name: String): TagMetaData {
+            return TagMetaData(LinkedHashMap((Yaml(Loader(), Dumper(), Resolver(false)).load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>).mapValues {
+                val shortName = it.value["name"]!!
+                val longName = it.value.getOrElse("longName", {shortName})!!
+                val decoder: Decoder = if (it.value.contains("decoder")) {
+                    Class.forName("io.github.binaryfoo.decoders." + it.value["decoder"]).newInstance() as Decoder
+                } else {
+                    Decoders.PRIMITIVE
+                }
+                val primitiveDecoder = if (it.value.contains("primitiveDecoder")) {
+                    Class.forName("io.github.binaryfoo.decoders." + it.value["primitiveDecoder"]).newInstance() as PrimitiveDecoder
+                } else {
+                    PrimitiveDecoder.HEX
+                }
+                TagInfo(shortName, longName, decoder, primitiveDecoder)
+            }))
+        }
+
+        public fun toYaml(fileName: String, meta: TagMetaData, scheme: String) {
+            PrintWriter(FileWriter(fileName)).use { writer ->
+                for (e in meta.metadata.entrySet()) {
+                    writer.println(e.getKey() + ":")
+                    val tagInfo = e.getValue()
+                    writer.println(" name: " + tagInfo.shortName)
+                    if (tagInfo.shortName != tagInfo.longName) {
+                        writer.println(" longName: " + tagInfo.longName)
+                    }
+                    if (tagInfo.decoder != Decoders.PRIMITIVE) {
+                        writer.println(" decoder: " + tagInfo.decoder.javaClass.getSimpleName())
+                    }
+                    if (tagInfo.primitiveDecoder != PrimitiveDecoder.HEX) {
+                        writer.println(" primitiveDecoder: " + tagInfo.primitiveDecoder.javaClass.getSimpleName())
+                    }
+                    writer.println(" scheme: $scheme")
+                    writer.println()
+                }
+            }
+        }
     }
 }
+
