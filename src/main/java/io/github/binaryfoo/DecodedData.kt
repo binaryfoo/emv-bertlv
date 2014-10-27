@@ -91,6 +91,10 @@ public data class DecodedData(
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading)
         }
 
+        platformStatic public fun fromTlv(tag: Tag, rawdata: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+            return DecodedData(tag, rawdata, decodedData, startIndex, endIndex, children)
+        }
+
         platformStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {
             val matches = decoded.findAllForTag(tag)
             return if (matches.empty) null else matches[0]
