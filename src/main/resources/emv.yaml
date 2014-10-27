@@ -8,11 +8,14 @@ E5:
 
 9F26:
  name: application cryptogram
+ short: The meat in an EMV transaction. A bunch of bits only the card could have produced.
+ long: Proof the phsyical card was present and was the plastic created by the issuer rather than a clone.
  scheme: EMV
 
 9F27:
  name: cryptogram information data
  primitiveDecoder: CryptogramInformationDecoder
+ short: "Message the cryptogram should convey to the issuer: approved, declined, can I approve?"
  scheme: EMV
 
 E0:
@@ -230,6 +233,10 @@ DF2E:
  name: TSI
  longName: Transaction Status Indicator
  decoder: TSIDecoder
+ short: A record of things that happened during the transaction.
+ long: >
+  Whilst the TVR is expected to mainly be zeroes. This field is expected to mainly be ones.
+  Each bit is a fact about the transaction.
  scheme: EMV
 
 9C:
@@ -251,6 +258,10 @@ DF2E:
 
 5F34:
  name: PAN sequence number
+ short: Allows mulitple psyhical cards to share the same PAN whilst each has a unique cryptographic key.
+ long: >
+  Eg. a husband and wife each a two cards for the same account. The card's crypto key is derived from the PAN. For
+  each card to have its own key there needs to be something to distinguish the two cards. That's this field.
  scheme: EMV
 
 9F3B:
@@ -261,12 +272,17 @@ DF2E:
  name: TVR
  longName: Terminal Verification Results
  decoder: TVRDecoder
+ short: List of things that have gone wrong with the transaction.
+ long: >
+  All zeroes is a clean bill of health and means the transaction could be approved offline (without contacting the issuer).
+  Any non-zero bit could cause a decline or a need to contact the issuer (go online). Each bit is a single fact about the transaction.
  scheme: EMV
 
 94:
  name: AFL
  longName: Application File Locator
  decoder: ApplicationFileLocatorDecoder
+ short: List of record that should be read by the terminal.
  scheme: EMV
 
 93:
@@ -275,6 +291,7 @@ DF2E:
 
 92:
  name: issuer public key remainder
+ short: Used if the issuer public key is too big to fit in field 90.
  scheme: EMV
 
 91:
@@ -283,12 +300,16 @@ DF2E:
 
 90:
  name: issuer public key certificate
+ short: Public key owned by the card issuer signed by the Scheme (CA)
+ long: In turn used to sign the static or dynamic data provided by the card.
  scheme: EMV
 
 9F38:
  name: PDOL
  longName: Processing data object list
  decoder: DataObjectListDecoder
+ short: List of values to be passed to the card in GPO command
+ long: "A Data Object List: a list of (tag name, expected length) pairs."
  scheme: EMV
 
 9F39:
@@ -299,10 +320,13 @@ DF2E:
  name: ATC
  longName: application transaction counter
  primitiveDecoder: Base10PrimitiveDecoder
+ short: Number of transactions performed by the card since it was issued
+ long: Part of the replay/pre-play attack prevention.
  scheme: EMV
 
 9F37:
  name: unpredictable number
+ short: A terminal nonce generated nonce for replay attack prevention
  scheme: EMV
 
 9F35:
@@ -311,22 +335,32 @@ DF2E:
 
 8F:
  name: ca public key index
+ short: Identifier for the scheme's public key. Unique when combined with an AID.
  scheme: EMV
 
 9F34:
  name: CVM Results
  longName: Cardholder Verification Results
  decoder: CVMResultsDecoder
+ short: How was the card holder verified? Did this check succeed?
  scheme: EMV
 
 9F33:
  name: terminal capabilities
  scheme: EMV
 
+8C:
+ name: CDOL 1
+ longName: Card risk management data object list 1
+ decoder: DataObjectListDecoder
+ short: List of values card should be passed in 1st Generate AC command
+ scheme: EMV
+
 8D:
  name: CDOL 2
  longName: Card risk management data object list 2
  decoder: DataObjectListDecoder
+ short: List of values card should be passed in 2nd Generate AC command
  scheme: EMV
 
 8E:
@@ -341,12 +375,6 @@ DF2E:
 
 BF0C:
  name: FCI discretionary data
- scheme: EMV
-
-8C:
- name: CDOL 1
- longName: Card risk management data object list 1
- decoder: DataObjectListDecoder
  scheme: EMV
 
 8A:

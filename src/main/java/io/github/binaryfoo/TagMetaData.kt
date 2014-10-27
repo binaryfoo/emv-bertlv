@@ -82,7 +82,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
                 } else {
                     PrimitiveDecoder.HEX
                 }
-                TagInfo(shortName, longName, decoder, primitiveDecoder)
+                TagInfo(shortName, longName, decoder, primitiveDecoder, it.value.get("short"), it.value.get("long"))
             }))
         }
 

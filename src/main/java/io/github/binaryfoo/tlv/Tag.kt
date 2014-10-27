@@ -7,7 +7,11 @@ import java.util.Arrays
 import io.github.binaryfoo.TagMetaData
 import org.apache.commons.lang.builder.HashCodeBuilder
 import kotlin.platform.platformStatic
+import io.github.binaryfoo.TagInfo
 
+/**
+ * The tag in T-L-V. Sometimes called Type but EMV 4.3 Book 3 - B3 Coding of the Value Field of Data Objects uses the term.
+ */
 public data class Tag(val bytes: ByteArray) {
 
     {
@@ -49,7 +53,11 @@ public data class Tag(val bytes: ByteArray) {
     }
 
     public fun toString(tagMetaData: TagMetaData): String {
-        return ISOUtil.hexString(bytes) + " (" + tagMetaData.get(this).fullName + ")"
+        return toString(tagMetaData.get(this))
+    }
+
+    public fun toString(tagInfo: TagInfo): String {
+        return "${ISOUtil.hexString(bytes)} (${tagInfo.fullName})"
     }
 
     class object {

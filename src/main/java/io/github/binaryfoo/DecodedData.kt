@@ -29,9 +29,10 @@ public data class DecodedData(
         val fullDecodedData: String,
         val startIndex: Int, // in bytes
         val endIndex: Int, // in bytes
-        kids: List<DecodedData> = listOf()) {
+        kids: List<DecodedData> = listOf(),
+        var backgroundReading: Map<String, String?>? = null // wordy explanation. Eg to show in tooltip/popover
+) {
     public var notes: String? = null
-    public var backgroundReading: Map<String, String?>? = null
     /**
      * Allow Command and Response APDUs to be displayed specially.
      */
@@ -85,8 +86,9 @@ public data class DecodedData(
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, children)
         }
 
-        platformStatic public fun fromTlv(tag: Tag, rawData: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
-            return DecodedData(tag, rawData, decodedData, startIndex, endIndex, children)
+        platformStatic public fun fromTlv(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+            val tagInfo = metadata.get(tag)
+            return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading)
         }
 
         platformStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {

@@ -6,9 +6,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static io.github.binaryfoo.DecodedMatcher.decodedAs;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class RootDecoderTest {
@@ -46,6 +44,7 @@ public class RootDecoderTest {
         DecodedData decoded9f27 = decodedResponseTemplate.getChildren().get(0);
         assertThat(decoded9f27.getRawData(), is("9F27 (cryptogram information data)"));
         assertThat(decoded9f27.getDecodedData(), is("TC (Transaction Certificate - Approved)"));
+        assertThat(decoded9f27.getBackgroundReading(), hasEntry("short", "Message the cryptogram should convey to the issuer: approved, declined, can I approve?"));
 
         DecodedData decodedIAD = decodedResponseTemplate.getChildren().get(3);
         assertThat(decodedIAD.getRawData(), is("9F10 (issuer application data)"));
@@ -103,8 +102,11 @@ public class RootDecoderTest {
                 "Trailer: BC\n";
 
         List<DecodedData> decoded = decodeApdus(apdus.replace(" ", ""));
-        assertThat(DecodedData.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE, decoded).getNotes(), is(recoveredIssuerCertificate));
-        assertThat(DecodedData.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE, decoded).getChildren(), hasItem(decodedAs("", recoveredIssuerCertificate)));
+        DecodedData issuerCertificate = DecodedData.findForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE, decoded);
+        assertThat(issuerCertificate.getNotes(), is(recoveredIssuerCertificate));
+        assertThat(issuerCertificate.getChildren(), hasItem(decodedAs("", recoveredIssuerCertificate)));
+        assertThat(issuerCertificate.getBackgroundReading(), hasEntry("short", "Public key owned by the card issuer signed by the Scheme (CA)"));
+        assertThat(issuerCertificate.getBackgroundReading(), hasEntry("long", "In turn used to sign the static or dynamic data provided by the card."));
         assertThat(DecodedData.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA, decoded).getNotes(), is(recoveredStaticSignedData));
         assertThat(DecodedData.findForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA, decoded).getChildren(), hasItem(decodedAs("", recoveredStaticSignedData)));
     }
