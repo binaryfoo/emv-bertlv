@@ -5,12 +5,17 @@ Dependency Information:
         <dependency>
             <groupId>io.github.binaryfoo</groupId>
             <artifactId>emv-bertlv</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
         </dependency>
         
-In [Maven Central](https://repo1.maven.org/maven2/io/github/binaryfoo/emv-bertlv/).        
+Available from [Maven Central](https://repo1.maven.org/maven2/io/github/binaryfoo/emv-bertlv/).        
 
 Used in a little [tool](http://tvr-decoder.appspot.com/t/home) hosted on Google's AppEngine. The for which lives in another [repo](https://github.com/wcurrie/emv-bertlv-tools).
+
+Can be used as a command line tool (an executable jar): 
+
+1. Download the latest [jar](https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=io.github.binaryfoo&a=emv-bertlv&p=shaded.jar&v=LATEST)
+2. Run using `java -jar emv-bertlv-x.y.z-shaded.jar`
 
 The tests provide some idea of what kind of data this code can decipher. The [EMVCo](http://www.emvco.com/specifications.aspx) website has the full (1000+ page) specs. Add to that the Visa, Mastercard and Amex documents.
 
