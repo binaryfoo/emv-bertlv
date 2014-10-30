@@ -14,7 +14,7 @@ Used in a little [tool](http://tvr-decoder.appspot.com/t/home) hosted on Google'
 
 Can be used as a command line tool (an executable jar): 
 
-1. Download the latest [jar](https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=io.github.binaryfoo&a=emv-bertlv&p=shaded.jar&v=LATEST)
+1. Download the latest [jar](https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=io.github.binaryfoo&a=emv-bertlv&c=shaded&v=LATEST)
 2. Run using `java -jar emv-bertlv-x.y.z-shaded.jar`
 
 The tests provide some idea of what kind of data this code can decipher. The [EMVCo](http://www.emvco.com/specifications.aspx) website has the full (1000+ page) specs. Add to that the Visa, Mastercard and Amex documents.
