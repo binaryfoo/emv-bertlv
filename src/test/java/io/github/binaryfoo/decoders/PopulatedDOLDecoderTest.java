@@ -2,6 +2,7 @@ package io.github.binaryfoo.decoders;
 
 import io.github.binaryfoo.DecodedData;
 import io.github.binaryfoo.QVsdcTags;
+import io.github.binaryfoo.tlv.Tag;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,10 +17,12 @@ public class PopulatedDOLDecoderTest {
         session.setTagMetaData(QVsdcTags.METADATA);
         List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704:36000000000000001000000000000000003600000000000036120315000008E4C8", 0, session);
         assertThat(decoded.size(), is(9));
+        assertThat(decoded.get(0).getTag(), is(Tag.fromHex("9F66")));
         assertThat(decoded.get(0).getRawData(), is("9F66 (TTQ - Terminal transaction qualifiers)"));
         assertThat(decoded.get(0).getDecodedData(), is("36000000"));
         assertThat(decoded.get(0).getStartIndex(), is(24));
         assertThat(decoded.get(0).getEndIndex(), is(28));
+        assertThat(decoded.get(8).getTag(), is(Tag.fromHex("9F37")));
         assertThat(decoded.get(8).getRawData(), is("9F37 (unpredictable number)"));
         assertThat(decoded.get(8).getDecodedData(), is("0008E4C8"));
         assertThat(decoded.get(8).getStartIndex(), is(53));

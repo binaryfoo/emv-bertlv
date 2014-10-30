@@ -20,12 +20,6 @@ public class BackgroundReading {
             Yaml().load(ClasspathIO.open("apdus.yaml")) as Map<String, Map<String, String?>>
         }
 
-        platformStatic public fun readingFor(tag: Tag): Map<String, String?>? {
-            return tagDescriptions["$tag"]
-        }
-
-        private val tagDescriptions: Map<String, Map<String, String?>> by Delegates.blockingLazy {
-            Yaml().load(ClasspathIO.open("tags.yaml")) as Map<String, Map<String, String?>>
-        }
     }
 }
+public fun backgroundOf(short: String, long: String? = null): Map<String, String?> = mapOf("short" to short, "long" to long)

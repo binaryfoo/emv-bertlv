@@ -11,7 +11,10 @@ public class CVMResultsDecoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val rule = CVRule(input.substring(0, 4))
         val result = input.substring(4, 6)
-        return Arrays.asList<DecodedData>(DecodedData.primitive(input.substring(0, 2), rule.getVerificationMethodDescription(), startIndexInBytes, startIndexInBytes + 1), DecodedData.primitive(input.substring(2, 4), rule.getConditionCodeDescription(), startIndexInBytes + 1, startIndexInBytes + 2), DecodedData.primitive(result, decodeResult(result), startIndexInBytes + 2, startIndexInBytes + 3))
+        return listOf(
+                DecodedData.primitive(input.substring(0, 2), rule.getVerificationMethodDescription(), startIndexInBytes, startIndexInBytes + 1),
+                DecodedData.primitive(input.substring(2, 4), rule.getConditionCodeDescription(), startIndexInBytes + 1, startIndexInBytes + 2),
+                DecodedData.primitive(result, decodeResult(result), startIndexInBytes + 2, startIndexInBytes + 3))
     }
 
     private fun decodeResult(result: String): String {

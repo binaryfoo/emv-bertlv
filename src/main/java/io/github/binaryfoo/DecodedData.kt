@@ -67,7 +67,7 @@ public data class DecodedData(
     }
 
     override fun toString(): String {
-        var s = "raw=[${rawData}] decoded=[${fullDecodedData}] indexes=[${startIndex},${endIndex}]"
+        var s = "raw=[${rawData}] decoded=[${fullDecodedData}] indexes=[${startIndex},${endIndex}] background=[$backgroundReading]"
         if (isComposite()) {
             for (d in children) {
                 s += "\n" + d
@@ -91,7 +91,7 @@ public data class DecodedData(
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading)
         }
 
-        platformStatic public fun fromTlv(tag: Tag, rawdata: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+        platformStatic public fun fromTlv(tag: Tag, rawdata: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
             return DecodedData(tag, rawdata, decodedData, startIndex, endIndex, children)
         }
 
