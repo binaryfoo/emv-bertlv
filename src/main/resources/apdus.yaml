@@ -17,7 +17,7 @@ GenerateAC:
   long: Uses a symmetric key shared between the card and issuer. The key is derived using the PAN and card sequence number.
 
 ExternalAuthenticate:
-  short: Let the card verifier the issuer's response.
+  short: Let the card verify the issuer's response.
   long:
 
 InternalAuthenticate:
