@@ -10,7 +10,7 @@ Dependency Information:
         
 Available from [Maven Central](https://repo1.maven.org/maven2/io/github/binaryfoo/emv-bertlv/).        
 
-Used in a little [tool](http://tvr-decoder.appspot.com/t/home) hosted on Google's AppEngine. The for which lives in another [repo](https://github.com/wcurrie/emv-bertlv-tools).
+Used in a little [tool](http://tvr-decoder.appspot.com/t/home) hosted on Google's AppEngine (code lives in another [repo](https://github.com/wcurrie/emv-bertlv-tools)).
 
 Can be used as a command line tool (an executable jar): 
 
