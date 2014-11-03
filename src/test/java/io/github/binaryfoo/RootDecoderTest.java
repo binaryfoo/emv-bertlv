@@ -127,7 +127,8 @@ public class RootDecoderTest {
                 "Format: 05\n" +
                 "Hash algorithm: 01\n" +
                 "Dynamic data length: 7\n" +
-                "Dynamic data: 06112233445566\n" + // tad suspicious...
+                "ICC dynamic number length: 6\n" +
+                "ICC dynamic number: 112233445566\n" + // not so dynamic looking...
                 "Hash: 97C21EB1AA67291E00322913CE1C52CCF0D93200\n" +
                 "Trailer: BC\n";
 
