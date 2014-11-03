@@ -1,14 +1,13 @@
 package io.github.binaryfoo.decoders
 
-import io.github.binaryfoo.io.ClasspathIO
-
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.HashMap
 import kotlin.properties.Delegates
+import io.github.binaryfoo.io.ClasspathIO
 
-public class CurrencyCodeDecoder : PrimitiveDecoder {
+public class CountryCodeDecoder : PrimitiveDecoder {
 
     override fun decode(hexString: String): String {
         return numericToAlpha[hexString.substring(1)] ?: "Unknown"
@@ -17,8 +16,7 @@ public class CurrencyCodeDecoder : PrimitiveDecoder {
     class object {
 
         private val numericToAlpha: Map<String, String> by Delegates.blockingLazy {
-            csvToMap("numeric-currency-list.csv", 3)
+            csvToMap("numeric-country-list.csv", 3)
         }
     }
-
 }
