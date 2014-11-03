@@ -1,6 +1,6 @@
 package io.github.binaryfoo.crypto
 
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 import org.apache.commons.io.IOUtils
 
 import java.io.IOException
@@ -11,7 +11,7 @@ import kotlin.platform.platformStatic
 public class CaPublicKeyTable {
     class object {
 
-        private val keys = ClasspathIO.readLines("ca-public-keys.txt").map { line ->
+        public val keys: List<CaPublicKey> = ClasspathIO.readLines("ca-public-keys.txt").map { line ->
             try {
                 val fields = line.split("\\t")
                 val exponent = fields[1]

@@ -1,6 +1,6 @@
 package io.github.binaryfoo.decoders.apdu
 
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang.builder.ToStringBuilder
 import org.apache.commons.lang.builder.ToStringStyle

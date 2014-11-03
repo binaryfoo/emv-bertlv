@@ -1,7 +1,7 @@
 package io.github.binaryfoo.decoders
 
 import java.util.HashMap
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 
 /**
  * Read a CSV into a map. Say alpha to numeric code.

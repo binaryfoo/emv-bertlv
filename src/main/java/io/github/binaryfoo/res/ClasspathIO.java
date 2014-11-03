@@ -1,4 +1,4 @@
-package io.github.binaryfoo.io;
+package io.github.binaryfoo.res;
 
 import org.apache.commons.io.IOUtils;
 

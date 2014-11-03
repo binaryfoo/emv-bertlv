@@ -1,6 +1,6 @@
 package io.github.binaryfoo.decoders
 
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 
 import java.io.BufferedReader
 import java.io.IOException

@@ -8,7 +8,7 @@ import kotlin.platform.platformStatic
 import java.io.IOException
 import java.io.PrintWriter
 import java.io.FileWriter
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 import org.yaml.snakeyaml.Yaml
 import java.util.LinkedHashMap
 import org.yaml.snakeyaml.Loader

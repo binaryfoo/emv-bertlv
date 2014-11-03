@@ -6,7 +6,7 @@ import io.github.binaryfoo.bit.*
 import io.github.binaryfoo.bit.EmvBit
 import io.github.binaryfoo.decoders.bit.BitStringField
 import io.github.binaryfoo.decoders.bit.EmvBitStringParser
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 import io.github.binaryfoo.tlv.ISOUtil
 import org.apache.commons.io.IOUtils
 

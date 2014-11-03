@@ -1,7 +1,7 @@
 package io.github.binaryfoo.decoders.annotator
 
 import org.yaml.snakeyaml.Yaml
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 import kotlin.properties.Delegates
 import java.util.HashMap
 import io.github.binaryfoo.decoders.apdu.APDUCommand

@@ -5,7 +5,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.HashMap
 import kotlin.properties.Delegates
-import io.github.binaryfoo.io.ClasspathIO
+import io.github.binaryfoo.res.ClasspathIO
 
 public class CountryCodeDecoder : PrimitiveDecoder {
 
