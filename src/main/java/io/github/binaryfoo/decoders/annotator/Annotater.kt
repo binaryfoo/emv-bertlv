@@ -6,6 +6,7 @@ import io.github.binaryfoo.decoders.DecodeSession
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.decoders.SignedDataRecoverer
 import io.github.binaryfoo.crypto.PublicKeyCertificate
+import io.github.binaryfoo.tlv.ISOUtil
 
 trait Annotater {
     fun createNotes(session: DecodeSession, decoded: List<DecodedData>)
@@ -27,21 +28,22 @@ trait Annotater {
 
     public fun recoverCertificate(signedData: String,
                        certificateOfSigner: PublicKeyCertificate,
-                       decode: (ByteArray, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
+                       startIndexInBytes: Int,
+                       decode: (ByteArray, Int, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
         if (certificateOfSigner.exponent == null) {
             return RecoveryResult("Failed to recover: missing ${certificateOfSigner.name} exponent")
         } else {
             try {
                 val recoveredBytes: ByteArray = SignedDataRecoverer().recover(signedData, certificateOfSigner.exponent!!, certificateOfSigner.modulus)
-                val recoveredCertificate = decode(recoveredBytes, certificateOfSigner.modulusLength)
-                return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredCertificate.detail, recoveredCertificate)
+                val recoveredCertificate = decode(recoveredBytes, certificateOfSigner.modulusLength, startIndexInBytes)
+                return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredCertificate.detail, ISOUtil.hexString(recoveredBytes), recoveredCertificate)
             } catch(e: Exception) {
                 return RecoveryResult("Failed to recover: ${e}")
             }
         }
     }
 
-    public data class RecoveryResult(public val text: String, val _decoded: List<DecodedData> = listOf(), public val certificate: RecoveredPublicKeyCertificate? = null) {
+    public data class RecoveryResult(public val text: String, val _decoded: List<DecodedData> = listOf(), public val recoveredHex: String? = null, public val certificate: RecoveredPublicKeyCertificate? = null) {
         public val decoded: List<DecodedData>
         get() {
             return listOf(DecodedData.primitive("", text)) + _decoded

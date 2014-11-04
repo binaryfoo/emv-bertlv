@@ -7,6 +7,7 @@ import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
+import io.github.binaryfoo.HexDumpFactory
 
 public class ICCPublicKeyDecoder : Annotater {
 
@@ -15,37 +16,42 @@ public class ICCPublicKeyDecoder : Annotater {
         val iccCertificate = session.findTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)
 
         if (iccCertificate != null && recoveredIssuerPublicKeyCertificate != null && recoveredIssuerPublicKeyCertificate.exponent != null) {
-            val result = recoverCertificate(iccCertificate, recoveredIssuerPublicKeyCertificate, ::decodeICCPublicKeyCertificate)
-            val certificate = result.certificate
-            if (certificate != null) {
-                certificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
-                certificate.exponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
-                session.iccPublicKeyCertificate = certificate
+            for (decodedCertificate in decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)) {
+                val result = recoverCertificate(iccCertificate, recoveredIssuerPublicKeyCertificate, decodedCertificate.startIndex, ::decodeICCPublicKeyCertificate)
+                val certificate = result.certificate
+                if (certificate != null) {
+                    certificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
+                    certificate.exponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
+                    session.iccPublicKeyCertificate = certificate
+                }
+                decodedCertificate.addChildren(result.decoded)
+                if (result.recoveredHex != null) {
+                    decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, decodedCertificate.startIndex)
+                }
             }
-            decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE).forEach { it.addChildren(result.decoded) }
         }
     }
 
 }
 
-fun decodeICCPublicKeyCertificate(recovered: ByteArray, byteLengthOfIssuerModulus: Int): RecoveredPublicKeyCertificate {
+fun decodeICCPublicKeyCertificate(recovered: ByteArray, byteLengthOfIssuerModulus: Int, startIndexInBytes: Int): RecoveredPublicKeyCertificate {
     val publicKeyLength = Integer.parseInt(ISOUtil.hexString(recovered, 19, 1), 16)
     val exponentLength = ISOUtil.hexString(recovered, 20, 1)
     var lengthOfLeftKeyPart = if (publicKeyLength > byteLengthOfIssuerModulus - 42) byteLengthOfIssuerModulus - 42 else publicKeyLength
     val leftKeyPart = ISOUtil.hexString(recovered, 21, lengthOfLeftKeyPart)
     val children = listOf(
-        DecodedData.primitive("Header", ISOUtil.hexString(recovered, 0, 1)),
-        DecodedData.primitive("Format", ISOUtil.hexString(recovered, 1, 1)),
-        DecodedData.primitive("PAN", ISOUtil.hexString(recovered, 2, 10)),
-        DecodedData.primitive("Expiry Date (MMYY)", ISOUtil.hexString(recovered, 12, 2)),
-        DecodedData.primitive("Serial number", ISOUtil.hexString(recovered, 14, 3)),
-        DecodedData.primitive("Hash algorithm", ISOUtil.hexString(recovered, 17, 1)),
-        DecodedData.primitive("Public key algorithm", ISOUtil.hexString(recovered, 18, 1)),
-        DecodedData.primitive("Public key length", publicKeyLength.toString()),
-        DecodedData.primitive("Public key exponent length", exponentLength),
-        DecodedData.primitive("Public key", leftKeyPart),
-        DecodedData.primitive("Hash", ISOUtil.hexString(recovered, 21 + byteLengthOfIssuerModulus - 42, 20)),
-        DecodedData.primitive("Trailer", ISOUtil.hexString(recovered, 21 + byteLengthOfIssuerModulus - 42 + 20, 1))
+        DecodedData.byteRange("Header", recovered, 0, 1, startIndexInBytes),
+        DecodedData.byteRange("Format", recovered, 1, 1, startIndexInBytes),
+        DecodedData.byteRange("PAN", recovered, 2, 10, startIndexInBytes),
+        DecodedData.byteRange("Expiry Date (MMYY)", recovered, 12, 2, startIndexInBytes),
+        DecodedData.byteRange("Serial number", recovered, 14, 3, startIndexInBytes),
+        DecodedData.byteRange("Hash algorithm", recovered, 17, 1, startIndexInBytes),
+        DecodedData.byteRange("Public key algorithm", recovered, 18, 1, startIndexInBytes),
+        DecodedData.byteRange("Public key length", publicKeyLength.toString(), 19, 1, startIndexInBytes),
+        DecodedData.byteRange("Public key exponent length", exponentLength, 20, 1, startIndexInBytes),
+        DecodedData.byteRange("Public key", leftKeyPart, 21, lengthOfLeftKeyPart, startIndexInBytes),
+        DecodedData.byteRange("Hash", recovered, 21 + byteLengthOfIssuerModulus - 42, 20, startIndexInBytes),
+        DecodedData.byteRange("Trailer", recovered, 21 + byteLengthOfIssuerModulus - 42 + 20, 1, startIndexInBytes)
     )
     return RecoveredPublicKeyCertificate("ICC", children, exponentLength, leftKeyPart)
 }

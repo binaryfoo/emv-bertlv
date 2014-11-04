@@ -10,6 +10,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder
 import kotlin.platform.platformStatic
 import java.util.ArrayList
 import java.util.LinkedList
+import io.github.binaryfoo.tlv.ISOUtil
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -82,6 +83,15 @@ public data class DecodedData(
 
         platformStatic public fun primitive(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0): DecodedData {
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, listOf<DecodedData>())
+        }
+
+        platformStatic public fun byteRange(rawData: String, bytes: ByteArray, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
+            val decodedData = ISOUtil.hexString(bytes, startIndexWithinBytes, length)
+            return DecodedData(null, rawData, decodedData, startIndexWithinFullDecoding + startIndexWithinBytes, startIndexWithinFullDecoding + startIndexWithinBytes + length, listOf<DecodedData>())
+        }
+
+        platformStatic public fun byteRange(rawData: String, decodedData: String, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
+            return DecodedData(null, rawData, decodedData, startIndexWithinFullDecoding + startIndexWithinBytes, startIndexWithinFullDecoding + startIndexWithinBytes + length, listOf<DecodedData>())
         }
 
         platformStatic public fun constructed(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0, children: List<DecodedData>): DecodedData {
