@@ -19,25 +19,26 @@ public class SignedStaticApplicationDataDecoder : Annotater {
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate
         val signedStaticData = session.findTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         if (signedStaticData != null && issuerPublicKeyCertificate != null) {
-            val notes = recoverText(signedStaticData, issuerPublicKeyCertificate, ::decodeSignedStaticData)
-            decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA).forEach { it.notes = notes }
+            val results = recoverText(signedStaticData, issuerPublicKeyCertificate, ::decodeSignedStaticData)
+            decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA).forEach { it.addChildren(results.decoded) }
         }
     }
 
 }
 
-fun decodeSignedStaticData(recovered: ByteArray, byteLengthOfIssuerModulus: Int): String {
+fun decodeSignedStaticData(recovered: ByteArray, byteLengthOfIssuerModulus: Int): List<DecodedData> {
     val header = ISOUtil.hexString(recovered, 0, 1)
     val format = ISOUtil.hexString(recovered, 1, 1)
     val hashAlgorithm = ISOUtil.hexString(recovered, 2, 1)
     val dataAuthenticationCode = ISOUtil.hexString(recovered, 3, 2)
     val hash = ISOUtil.hexString(recovered, recovered.size-21, 20)
     val trailer = ISOUtil.hexString(recovered, recovered.size-1, 1)
-    return "Header: ${header}\n" +
-            "Format: ${format}\n" +
-            "Hash Algorithm: ${hashAlgorithm}\n" +
-            "Data Auth Code: ${dataAuthenticationCode}\n" +
-            "Hash: ${hash}\n" +
-            "Trailer: ${trailer}\n"
+    return listOf(
+            DecodedData.primitive("Header", header),
+            DecodedData.primitive("Format", format),
+            DecodedData.primitive("Hash Algorithm", hashAlgorithm),
+            DecodedData.primitive("Data Auth Code", dataAuthenticationCode),
+            DecodedData.primitive("Hash", hash),
+            DecodedData.primitive("Trailer", trailer))
 }
 

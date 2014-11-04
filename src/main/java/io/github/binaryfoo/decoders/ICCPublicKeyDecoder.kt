@@ -22,29 +22,30 @@ public class ICCPublicKeyDecoder : Annotater {
                 certificate.exponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
                 session.iccPublicKeyCertificate = certificate
             }
-            decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE).forEach { it.notes = result.text }
+            decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE).forEach { it.addChildren(result.decoded) }
         }
     }
 
 }
 
 fun decodeICCPublicKeyCertificate(recovered: ByteArray, byteLengthOfIssuerModulus: Int): RecoveredPublicKeyCertificate {
-    val b = StringBuilder()
-    b.append("Header: ").append(ISOUtil.hexString(recovered, 0, 1)).append('\n')
-    b.append("Format: ").append(ISOUtil.hexString(recovered, 1, 1)).append('\n')
-    b.append("PAN: ").append(ISOUtil.hexString(recovered, 2, 10)).append('\n')
-    b.append("Expiry Date (MMYY): ").append(ISOUtil.hexString(recovered, 12, 2)).append('\n')
-    b.append("Serial number: ").append(ISOUtil.hexString(recovered, 14, 3)).append('\n')
-    b.append("Hash algorithm: ").append(ISOUtil.hexString(recovered, 17, 1)).append('\n')
-    b.append("Public key algorithm: ").append(ISOUtil.hexString(recovered, 18, 1)).append('\n')
     val publicKeyLength = Integer.parseInt(ISOUtil.hexString(recovered, 19, 1), 16)
-    b.append("Public key length: ").append(publicKeyLength).append('\n')
     val exponentLength = ISOUtil.hexString(recovered, 20, 1)
-    b.append("Public key exponent length: ").append(exponentLength).append('\n')
     var lengthOfLeftKeyPart = if (publicKeyLength > byteLengthOfIssuerModulus - 42) byteLengthOfIssuerModulus - 42 else publicKeyLength
     val leftKeyPart = ISOUtil.hexString(recovered, 21, lengthOfLeftKeyPart)
-    b.append("Public key: ").append(leftKeyPart).append('\n')
-    b.append("Hash: ").append(ISOUtil.hexString(recovered, 21 + byteLengthOfIssuerModulus - 42, 20)).append('\n')
-    b.append("Trailer: ").append(ISOUtil.hexString(recovered, 21 + byteLengthOfIssuerModulus - 42 + 20, 1)).append('\n')
-    return RecoveredPublicKeyCertificate("ICC", b.toString(), exponentLength, leftKeyPart)
+    val children = listOf(
+        DecodedData.primitive("Header", ISOUtil.hexString(recovered, 0, 1)),
+        DecodedData.primitive("Format", ISOUtil.hexString(recovered, 1, 1)),
+        DecodedData.primitive("PAN", ISOUtil.hexString(recovered, 2, 10)),
+        DecodedData.primitive("Expiry Date (MMYY)", ISOUtil.hexString(recovered, 12, 2)),
+        DecodedData.primitive("Serial number", ISOUtil.hexString(recovered, 14, 3)),
+        DecodedData.primitive("Hash algorithm", ISOUtil.hexString(recovered, 17, 1)),
+        DecodedData.primitive("Public key algorithm", ISOUtil.hexString(recovered, 18, 1)),
+        DecodedData.primitive("Public key length", publicKeyLength.toString()),
+        DecodedData.primitive("Public key exponent length", exponentLength),
+        DecodedData.primitive("Public key", leftKeyPart),
+        DecodedData.primitive("Hash", ISOUtil.hexString(recovered, 21 + byteLengthOfIssuerModulus - 42, 20)),
+        DecodedData.primitive("Trailer", ISOUtil.hexString(recovered, 21 + byteLengthOfIssuerModulus - 42 + 20, 1))
+    )
+    return RecoveredPublicKeyCertificate("ICC", children, exponentLength, leftKeyPart)
 }

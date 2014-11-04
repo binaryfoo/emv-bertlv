@@ -19,30 +19,34 @@ public class SignedDynamicApplicationDataDecoder : Annotater {
         val iccPublicKeyCertificate = session.iccPublicKeyCertificate
         val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData
         if (signedData != null && iccPublicKeyCertificate != null) {
-            val notes = recoverText(signedData, iccPublicKeyCertificate, ::decodeSignedDynamicData)
-            decoded.findAllForValue(signedData).forEach { it.notes = notes }
+            val result = recoverText(signedData, iccPublicKeyCertificate, ::decodeSignedDynamicData)
+            decoded.findAllForValue(signedData).forEach { it.addChildren(result.decoded) }
         }
     }
 
 }
 
-fun decodeSignedDynamicData(recovered: ByteArray, byteLengthOfICCModulus: Int): String {
-    val b = StringBuilder()
-    b.append("Header: ").append(ISOUtil.hexString(recovered, 0, 1)).append('\n')
-    b.append("Format: ").append(ISOUtil.hexString(recovered, 1, 1)).append('\n')
-    b.append("Hash algorithm: ").append(ISOUtil.hexString(recovered, 2, 1)).append('\n')
+fun decodeSignedDynamicData(recovered: ByteArray, byteLengthOfICCModulus: Int): List<DecodedData> {
     val dynamicDataLength = Integer.parseInt(ISOUtil.hexString(recovered, 3, 1), 16)
-    b.append("Dynamic data length: ").append(dynamicDataLength).append('\n')
     val iccDynamicNumberLength = Integer.parseInt(ISOUtil.hexString(recovered, 4, 1), 16)
-    b.append("ICC dynamic number length: ").append(iccDynamicNumberLength).append('\n')
-    b.append("ICC dynamic number: ").append(ISOUtil.hexString(recovered, 5, iccDynamicNumberLength)).append('\n')
     val cryptogramInformationData = ISOUtil.hexString(recovered, 5 + iccDynamicNumberLength, 1)
-    if (cryptogramInformationData != "BB") {
-        b.append("Cryptogram information data: ").append(cryptogramInformationData).append('\n')
-        b.append("Cryptogram: ").append(ISOUtil.hexString(recovered, 5 + iccDynamicNumberLength + 1, 8)).append('\n')
-        b.append("Transaction data hash code: ").append(ISOUtil.hexString(recovered, 5 + iccDynamicNumberLength + 1 + 8, 20)).append('\n')
-    }
-    b.append("Hash: ").append(ISOUtil.hexString(recovered, recovered.size - 21, 20)).append('\n')
-    b.append("Trailer: ").append(ISOUtil.hexString(recovered, recovered.size - 1, 1)).append('\n')
-    return b.toString()
+    return listOf(
+        DecodedData.primitive("Header", ISOUtil.hexString(recovered, 0, 1)),
+        DecodedData.primitive("Format", ISOUtil.hexString(recovered, 1, 1)),
+        DecodedData.primitive("Hash algorithm", ISOUtil.hexString(recovered, 2, 1)),
+        DecodedData.primitive("Dynamic data length", dynamicDataLength.toString()),
+        DecodedData.primitive("ICC dynamic number length", iccDynamicNumberLength.toString()),
+        DecodedData.primitive("ICC dynamic number", ISOUtil.hexString(recovered, 5, iccDynamicNumberLength)),
+        *if (cryptogramInformationData != "BB") {
+            array(
+                DecodedData.primitive("Cryptogram information data", cryptogramInformationData),
+                DecodedData.primitive("Cryptogram", ISOUtil.hexString(recovered, 5 + iccDynamicNumberLength + 1, 8)),
+                DecodedData.primitive("Transaction data hash code", ISOUtil.hexString(recovered, 5 + iccDynamicNumberLength + 1 + 8, 20))
+            )
+        } else {
+            array()
+        },
+        DecodedData.primitive("Hash", ISOUtil.hexString(recovered, recovered.size - 21, 20)),
+        DecodedData.primitive("Trailer", ISOUtil.hexString(recovered, recovered.size - 1, 1))
+    )
 }

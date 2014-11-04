@@ -1,11 +1,13 @@
 package io.github.binaryfoo.crypto
 
+import io.github.binaryfoo.DecodedData
+
 /**
  * Covers both Issuer and ICC (chip card) cases.
  */
 public data class RecoveredPublicKeyCertificate(
         val owner: String,
-        val textDump: String,
+        val detail: List<DecodedData>,
         val exponentLength: String,
         val leftKeyPart: String,
         var rightKeyPart: String? = null) : PublicKeyCertificate {

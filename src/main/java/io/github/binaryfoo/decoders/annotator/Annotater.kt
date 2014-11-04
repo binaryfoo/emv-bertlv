@@ -12,15 +12,15 @@ trait Annotater {
 
     public fun recoverText(signedData: String,
                        certificateOfSigner: RecoveredPublicKeyCertificate,
-                       decode: (ByteArray, Int) -> String): String {
+                       decode: (ByteArray, Int) -> List<DecodedData>): RecoveryResult {
         if (certificateOfSigner.exponent == null) {
-            return "Failed to recover: missing ${certificateOfSigner.name} exponent"
+            return RecoveryResult("Failed to recover: missing ${certificateOfSigner.name} exponent")
         } else {
             try {
                 val recovered: ByteArray = SignedDataRecoverer().recover(signedData, certificateOfSigner.exponent!!, certificateOfSigner.modulus)
-                return "Recovered using ${certificateOfSigner.name}:\n" + decode(recovered, certificateOfSigner.modulusLength)
+                return RecoveryResult("Recovered using ${certificateOfSigner.name}", decode(recovered, certificateOfSigner.modulusLength))
             } catch(e: Exception) {
-                return "Failed to recover: ${e}"
+                return RecoveryResult("Failed to recover: ${e}")
             }
         }
     }
@@ -34,13 +34,18 @@ trait Annotater {
             try {
                 val recoveredBytes: ByteArray = SignedDataRecoverer().recover(signedData, certificateOfSigner.exponent!!, certificateOfSigner.modulus)
                 val recoveredCertificate = decode(recoveredBytes, certificateOfSigner.modulusLength)
-                return RecoveryResult("Recovered using ${certificateOfSigner.name}:\n${recoveredCertificate.textDump}", recoveredCertificate)
+                return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredCertificate.detail, recoveredCertificate)
             } catch(e: Exception) {
                 return RecoveryResult("Failed to recover: ${e}")
             }
         }
     }
 
-    public data class RecoveryResult(public val text: String, public val certificate: RecoveredPublicKeyCertificate? = null)
+    public data class RecoveryResult(public val text: String, val _decoded: List<DecodedData> = listOf(), public val certificate: RecoveredPublicKeyCertificate? = null) {
+        public val decoded: List<DecodedData>
+        get() {
+            return listOf(DecodedData.primitive("", text)) + _decoded
+        }
+    }
 
 }

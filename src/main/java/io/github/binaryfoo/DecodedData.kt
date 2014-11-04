@@ -30,18 +30,15 @@ public data class DecodedData(
         kids: List<DecodedData> = listOf(),
         var backgroundReading: Map<String, String?>? = null // wordy explanation. Eg to show in tooltip/popover
 ) {
-    public var notes: String? = null
     /**
      * Allow Command and Response APDUs to be displayed specially.
      */
     public var category: String = ""
     public var hexDump: List<HexDumpElement>? = null
-    public val children: List<DecodedData> = kids
+    private val _children: MutableList<DecodedData> = ArrayList(kids)
+    public val children: List<DecodedData>
     get() {
-        if ($children.isEmpty() && notes != null) {
-            return listOf(primitive("", notes!!, 0, 0))
-        }
-        return $children
+        return _children
     }
 
     private fun trim(decodedData: String): String {
@@ -64,6 +61,13 @@ public data class DecodedData(
         return !children.isEmpty()
     }
 
+    /**
+     * For values that can't be decoded in the first pass. Like decrypted ones.
+     */
+    public fun addChildren(child: List<DecodedData>) {
+        _children.addAll(child)
+    }
+
     override fun toString(): String {
         var s = "raw=[${rawData}] decoded=[${fullDecodedData}] indexes=[${startIndex},${endIndex}] background=[$backgroundReading]"
         if (isComposite()) {
@@ -76,11 +80,11 @@ public data class DecodedData(
 
     class object {
 
-        platformStatic public fun primitive(rawData: String, decodedData: String, startIndex: Int, endIndex: Int): DecodedData {
+        platformStatic public fun primitive(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0): DecodedData {
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, listOf<DecodedData>())
         }
 
-        platformStatic public fun constructed(rawData: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+        platformStatic public fun constructed(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0, children: List<DecodedData>): DecodedData {
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, children)
         }
 
