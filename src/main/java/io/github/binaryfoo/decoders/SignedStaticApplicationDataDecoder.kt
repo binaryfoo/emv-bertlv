@@ -11,6 +11,7 @@ import io.github.binaryfoo.HexDumpFactory
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.decoders.annotator.SignedDataDecoder.RecoveryResult
+import io.github.binaryfoo.findTlvForTag
 
 /**
  * EMV 4.3 Book 2, Table 7: Format of Data Recovered from Signed Static Application Data
@@ -21,7 +22,7 @@ public class SignedStaticApplicationDataDecoder : SignedDataDecoder {
 
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate
-        val signedStaticData = session.findTlv(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
+        val signedStaticData = decoded.findTlvForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         if (signedStaticData != null && issuerPublicKeyCertificate != null) {
             for (decodedSSD in decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)) {
                 recoverSignedData(signedStaticData, decodedSSD, issuerPublicKeyCertificate, ::decodeSignedStaticData)

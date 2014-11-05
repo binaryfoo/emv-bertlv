@@ -8,6 +8,8 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.HexDumpFactory
+import io.github.binaryfoo.findTlvForTag
+import io.github.binaryfoo.findValueForTag
 
 /**
  * EMV 4.3 Book2, Table 14: Format of Data Recovered from ICC Public Key Certificate
@@ -16,14 +18,14 @@ public class ICCPublicKeyDecoder : SignedDataDecoder {
 
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val recoveredIssuerPublicKeyCertificate = session.issuerPublicKeyCertificate
-        val iccCertificate = session.findTlv(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)
+        val iccCertificate = decoded.findTlvForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)
 
         if (iccCertificate != null && recoveredIssuerPublicKeyCertificate != null && recoveredIssuerPublicKeyCertificate.exponent != null) {
             for (decodedCertificate in decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)) {
                 val result = recoverCertificate(iccCertificate, decodedCertificate, recoveredIssuerPublicKeyCertificate, ::decodeICCPublicKeyCertificate)
                 if (result.certificate != null) {
-                    result.certificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
-                    result.certificate.exponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
+                    result.certificate.rightKeyPart = decoded.findValueForTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
+                    result.certificate.exponent = decoded.findValueForTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
                     session.iccPublicKeyCertificate = result.certificate
                 }
             }

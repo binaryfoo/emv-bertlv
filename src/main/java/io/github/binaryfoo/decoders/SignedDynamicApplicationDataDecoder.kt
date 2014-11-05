@@ -9,6 +9,7 @@ import io.github.binaryfoo.findAllForValue
 import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.HexDumpFactory
+import io.github.binaryfoo.findTlvForTag
 
 /**
  * Dynamic data auth means CA (scheme) -> Issuer -> ICC -> data
@@ -23,7 +24,7 @@ public class SignedDynamicApplicationDataDecoder : SignedDataDecoder {
         val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData
         if (signedData != null && iccPublicKeyCertificate != null) {
             for (decodedSignedData in decoded.findAllForValue(signedData)) {
-                val signedDynamicData = session.findTlv(decodedSignedData.tag!!)!!
+                val signedDynamicData = decoded.findTlvForTag(decodedSignedData.tag!!)!!
                 recoverSignedData(signedDynamicData, decodedSignedData, iccPublicKeyCertificate, ::decodeSignedDynamicData)
             }
         }

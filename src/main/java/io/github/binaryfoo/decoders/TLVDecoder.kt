@@ -20,23 +20,22 @@ public class TLVDecoder : Decoder {
     private fun decodeTlvs(list: List<BerTlv>, startIndex: Int, session: DecodeSession): List<DecodedData> {
         var currentStartIndex = startIndex
         val decodedItems = ArrayList<DecodedData>()
-        for (berTlv in list) {
-            val valueAsHexString = berTlv.valueAsHexString
-            val tag = berTlv.tag
-            val length = berTlv.toBinary().size
+        for (tlv in list) {
+            val valueAsHexString = tlv.valueAsHexString
+            val tag = tlv.tag
+            val length = tlv.toBinary().size
             val contentEndIndex = currentStartIndex + length
-            val compositeStartElementIndex = currentStartIndex + berTlv.startIndexOfValue
+            val compositeStartElementIndex = currentStartIndex + tlv.startIndexOfValue
             val tagMetaData = session.tagMetaData!!
             val decoded = if (tag.isConstructed()) {
-                DecodedData.fromTlv(tag, tagMetaData, valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, session))
+                DecodedData.fromTlv(tlv, tagMetaData, valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(tlv.getChildren(), compositeStartElementIndex, session))
             } else {
                 val tagInfo = tagMetaData.get(tag)
-                DecodedData.fromTlv(tag, tagMetaData, tagInfo.decodePrimitiveTlvValue(valueAsHexString), currentStartIndex, contentEndIndex, tagInfo.decoder.decode(valueAsHexString, compositeStartElementIndex, session))
+                DecodedData.fromTlv(tlv, tagMetaData, tagInfo.decodePrimitiveTlvValue(valueAsHexString), currentStartIndex, contentEndIndex, tagInfo.decoder.decode(valueAsHexString, compositeStartElementIndex, session))
             }
             decodedItems.add(decoded)
             currentStartIndex += length
         }
-        session.rememberTlvs(list)
         return decodedItems
     }
 

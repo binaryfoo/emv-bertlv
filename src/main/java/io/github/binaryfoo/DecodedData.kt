@@ -11,6 +11,7 @@ import kotlin.platform.platformStatic
 import java.util.ArrayList
 import java.util.LinkedList
 import io.github.binaryfoo.tlv.ISOUtil
+import io.github.binaryfoo.tlv.BerTlv
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -29,7 +30,8 @@ public data class DecodedData(
         val startIndex: Int, // in bytes
         val endIndex: Int, // in bytes
         kids: List<DecodedData> = listOf(),
-        var backgroundReading: Map<String, String?>? = null // wordy explanation. Eg to show in tooltip/popover
+        var backgroundReading: Map<String, String?>? = null, // wordy explanation. Eg to show in tooltip/popover,
+        val tlv: BerTlv? = null
 ) {
     /**
      * Allow Command and Response APDUs to be displayed specially.
@@ -70,7 +72,16 @@ public data class DecodedData(
     }
 
     override fun toString(): String {
-        var s = "raw=[${rawData}] decoded=[${fullDecodedData}] indexes=[${startIndex},${endIndex}] background=[$backgroundReading]"
+        var s = "raw=[${rawData}] decoded=[${fullDecodedData}] indexes=[${startIndex},${endIndex}]"
+        if (backgroundReading != null) {
+            s += " background=[$backgroundReading]"
+        }
+        if (tag != null) {
+            s += " tag=$tag"
+        }
+        if (tlv != null) {
+            s += " tlv=$tlv"
+        }
         if (isComposite()) {
             for (d in children) {
                 s += "\n" + d
@@ -98,13 +109,21 @@ public data class DecodedData(
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, children)
         }
 
-        platformStatic public fun fromTlv(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+        /**
+         * Attach a Tag but the data wasn't actually encoded as TLV. Eg a bunch of values are concatenated in a stream.
+         */
+        platformStatic public fun withTag(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
             val tagInfo = metadata.get(tag)
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading)
         }
 
-        platformStatic public fun fromTlv(tag: Tag, rawdata: String, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
-            return DecodedData(tag, rawdata, decodedData, startIndex, endIndex, children)
+        /**
+         * Decoded from a TLV.
+         */
+        platformStatic public fun fromTlv(tlv: BerTlv, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+            val tag = tlv.tag
+            val tagInfo = metadata.get(tag)
+            return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading, tlv)
         }
 
         platformStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {
@@ -145,6 +164,14 @@ public data class DecodedData(
 
 public fun List<DecodedData>.findForTag(tag: Tag): DecodedData? {
     return DecodedData.findForTag(tag, this)
+}
+
+public fun List<DecodedData>.findTlvForTag(tag: Tag): BerTlv? {
+    return DecodedData.findAllForTag(tag, this).last?.tlv
+}
+
+public fun List<DecodedData>.findValueForTag(tag: Tag): String? {
+    return DecodedData.findAllForTag(tag, this).last?.tlv?.valueAsHexString
 }
 
 public fun List<DecodedData>.findAllForTag(tag: Tag): List<DecodedData> {

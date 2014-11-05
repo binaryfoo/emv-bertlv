@@ -39,7 +39,7 @@ public class ResponseFormat1Decoder : Decoder {
     private fun decode(tag: Tag, value: String, startIndexInBytes: Int, length: Int, decodeSession: DecodeSession): DecodedData {
         val tagMetaData = decodeSession.tagMetaData!!
         val children = tagMetaData.get(tag).decoder.decode(value, startIndexInBytes, decodeSession)
-        return DecodedData.fromTlv(tag, tagMetaData, tagMetaData.get(tag).decodePrimitiveTlvValue(value), startIndexInBytes, startIndexInBytes + length, children)
+        return DecodedData.withTag(tag, tagMetaData, tagMetaData.get(tag).decodePrimitiveTlvValue(value), startIndexInBytes, startIndexInBytes + length, children)
     }
 
     override fun validate(input: String?): String? {

@@ -12,6 +12,8 @@ import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.HexDumpFactory
 import io.github.binaryfoo.crypto.CaPublicKey
+import io.github.binaryfoo.findTlvForTag
+import io.github.binaryfoo.findValueForTag
 
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
@@ -19,17 +21,17 @@ import io.github.binaryfoo.crypto.CaPublicKey
 public class IssuerPublicKeyDecoder : SignedDataDecoder {
 
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
-        val keyIndex = session.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)
-        val encryptedCertificate = session.findTlv(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
-        val rid = extractRid(session.findTag(EmvTags.DEDICATED_FILE_NAME))
+        val keyIndex = decoded.findValueForTag(EmvTags.CA_PUBLIC_KEY_INDEX)
+        val encryptedCertificate = decoded.findTlvForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
+        val rid = extractRid(decoded.findValueForTag(EmvTags.DEDICATED_FILE_NAME))
         if (keyIndex != null && encryptedCertificate != null && rid != null) {
             val caPublicKey = crypto.CaPublicKeyTable.getEntry(rid, keyIndex)
             if (caPublicKey != null) {
                 for (decodedCertificate in decoded.findAllForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)) {
                     val result = recoverCertificate(encryptedCertificate, decodedCertificate, caPublicKey, ::decodeIssuerPublicKey)
                     if (result.certificate != null) {
-                        result.certificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
-                        result.certificate.exponent = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_EXPONENT)
+                        result.certificate.rightKeyPart = decoded.findValueForTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
+                        result.certificate.exponent = decoded.findValueForTag(EmvTags.ISSUER_PUBLIC_KEY_EXPONENT)
                         session.issuerPublicKeyCertificate = result.certificate
                     }
                 }
