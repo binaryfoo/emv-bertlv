@@ -8,19 +8,25 @@ import io.github.binaryfoo.decoders.SignedDataRecoverer
 import io.github.binaryfoo.crypto.PublicKeyCertificate
 import io.github.binaryfoo.tlv.ISOUtil
 
-trait Annotater {
+/**
+ * Signed data in EMV is RSA encrypted using the private key. Recovery means decrypt using the public key.
+ */
+trait SignedDataDecoder {
     fun createNotes(session: DecodeSession, decoded: List<DecodedData>)
 
+    /**
+     * Use for static and dynamic data from the chip.
+     */
     public fun recoverText(signedData: String,
                        certificateOfSigner: RecoveredPublicKeyCertificate,
                        startIndexInBytes: Int,
-                       decode: (ByteArray, Int, Int) -> List<DecodedData>): RecoveryResult {
+                       decode: (ByteArray, Int) -> List<DecodedData>): RecoveryResult {
         if (certificateOfSigner.exponent == null) {
             return RecoveryResult("Failed to recover: missing ${certificateOfSigner.name} exponent")
         } else {
             try {
                 val recoveredBytes: ByteArray = SignedDataRecoverer().recover(signedData, certificateOfSigner.exponent!!, certificateOfSigner.modulus)
-                val recoveredData = decode(recoveredBytes, certificateOfSigner.modulusLength, startIndexInBytes)
+                val recoveredData = decode(recoveredBytes, startIndexInBytes)
                 return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredData, ISOUtil.hexString(recoveredBytes))
             } catch(e: Exception) {
                 return RecoveryResult("Failed to recover: ${e}")
@@ -28,6 +34,9 @@ trait Annotater {
         }
     }
 
+    /**
+     * Use for issuer and ICC certificates.
+     */
     public fun recoverCertificate(signedData: String,
                        certificateOfSigner: PublicKeyCertificate,
                        startIndexInBytes: Int,

@@ -3,7 +3,7 @@ package io.github.binaryfoo.decoders
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
 import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.decoders.annotator.Annotater
+import io.github.binaryfoo.decoders.annotator.SignedDataDecoder
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.crypto
@@ -15,7 +15,7 @@ import io.github.binaryfoo.HexDumpFactory
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
  */
-public class IssuerPublicKeyDecoder : Annotater {
+public class IssuerPublicKeyDecoder : SignedDataDecoder {
 
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val keyIndex = session.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)

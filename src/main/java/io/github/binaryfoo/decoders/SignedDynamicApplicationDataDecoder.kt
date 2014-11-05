@@ -1,7 +1,7 @@
 package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.decoders.annotator.Annotater
+import io.github.binaryfoo.decoders.annotator.SignedDataDecoder
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.findForValue
@@ -14,8 +14,10 @@ import io.github.binaryfoo.HexDumpFactory
  * Dynamic data auth means CA (scheme) -> Issuer -> ICC -> data
  *
  * Covers both DDA (the first step up from SDA) and CDA (combined with Generate AC)
+ *
+ * EMV 4.3 Book2, Table 18: Dynamic Application Data to be Signed
  */
-public class SignedDynamicApplicationDataDecoder : Annotater {
+public class SignedDynamicApplicationDataDecoder : SignedDataDecoder {
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val iccPublicKeyCertificate = session.iccPublicKeyCertificate
         val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData
@@ -34,7 +36,7 @@ public class SignedDynamicApplicationDataDecoder : Annotater {
 
 }
 
-fun decodeSignedDynamicData(recovered: ByteArray, byteLengthOfICCModulus: Int, startIndexInBytes: Int): List<DecodedData> {
+fun decodeSignedDynamicData(recovered: ByteArray, startIndexInBytes: Int): List<DecodedData> {
     val dynamicDataLength = Integer.parseInt(ISOUtil.hexString(recovered, 3, 1), 16)
     val iccDynamicNumberLength = Integer.parseInt(ISOUtil.hexString(recovered, 4, 1), 16)
     val cryptogramInformationData = ISOUtil.hexString(recovered, 5 + iccDynamicNumberLength, 1)

@@ -1,7 +1,7 @@
 package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.decoders.annotator.Annotater
+import io.github.binaryfoo.decoders.annotator.SignedDataDecoder
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.DecodedData
@@ -9,7 +9,10 @@ import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.HexDumpFactory
 
-public class ICCPublicKeyDecoder : Annotater {
+/**
+ * EMV 4.3 Book2, Table 14: Format of Data Recovered from ICC Public Key Certificate
+ */
+public class ICCPublicKeyDecoder : SignedDataDecoder {
 
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val recoveredIssuerPublicKeyCertificate = session.issuerPublicKeyCertificate

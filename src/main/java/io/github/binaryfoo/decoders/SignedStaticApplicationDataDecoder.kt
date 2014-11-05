@@ -1,6 +1,6 @@
 package io.github.binaryfoo.decoders
 
-import io.github.binaryfoo.decoders.annotator.Annotater
+import io.github.binaryfoo.decoders.annotator.SignedDataDecoder
 import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.tlv.ISOUtil
 import io.github.binaryfoo.DecodedData
@@ -14,7 +14,7 @@ import io.github.binaryfoo.HexDumpFactory
  *
  * Static data auth means CA (scheme) -> Issuer -> data. Chip has no RSA hardware. No replay attack prevention.
  */
-public class SignedStaticApplicationDataDecoder : Annotater {
+public class SignedStaticApplicationDataDecoder : SignedDataDecoder {
 
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate
@@ -33,7 +33,7 @@ public class SignedStaticApplicationDataDecoder : Annotater {
 
 }
 
-fun decodeSignedStaticData(recovered: ByteArray, byteLengthOfIssuerModulus: Int, startIndexInBytes: Int): List<DecodedData> {
+fun decodeSignedStaticData(recovered: ByteArray, startIndexInBytes: Int): List<DecodedData> {
     return listOf(
             DecodedData.byteRange("Header", recovered, 0, 1, startIndexInBytes),
             DecodedData.byteRange("Format", recovered, 1, 1, startIndexInBytes),
