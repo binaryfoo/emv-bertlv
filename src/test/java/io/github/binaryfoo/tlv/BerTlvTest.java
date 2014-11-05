@@ -226,6 +226,13 @@ public class BerTlvTest {
 	}
 
     @Test
+    public void testGetStartIndexOfValue() throws Exception {
+    	assertEquals(2, BerTlv.newInstance(Tag.fromHex("9A"), "FF").getStartIndexOfValue());
+    	assertEquals(3, BerTlv.newInstance(Tag.fromHex("9A"), StringUtils.repeat("A", 400)).getStartIndexOfValue());
+    	assertEquals(5, BerTlv.newInstance(Tag.fromHex("9F1B"), StringUtils.repeat("A", 4000)).getStartIndexOfValue());
+	}
+
+    @Test
     public void testHandlesZeroPadding() throws Exception {
         String crap = "910A93D60A0F3CC53834303072459F180400004000860E04DA9F5809004B360CA0FF728F689F180400004000860E04DA9F580904B50F23328A5C788500000000000000000000000000000000000000000000";
 

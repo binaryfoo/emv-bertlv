@@ -21,11 +21,11 @@ public class TLVDecoder : Decoder {
         var currentStartIndex = startIndex
         val decodedItems = ArrayList<DecodedData>()
         for (berTlv in list) {
-            val valueAsHexString = berTlv.getValueAsHexString()
+            val valueAsHexString = berTlv.valueAsHexString
             val tag = berTlv.tag
             val length = berTlv.toBinary().size
             val contentEndIndex = currentStartIndex + length
-            val compositeStartElementIndex = currentStartIndex + tag.bytes.size + berTlv.getLengthInBytesOfEncodedLength()
+            val compositeStartElementIndex = currentStartIndex + berTlv.startIndexOfValue
             val tagMetaData = session.tagMetaData!!
             val decoded = if (tag.isConstructed()) {
                 DecodedData.fromTlv(tag, tagMetaData, valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(berTlv.getChildren(), compositeStartElementIndex, session))
@@ -36,7 +36,7 @@ public class TLVDecoder : Decoder {
             decodedItems.add(decoded)
             currentStartIndex += length
         }
-        session.rememberTags(list)
+        session.rememberTlvs(list)
         return decodedItems
     }
 

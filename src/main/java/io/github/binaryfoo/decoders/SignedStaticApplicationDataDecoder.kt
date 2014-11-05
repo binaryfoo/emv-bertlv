@@ -7,6 +7,7 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findForValue
 import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
+import io.github.binaryfoo.HexDumpFactory
 
 /**
  * EMV 4.3 Book 2, Table 7: Format of Data Recovered from Signed Static Application Data
@@ -17,28 +18,29 @@ public class SignedStaticApplicationDataDecoder : Annotater {
 
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate
-        val signedStaticData = session.findTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
+        val signedStaticData = session.findTlv(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         if (signedStaticData != null && issuerPublicKeyCertificate != null) {
-            val results = recoverText(signedStaticData, issuerPublicKeyCertificate, ::decodeSignedStaticData)
-            decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA).forEach { it.addChildren(results.decoded) }
+            for (decodedSSD in decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)) {
+                val startIndex = decodedSSD.startIndex + signedStaticData.startIndexOfValue
+                val result = recoverText(signedStaticData.valueAsHexString, issuerPublicKeyCertificate, startIndex, ::decodeSignedStaticData)
+                decodedSSD.addChildren(result.decoded)
+                if (result.recoveredHex != null) {
+                    decodedSSD.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+                }
+            }
         }
     }
 
 }
 
-fun decodeSignedStaticData(recovered: ByteArray, byteLengthOfIssuerModulus: Int): List<DecodedData> {
-    val header = ISOUtil.hexString(recovered, 0, 1)
-    val format = ISOUtil.hexString(recovered, 1, 1)
-    val hashAlgorithm = ISOUtil.hexString(recovered, 2, 1)
-    val dataAuthenticationCode = ISOUtil.hexString(recovered, 3, 2)
-    val hash = ISOUtil.hexString(recovered, recovered.size-21, 20)
-    val trailer = ISOUtil.hexString(recovered, recovered.size-1, 1)
+fun decodeSignedStaticData(recovered: ByteArray, byteLengthOfIssuerModulus: Int, startIndexInBytes: Int): List<DecodedData> {
     return listOf(
-            DecodedData.primitive("Header", header),
-            DecodedData.primitive("Format", format),
-            DecodedData.primitive("Hash Algorithm", hashAlgorithm),
-            DecodedData.primitive("Data Auth Code", dataAuthenticationCode),
-            DecodedData.primitive("Hash", hash),
-            DecodedData.primitive("Trailer", trailer))
+            DecodedData.byteRange("Header", recovered, 0, 1, startIndexInBytes),
+            DecodedData.byteRange("Format", recovered, 1, 1, startIndexInBytes),
+            DecodedData.byteRange("Hash Algorithm", recovered, 2, 1, startIndexInBytes),
+            DecodedData.byteRange("Data Auth Code", recovered, 3, 2, startIndexInBytes),
+            DecodedData.byteRange("Hash", recovered, recovered.size-21, 20, startIndexInBytes),
+            DecodedData.byteRange("Trailer", recovered, recovered.size-1, 1, startIndexInBytes)
+    )
 }
 

@@ -13,13 +13,15 @@ trait Annotater {
 
     public fun recoverText(signedData: String,
                        certificateOfSigner: RecoveredPublicKeyCertificate,
-                       decode: (ByteArray, Int) -> List<DecodedData>): RecoveryResult {
+                       startIndexInBytes: Int,
+                       decode: (ByteArray, Int, Int) -> List<DecodedData>): RecoveryResult {
         if (certificateOfSigner.exponent == null) {
             return RecoveryResult("Failed to recover: missing ${certificateOfSigner.name} exponent")
         } else {
             try {
-                val recovered: ByteArray = SignedDataRecoverer().recover(signedData, certificateOfSigner.exponent!!, certificateOfSigner.modulus)
-                return RecoveryResult("Recovered using ${certificateOfSigner.name}", decode(recovered, certificateOfSigner.modulusLength))
+                val recoveredBytes: ByteArray = SignedDataRecoverer().recover(signedData, certificateOfSigner.exponent!!, certificateOfSigner.modulus)
+                val recoveredData = decode(recoveredBytes, certificateOfSigner.modulusLength, startIndexInBytes)
+                return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredData, ISOUtil.hexString(recoveredBytes))
             } catch(e: Exception) {
                 return RecoveryResult("Failed to recover: ${e}")
             }

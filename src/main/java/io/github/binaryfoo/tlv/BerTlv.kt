@@ -24,13 +24,17 @@ public abstract class BerTlv(public val tag: Tag) {
         return ISOUtil.hexString(toBinary())
     }
 
-    public fun getValueAsHexString(): String {
-        return ISOUtil.hexString(getValue())
-    }
+    public val valueAsHexString: String
+    get() = ISOUtil.hexString(getValue())
 
-    public fun getLengthInBytesOfEncodedLength(): Int {
-        return getLength(getValue()).size
-    }
+    public val lengthInBytesOfEncodedLength: Int
+    get() = getLength(getValue()).size
+
+    /**
+     * Skip the tag and length bytes.
+     */
+    public val startIndexOfValue: Int
+    get() = tag.bytes.size + lengthInBytesOfEncodedLength
 
     public abstract fun findTlv(tag: Tag): BerTlv?
 

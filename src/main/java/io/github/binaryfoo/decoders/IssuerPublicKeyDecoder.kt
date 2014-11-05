@@ -19,13 +19,14 @@ public class IssuerPublicKeyDecoder : Annotater {
 
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val keyIndex = session.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)
-        val encryptedCertificate = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
+        val encryptedCertificate = session.findTlv(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
         val rid = extractRid(session.findTag(EmvTags.DEDICATED_FILE_NAME))
         if (keyIndex != null && encryptedCertificate != null && rid != null) {
             val caPublicKey = crypto.CaPublicKeyTable.getEntry(rid, keyIndex)
             if (caPublicKey != null) {
                 for (decodedCertificate in decoded.findAllForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)) {
-                    val result = recoverCertificate(encryptedCertificate, caPublicKey, decodedCertificate.startIndex, ::decodeIssuerPublicKey)
+                    val startIndex = decodedCertificate.startIndex + encryptedCertificate.startIndexOfValue
+                    val result = recoverCertificate(encryptedCertificate.valueAsHexString, caPublicKey, startIndex, ::decodeIssuerPublicKey)
                     val certificate = result.certificate
                     if (certificate != null) {
                         certificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
@@ -34,7 +35,7 @@ public class IssuerPublicKeyDecoder : Annotater {
                     }
                     decodedCertificate.addChildren(result.decoded)
                     if (result.recoveredHex != null) {
-                        decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, decodedCertificate.startIndex)
+                        decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
                     }
                 }
             }

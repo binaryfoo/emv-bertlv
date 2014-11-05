@@ -18,8 +18,8 @@ public class GetProcessingOptionsCommandAPDUDecoder : CommandAPDUDecoder {
         val length = Integer.parseInt(input.substring(8, 10), 16)
         val populatedPdol = input.substring(10, 10 + length * 2)
         val populatedPdolTlv = BerTlv.parse(ISOUtil.hex2byte(populatedPdol))
-        val valueAsHexString = populatedPdolTlv.getValueAsHexString()
-        val decodedPDOLElements = decodePDOLElements(session, valueAsHexString, startIndexInBytes + 5 + populatedPdolTlv.tag.bytes.size + populatedPdolTlv.getLengthInBytesOfEncodedLength())
+        val valueAsHexString = populatedPdolTlv.valueAsHexString
+        val decodedPDOLElements = decodePDOLElements(session, valueAsHexString, startIndexInBytes + 5 + populatedPdolTlv.startIndexOfValue)
         val decodedData = if (populatedPdolTlv.getValue().size == 0) "No PDOL included" else "PDOL " + valueAsHexString
         return DecodedData.constructed("C-APDU: GPO", decodedData, startIndexInBytes, startIndexInBytes + 5 + length + 1, decodedPDOLElements)
     }

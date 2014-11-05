@@ -13,11 +13,12 @@ public class ICCPublicKeyDecoder : Annotater {
 
     override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
         val recoveredIssuerPublicKeyCertificate = session.issuerPublicKeyCertificate
-        val iccCertificate = session.findTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)
+        val iccCertificate = session.findTlv(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)
 
         if (iccCertificate != null && recoveredIssuerPublicKeyCertificate != null && recoveredIssuerPublicKeyCertificate.exponent != null) {
             for (decodedCertificate in decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)) {
-                val result = recoverCertificate(iccCertificate, recoveredIssuerPublicKeyCertificate, decodedCertificate.startIndex, ::decodeICCPublicKeyCertificate)
+                val startIndex = decodedCertificate.startIndex + iccCertificate.startIndexOfValue
+                val result = recoverCertificate(iccCertificate.valueAsHexString, recoveredIssuerPublicKeyCertificate, startIndex, ::decodeICCPublicKeyCertificate)
                 val certificate = result.certificate
                 if (certificate != null) {
                     certificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
@@ -26,7 +27,7 @@ public class ICCPublicKeyDecoder : Annotater {
                 }
                 decodedCertificate.addChildren(result.decoded)
                 if (result.recoveredHex != null) {
-                    decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, decodedCertificate.startIndex)
+                    decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
                 }
             }
         }

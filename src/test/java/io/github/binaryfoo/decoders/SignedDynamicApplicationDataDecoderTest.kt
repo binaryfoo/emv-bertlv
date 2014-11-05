@@ -14,7 +14,7 @@ public class SignedDynamicApplicationDataDecoderTest {
     Test
     public fun decodeOutputOfCDA() {
         val recovered = ISOUtil.hex2byte("6A0501260836DF6D9E2104092E40D58B731AF5885C067BE29D015DD4C9454026810F0879E219B8A7DCD0BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB5734B62BE6BFF2A04C1CFF4060E549C932E1723DBC")
-        val decoded = decodeSignedDynamicData(recovered, 144)
+        val decoded = decodeSignedDynamicData(recovered, 144, 0)
         assertThat(decoded, `is`(DecodedAsStringMatcher.decodedAsString("""Header: 6A
 Format: 05
 Hash algorithm: 01
@@ -32,7 +32,7 @@ Trailer: BC
     Test
     public fun decodeBogStandardDDA() {
         val recovered = ISOUtil.hex2byte("6A05010706112233445566BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB97C21EB1AA67291E00322913CE1C52CCF0D93200BC")
-        val decoded = decodeSignedDynamicData(recovered, 0)
+        val decoded = decodeSignedDynamicData(recovered, 0, 0)
         assertThat(decoded, `is`(DecodedAsStringMatcher.decodedAsString("""Header: 6A
 Format: 05
 Hash algorithm: 01

@@ -7,6 +7,7 @@ import io.github.binaryfoo.tlv.Tag
 import java.util.HashMap
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
+import java.util.LinkedHashMap
 
 public class DecodeSession : HashMap<Tag, String>() {
 
@@ -16,6 +17,7 @@ public class DecodeSession : HashMap<Tag, String>() {
     public var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
     public var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
     public var signedDynamicAppData: String? = null
+    private val decodedTlvs: MutableMap<Tag, BerTlv> = LinkedHashMap()
 
     public fun isFirstGenerateACCommand(): Boolean {
         return firstGenerateACCommand
@@ -26,10 +28,14 @@ public class DecodeSession : HashMap<Tag, String>() {
     }
 
     public fun findTag(tag: Tag): String? {
-        return this[tag]
+        return decodedTlvs[tag]?.valueAsHexString
     }
 
-    public fun rememberTags(tlvs: List<BerTlv>) {
-        tlvs.forEach { this[it.tag] = it.getValueAsHexString() }
+    public fun findTlv(tag: Tag): BerTlv? {
+        return decodedTlvs[tag]
+    }
+
+    public fun rememberTlvs(tlvs: List<BerTlv>) {
+        tlvs.forEach { decodedTlvs[it.tag] = it }
     }
 }
