@@ -18,18 +18,13 @@ import io.github.binaryfoo.HexDumpFactory
  * EMV 4.3 Book2, Table 18: Dynamic Application Data to be Signed
  */
 public class SignedDynamicApplicationDataDecoder : SignedDataDecoder {
-    override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
+    override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val iccPublicKeyCertificate = session.iccPublicKeyCertificate
         val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData
         if (signedData != null && iccPublicKeyCertificate != null) {
             for (decodedSignedData in decoded.findAllForValue(signedData)) {
-                val offset = if (decodedSignedData.tag != null) session.findTlv(decodedSignedData.tag)?.startIndexOfValue ?: 0 else 0
-                val startIndex = decodedSignedData.startIndex + offset
-                val result = recoverText(signedData, iccPublicKeyCertificate, startIndex, ::decodeSignedDynamicData)
-                decodedSignedData.addChildren(result.decoded)
-                if (result.recoveredHex != null) {
-                    decodedSignedData.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
-                }
+                val signedDynamicData = session.findTlv(decodedSignedData.tag!!)!!
+                recoverSignedData(signedDynamicData, decodedSignedData, iccPublicKeyCertificate, ::decodeSignedDynamicData)
             }
         }
     }

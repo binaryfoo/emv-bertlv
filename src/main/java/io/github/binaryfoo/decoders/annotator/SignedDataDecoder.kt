@@ -7,16 +7,30 @@ import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.decoders.SignedDataRecoverer
 import io.github.binaryfoo.crypto.PublicKeyCertificate
 import io.github.binaryfoo.tlv.ISOUtil
+import io.github.binaryfoo.crypto.CaPublicKey
+import io.github.binaryfoo.HexDumpFactory
 
 /**
  * Signed data in EMV is RSA encrypted using the private key. Recovery means decrypt using the public key.
  */
 trait SignedDataDecoder {
-    fun createNotes(session: DecodeSession, decoded: List<DecodedData>)
+    fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>)
 
     /**
      * Use for static and dynamic data from the chip.
      */
+    public fun recoverSignedData(signedStaticData: BerTlv,
+                                 decodedSSD: DecodedData,
+                                 certificateOfSigner: RecoveredPublicKeyCertificate,
+                                 decode: (ByteArray, Int) -> List<DecodedData>) {
+        val startIndex = decodedSSD.startIndex + signedStaticData.startIndexOfValue
+        val result = recoverText(signedStaticData.valueAsHexString, certificateOfSigner, startIndex, decode)
+        decodedSSD.addChildren(result.decoded)
+        if (result.recoveredHex != null) {
+            decodedSSD.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+        }
+    }
+
     public fun recoverText(signedData: String,
                        certificateOfSigner: RecoveredPublicKeyCertificate,
                        startIndexInBytes: Int,
@@ -37,10 +51,23 @@ trait SignedDataDecoder {
     /**
      * Use for issuer and ICC certificates.
      */
-    public fun recoverCertificate(signedData: String,
-                       certificateOfSigner: PublicKeyCertificate,
-                       startIndexInBytes: Int,
-                       decode: (ByteArray, Int, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
+    public fun recoverCertificate(encryptedCertificate: BerTlv,
+                                  decodedCertificate: DecodedData,
+                                  certificateOfSigner: PublicKeyCertificate,
+                                  decode: (ByteArray, Int, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
+        val startIndex = decodedCertificate.startIndex + encryptedCertificate.startIndexOfValue
+        val result = recoverCertificate(encryptedCertificate.valueAsHexString, certificateOfSigner, startIndex, decode)
+        decodedCertificate.addChildren(result.decoded)
+        if (result.recoveredHex != null) {
+            decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+        }
+        return result
+    }
+
+    private fun recoverCertificate(signedData: String,
+                                  certificateOfSigner: PublicKeyCertificate,
+                                  startIndexInBytes: Int,
+                                  decode: (ByteArray, Int, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
         if (certificateOfSigner.exponent == null) {
             return RecoveryResult("Failed to recover: missing ${certificateOfSigner.name} exponent")
         } else {

@@ -8,6 +8,9 @@ import io.github.binaryfoo.findForValue
 import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.HexDumpFactory
+import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
+import io.github.binaryfoo.tlv.BerTlv
+import io.github.binaryfoo.decoders.annotator.SignedDataDecoder.RecoveryResult
 
 /**
  * EMV 4.3 Book 2, Table 7: Format of Data Recovered from Signed Static Application Data
@@ -16,21 +19,15 @@ import io.github.binaryfoo.HexDumpFactory
  */
 public class SignedStaticApplicationDataDecoder : SignedDataDecoder {
 
-    override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
+    override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate
         val signedStaticData = session.findTlv(EmvTags.SIGNED_STATIC_APPLICATION_DATA)
         if (signedStaticData != null && issuerPublicKeyCertificate != null) {
             for (decodedSSD in decoded.findAllForTag(EmvTags.SIGNED_STATIC_APPLICATION_DATA)) {
-                val startIndex = decodedSSD.startIndex + signedStaticData.startIndexOfValue
-                val result = recoverText(signedStaticData.valueAsHexString, issuerPublicKeyCertificate, startIndex, ::decodeSignedStaticData)
-                decodedSSD.addChildren(result.decoded)
-                if (result.recoveredHex != null) {
-                    decodedSSD.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
-                }
+                recoverSignedData(signedStaticData, decodedSSD, issuerPublicKeyCertificate, ::decodeSignedStaticData)
             }
         }
     }
-
 }
 
 fun decodeSignedStaticData(recovered: ByteArray, startIndexInBytes: Int): List<DecodedData> {

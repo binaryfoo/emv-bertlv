@@ -11,13 +11,14 @@ import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.findForTag
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.HexDumpFactory
+import io.github.binaryfoo.crypto.CaPublicKey
 
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
  */
 public class IssuerPublicKeyDecoder : SignedDataDecoder {
 
-    override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
+    override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val keyIndex = session.findTag(EmvTags.CA_PUBLIC_KEY_INDEX)
         val encryptedCertificate = session.findTlv(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
         val rid = extractRid(session.findTag(EmvTags.DEDICATED_FILE_NAME))
@@ -25,17 +26,11 @@ public class IssuerPublicKeyDecoder : SignedDataDecoder {
             val caPublicKey = crypto.CaPublicKeyTable.getEntry(rid, keyIndex)
             if (caPublicKey != null) {
                 for (decodedCertificate in decoded.findAllForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)) {
-                    val startIndex = decodedCertificate.startIndex + encryptedCertificate.startIndexOfValue
-                    val result = recoverCertificate(encryptedCertificate.valueAsHexString, caPublicKey, startIndex, ::decodeIssuerPublicKey)
-                    val certificate = result.certificate
-                    if (certificate != null) {
-                        certificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
-                        certificate.exponent = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_EXPONENT)
-                        session.issuerPublicKeyCertificate = certificate
-                    }
-                    decodedCertificate.addChildren(result.decoded)
-                    if (result.recoveredHex != null) {
-                        decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+                    val result = recoverCertificate(encryptedCertificate, decodedCertificate, caPublicKey, ::decodeIssuerPublicKey)
+                    if (result.certificate != null) {
+                        result.certificate.rightKeyPart = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_REMAINDER)
+                        result.certificate.exponent = session.findTag(EmvTags.ISSUER_PUBLIC_KEY_EXPONENT)
+                        session.issuerPublicKeyCertificate = result.certificate
                     }
                 }
             }

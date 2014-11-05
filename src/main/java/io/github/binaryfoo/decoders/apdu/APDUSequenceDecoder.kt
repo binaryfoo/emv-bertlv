@@ -25,7 +25,7 @@ import io.github.binaryfoo.decoders.annotator.BackgroundReading
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
     private val hexDumpFactory = HexDumpFactory()
-    private val annotators = listOf(
+    private val signedDataRecoverers = listOf(
         IssuerPublicKeyDecoder(),
         ICCPublicKeyDecoder(),
         SignedStaticApplicationDataDecoder(),
@@ -73,9 +73,9 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
     }
 
     fun postProcess(decoded: List<DecodedData>, session: DecodeSession) {
-        for (processor in annotators) {
+        for (processor in signedDataRecoverers) {
             try {
-                processor.createNotes(session, decoded)
+                processor.decodeSignedData(session, decoded)
             } catch(e: Exception) {
             }
         }

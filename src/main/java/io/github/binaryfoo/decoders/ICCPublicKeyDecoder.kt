@@ -14,23 +14,17 @@ import io.github.binaryfoo.HexDumpFactory
  */
 public class ICCPublicKeyDecoder : SignedDataDecoder {
 
-    override fun createNotes(session: DecodeSession, decoded: List<DecodedData>) {
+    override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val recoveredIssuerPublicKeyCertificate = session.issuerPublicKeyCertificate
         val iccCertificate = session.findTlv(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)
 
         if (iccCertificate != null && recoveredIssuerPublicKeyCertificate != null && recoveredIssuerPublicKeyCertificate.exponent != null) {
             for (decodedCertificate in decoded.findAllForTag(EmvTags.ICC_PUBLIC_KEY_CERTIFICATE)) {
-                val startIndex = decodedCertificate.startIndex + iccCertificate.startIndexOfValue
-                val result = recoverCertificate(iccCertificate.valueAsHexString, recoveredIssuerPublicKeyCertificate, startIndex, ::decodeICCPublicKeyCertificate)
-                val certificate = result.certificate
-                if (certificate != null) {
-                    certificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
-                    certificate.exponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
-                    session.iccPublicKeyCertificate = certificate
-                }
-                decodedCertificate.addChildren(result.decoded)
-                if (result.recoveredHex != null) {
-                    decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+                val result = recoverCertificate(iccCertificate, decodedCertificate, recoveredIssuerPublicKeyCertificate, ::decodeICCPublicKeyCertificate)
+                if (result.certificate != null) {
+                    result.certificate.rightKeyPart = session.findTag(EmvTags.ICC_PUBLIC_KEY_REMAINDER)
+                    result.certificate.exponent = session.findTag(EmvTags.ICC_PUBLIC_KEY_EXPONENT)
+                    session.iccPublicKeyCertificate = result.certificate
                 }
             }
         }
