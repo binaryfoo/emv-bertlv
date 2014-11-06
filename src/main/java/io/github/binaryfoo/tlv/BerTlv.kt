@@ -26,9 +26,7 @@ public abstract class BerTlv(public val tag: Tag) {
     /**
      * The whole object (the T, L and V components) as a hex string.
      */
-    public fun toHexString(): String {
-        return ISOUtil.hexString(toBinary())
-    }
+    public fun toHexString(): String = ISOUtil.hexString(toBinary())
 
     /**
      * The value of V in TLV as a hex string.
@@ -159,7 +157,7 @@ public abstract class BerTlv(public val tag: Tag) {
                         tlvs.add(newInstance(tag, value))
                     }
                 } catch (e: Exception) {
-                    throw RuntimeException("Failed parsing " + tag + "," + (if (e.getMessage() == null) e.javaClass.getSimpleName() else e.getMessage()), e)
+                    throw RuntimeException("Failed parsing $tag," + (if (e.getMessage() == null) e.javaClass.getSimpleName() else e.getMessage()), e)
                 }
 
             }
@@ -196,14 +194,7 @@ public abstract class BerTlv(public val tag: Tag) {
             return dataLength
         }
 
-        platformStatic public fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? {
-            for (tlv in tlvs) {
-                if (tlv.tag == tag) {
-                    return tlv
-                }
-            }
-            return null
-        }
+        platformStatic public fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? = tlvs.firstOrNull { it.tag == tag }
     }
 
 }

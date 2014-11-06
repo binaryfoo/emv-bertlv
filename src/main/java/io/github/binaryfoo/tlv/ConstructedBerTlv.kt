@@ -5,11 +5,12 @@ import java.io.IOException
 import java.util.ArrayList
 import java.util.Arrays
 
+/**
+ * The V represents a set of TLVs.
+ */
 class ConstructedBerTlv(tag: Tag, private val children: List<BerTlv>) : BerTlv(tag) {
 
-    override fun getChildren(): List<BerTlv> {
-        return children
-    }
+    override fun getChildren(): List<BerTlv> = children
 
     override fun getValue(): ByteArray {
         val value = ByteArrayOutputStream()
@@ -24,32 +25,16 @@ class ConstructedBerTlv(tag: Tag, private val children: List<BerTlv>) : BerTlv(t
         return value.toByteArray()
     }
 
-    override fun findTlv(tag: Tag): BerTlv? {
-        for (tlv in children) {
-            if (tlv.tag == tag) {
-                return tlv
-            }
-        }
-        return null
-    }
+    override fun findTlv(tag: Tag): BerTlv? = children.firstOrNull { it.tag == tag }
 
-    override fun findTlvs(tag: Tag): List<BerTlv> {
-        val matches = ArrayList<BerTlv>()
-        for (tlv in children) {
-            if (tlv.tag == tag) {
-                matches.add(tlv)
-            }
-        }
-        return matches
-    }
+    override fun findTlvs(tag: Tag): List<BerTlv> = children.filter { it.tag == tag }
 
     override fun toString(): String {
-        val buffer = StringBuffer("\nTag: ")
-        buffer.append(tag).append('\n')
+        val buffer = StringBuilder("\nTag: $tag\n")
         for (tlv in children) {
             buffer.append(tlv).append('\n')
         }
-        buffer.append("End tag: ").append(tag).append('\n')
+        buffer.append("End tag: $tag\n")
         return buffer.toString()
     }
 }

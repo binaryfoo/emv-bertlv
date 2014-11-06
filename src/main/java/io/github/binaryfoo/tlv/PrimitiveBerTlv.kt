@@ -2,11 +2,12 @@ package io.github.binaryfoo.tlv
 
 import java.util.Collections
 
+/**
+ * The V is just some bytes.
+ */
 class PrimitiveBerTlv(tag: Tag, private val value: ByteArray) : BerTlv(tag) {
 
-    override fun getValue(): ByteArray {
-        return value
-    }
+    override fun getValue(): ByteArray = value
 
     override fun findTlv(tag: Tag): BerTlv? {
         return null
@@ -20,8 +21,6 @@ class PrimitiveBerTlv(tag: Tag, private val value: ByteArray) : BerTlv(tag) {
         return listOf()
     }
 
-    override fun toString(): String {
-        return tag.toString() + ": " + ISOUtil.hexString(value)
-    }
+    override fun toString(): String = "${tag}: ${ISOUtil.hexString(value)}"
 }
 
