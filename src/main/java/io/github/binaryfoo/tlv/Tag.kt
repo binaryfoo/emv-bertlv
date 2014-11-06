@@ -40,13 +40,13 @@ public data class Tag(val bytes: ByteArray) {
         }
     }
 
-    public fun getHexString(): String {
-        return ISOUtil.hexString(bytes)
-    }
+    public val hexString: String
+        get() = ISOUtil.hexString(bytes)
 
-    public fun isConstructed(): Boolean {
-        return (bytes[0].toInt() and 0x20) == 0x20
-    }
+    public val constructed: Boolean
+        get() = (bytes[0].toInt() and 0x20) == 0x20
+
+    public fun isConstructed(): Boolean = constructed
 
     override fun toString(): String {
         return ISOUtil.hexString(bytes)

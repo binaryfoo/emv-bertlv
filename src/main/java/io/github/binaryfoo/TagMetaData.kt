@@ -22,7 +22,7 @@ import org.yaml.snakeyaml.Dumper
 public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
 
     public fun put(tag: Tag, tagInfo: TagInfo) {
-        put(tag.getHexString(), tagInfo)
+        put(tag.hexString, tagInfo)
     }
 
     private fun put(tag: String, tagInfo: TagInfo) {
@@ -44,7 +44,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
     }
 
     public fun get(tag: Tag): TagInfo {
-        val tagInfo = metadata.get(tag.getHexString())
+        val tagInfo = metadata.get(tag.hexString)
         if (tagInfo == null) {
             return TagInfo("?", "?", Decoders.PRIMITIVE, PrimitiveDecoder.HEX)
         }

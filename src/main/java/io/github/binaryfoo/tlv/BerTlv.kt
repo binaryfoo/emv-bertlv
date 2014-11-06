@@ -123,7 +123,7 @@ public abstract class BerTlv(public val tag: Tag) {
                 try {
                     val length = parseLength(data)
                     val value = readUpToLength(data, length)
-                    if (tag.isConstructed() && parseConstructedTags) {
+                    if (tag.constructed && parseConstructedTags) {
                         try {
                             tlvs.add(newInstance(tag, parseList(value, true)))
                         } catch (e: Exception) {

@@ -27,7 +27,7 @@ public class TLVDecoder : Decoder {
             val contentEndIndex = currentStartIndex + length
             val compositeStartElementIndex = currentStartIndex + tlv.startIndexOfValue
             val tagMetaData = session.tagMetaData!!
-            val decoded = if (tag.isConstructed()) {
+            val decoded = if (tag.constructed) {
                 DecodedData.fromTlv(tlv, tagMetaData, valueAsHexString, currentStartIndex, contentEndIndex, decodeTlvs(tlv.getChildren(), compositeStartElementIndex, session))
             } else {
                 val tagInfo = tagMetaData.get(tag)

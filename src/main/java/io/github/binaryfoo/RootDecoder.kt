@@ -58,7 +58,7 @@ public class RootDecoder {
             "bit-string" to TagInfo.treeStructured("Bits", "EMV Bit String", ByteLabeller())
         )
 
-        private fun Tag.to(that: TagMetaData): Pair<String, TagInfo> = Pair(this.getHexString(), that.get(this))
+        private fun Tag.to(that: TagMetaData): Pair<String, TagInfo> = Pair(this.hexString, that.get(this))
 
         platformStatic public fun getTagInfo(tag: String): TagInfo? {
             return ROOT_TAG_INFO.get(tag)
