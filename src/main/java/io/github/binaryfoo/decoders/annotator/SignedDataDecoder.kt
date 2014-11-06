@@ -25,10 +25,7 @@ trait SignedDataDecoder {
                                  decode: (ByteArray, Int) -> List<DecodedData>) {
         val startIndex = decodedSSD.startIndex + signedStaticData.startIndexOfValue
         val result = recoverText(signedStaticData.valueAsHexString, certificateOfSigner, startIndex, decode)
-        decodedSSD.addChildren(result.decoded)
-        if (result.recoveredHex != null) {
-            decodedSSD.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
-        }
+        updateWithRecoveredData(decodedSSD, result, startIndex)
     }
 
     public fun recoverText(signedData: String,
@@ -57,10 +54,7 @@ trait SignedDataDecoder {
                                   decode: (ByteArray, Int, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
         val startIndex = decodedCertificate.startIndex + encryptedCertificate.startIndexOfValue
         val result = recoverCertificate(encryptedCertificate.valueAsHexString, certificateOfSigner, startIndex, decode)
-        decodedCertificate.addChildren(result.decoded)
-        if (result.recoveredHex != null) {
-            decodedCertificate.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
-        }
+        updateWithRecoveredData(decodedCertificate, result, startIndex)
         return result
     }
 
@@ -78,6 +72,14 @@ trait SignedDataDecoder {
             } catch(e: Exception) {
                 return RecoveryResult("Failed to recover: ${e}")
             }
+        }
+    }
+
+    private fun updateWithRecoveredData(source: DecodedData, result: RecoveryResult, startIndex: Int) {
+        source.addChildren(result.decoded)
+        if (result.recoveredHex != null) {
+            source.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+            source.category = "recovered"
         }
     }
 
