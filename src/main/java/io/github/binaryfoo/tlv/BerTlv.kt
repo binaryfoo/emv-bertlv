@@ -5,6 +5,9 @@ import java.util.ArrayList
 import java.util.Arrays
 import kotlin.platform.platformStatic
 
+/**
+ * Model data elements encoded using the Basic Encoding Rules: http://en.wikipedia.org/wiki/X.690#BER_encoding.
+ */
 public abstract class BerTlv(public val tag: Tag) {
 
     public fun toBinary(): ByteArray {
@@ -20,15 +23,31 @@ public abstract class BerTlv(public val tag: Tag) {
         return b.array()
     }
 
+    /**
+     * The whole object (the T, L and V components) as a hex string.
+     */
     public fun toHexString(): String {
         return ISOUtil.hexString(toBinary())
     }
 
+    /**
+     * The value of V in TLV as a hex string.
+     */
     public val valueAsHexString: String
     get() = ISOUtil.hexString(getValue())
 
+    /**
+     * The number of bytes used to encode the L (length) in TLV.
+     * Eg 1 byte might be used to encode a length of 12, whilst at least 2 bytes would be used for a length of 300.
+     */
     public val lengthInBytesOfEncodedLength: Int
     get() = getLength(getValue()).size
+
+    /**
+     * The value of L (length) in TLV. Length in bytes of the value.
+     */
+    public val length: Int
+    get() = getValue().size
 
     /**
      * Skip the tag and length bytes.
@@ -40,8 +59,14 @@ public abstract class BerTlv(public val tag: Tag) {
 
     public abstract fun findTlvs(tag: Tag): List<BerTlv>
 
+    /**
+     * The value of V in TLV as a byte array.
+     */
     public abstract fun getValue(): ByteArray
 
+    /**
+     * For a constructed TLV the child elements that make up the V. For a primitive, an empty list.
+     */
     public abstract fun getChildren(): List<BerTlv>
 
     private fun getLength(value: ByteArray?): ByteArray {
