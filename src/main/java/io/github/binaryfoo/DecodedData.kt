@@ -44,6 +44,38 @@ public data class DecodedData(
         return _children
     }
 
+    /**
+     * Position within the #hexDump of the bytes this decoding represents.
+     * For a decoding of a TLV this will include the T, L and V components. The whole kit and caboodle.
+     */
+    public val positionInHexDump: Range<Int>
+    get() {
+        return startIndex..endIndex-1
+    }
+
+    /**
+     * Position within the #hexDump of the bytes comprising the T (tag) in the TLV this decoding represents.
+     * Null if this decoding didn't come from a TLV.
+     */
+    public val tagPositionInHexDump: Range<Int>?
+    get() {
+        return if (tlv != null) startIndex..(startIndex + tlv.tag.bytes.size - 1) else null
+    }
+
+    /**
+     * Position within the #hexDump of the bytes comprising the L (length) in the TLV this decoding represents.
+     * Null if this decoding didn't come from a TLV.
+     */
+    public val lengthPositionInHexDump: Range<Int>?
+    get() {
+        return if (tlv != null) {
+            val firstLengthByte = tagPositionInHexDump!!.end + 1
+            firstLengthByte..(firstLengthByte + tlv.lengthInBytesOfEncodedLength - 1)
+        } else {
+            null
+        }
+    }
+
     private fun trim(decodedData: String): String {
         return if (decodedData.length() >= 60) decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) else decodedData
     }
@@ -112,7 +144,7 @@ public data class DecodedData(
         /**
          * Attach a Tag but the data wasn't actually encoded as TLV. Eg a bunch of values are concatenated in a stream.
          */
-        platformStatic public fun withTag(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+        platformStatic public fun withTag(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
             val tagInfo = metadata.get(tag)
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading)
         }
@@ -120,7 +152,7 @@ public data class DecodedData(
         /**
          * Decoded from a TLV.
          */
-        platformStatic public fun fromTlv(tlv: BerTlv, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData>): DecodedData {
+        platformStatic public fun fromTlv(tlv: BerTlv, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
             val tag = tlv.tag
             val tagInfo = metadata.get(tag)
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading, tlv)
