@@ -1,0 +1,37 @@
+C-APDU: Select: AID A0000000041010
+R-APDU: 9000
+  6F (FCI template): 8407A0000000041010A516500A49443335312076312031BF0C075F50...746F
+    84 (dedicated file name): A0000000041010
+    A5 (FCI proprietary template): 500A49443335312076312031BF0C075F5004746F746F
+      50 (application label): ID351 v1 1
+      BF0C (FCI discretionary data): 5F5004746F746F
+        5F50 (?): 746F746F
+C-APDU: GPO: No PDOL included
+R-APDU: 9000
+  77 (response template): 82020000940408010100
+    82 (AIP - Application Interchange Profile): 0000
+      0000 (Byte 2 Bit 8): Magstripe Mode Only Supported
+    94 (AFL - Application File Locator): 08010100
+      SFI 1 record 1
+C-APDU: Read Record: SFI 1 record 1
+R-APDU: 9000
+  70 (response template): 9F6C0200019F62060000000000079F63060000000000005633423534...1F03
+    9F6C (application version number): 0001
+    9F62 (position of CVC3 in track 1): 000000000007
+    9F63 (position of UN and ATC in track 1): 000000000000
+    56 (track 1): B5413330056003511^CUST IMP MC 351/^1412101067750500
+    9F64 (number of digits from ATC in track 1): 00
+    9F65 (position of CVC3 in track 2): 0007
+    9F66 (position of UN and ATC in track 2): 0000
+    9F6B (track 2): 5413330056003511D1412101067750500F
+    9F67 (number of digits from ATC in track 2): 00
+    9F68 (CVM List - Cardholder Verification Method List): 00000000000000005E0342031F03
+      5E03: Signature, If terminal supports CVM, next
+      4203: Encrypted PIN online, If terminal supports CVM, next
+      1F03: No CVM required, If terminal supports CVM, FAIL
+C-APDU: Compute checksum: 00000000
+R-APDU: 9000
+  77 (response template): 9F610201F59F600201F59F3602000B
+    9F61 (CVC3 track 2): 501
+    9F60 (CVC3 track 1): 501
+    9F36 (ATC - application transaction counter): 11

@@ -11,11 +11,11 @@ public class DecodedAsStringMatcher(private val raw: String) : TypeSafeMatcher<L
     }
 
     override fun describeTo(description: Description) {
-        description.appendValue(raw)
+        description.appendText("is ").appendValue(raw)
     }
 
     override fun describeMismatchSafely(item: List<DecodedData>, mismatchDescription: Description) {
-        mismatchDescription.appendValue(toString(item))
+        mismatchDescription.appendText("was ").appendValue(toString(item))
     }
 
     private fun toString(decoded: List<DecodedData>): String = decoded.toSimpleString("")

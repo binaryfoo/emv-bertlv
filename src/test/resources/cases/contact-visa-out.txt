@@ -1,0 +1,211 @@
+C-APDU: Select: AID A0000000031010
+R-APDU: 9000
+  6F (FCI template): 8407A0000000031010A50B5009564953412054455354
+    84 (dedicated file name): A0000000031010
+    A5 (FCI proprietary template): 5009564953412054455354
+      50 (application label): VISA TEST
+C-APDU: GPO: No PDOL included
+R-APDU: 9000
+  80 (Fixed response template): 1C00080101001001010018030400
+    82 (AIP - Application Interchange Profile): 1C00
+      1000 (Byte 1 Bit 5): Cardholder verification is supported
+      0800 (Byte 1 Bit 4): Terminal risk management is to be performed
+      0400 (Byte 1 Bit 3): Issuer authentication is supported
+      0000 (Byte 2 Bit 8): Magstripe Mode Only Supported
+    94 (AFL - Application File Locator): 080101001001010018030400
+      SFI 1 record 1
+      SFI 2 record 1
+      SFI 3 records 3-4
+C-APDU: Read Record: SFI 1 record 1
+00000000: Failed to decode: Index: 0, Size: 0
+C-APDU: Read Record: SFI 2 record 1
+R-APDU: 9000
+  70 (response template): 5A0847613400000000508C159F02069F03069F1A0295055F2A029A03...0000
+    5A (PAN): 4761340000000050
+    8C (CDOL 1 - Card risk management data object list 1): 9F02069F03069F1A0295055F2A029A039C019F3704
+      9F02 (amount authorized) 6 bytes
+      9F03 (amount other) 6 bytes
+      9F1A (terminal country code) 2 bytes
+      95 (TVR - Terminal Verification Results) 5 bytes
+      5F2A (terminal currency code) 2 bytes
+      9A (transaction date) 3 bytes
+      9C (transaction type) 1 bytes
+      9F37 (unpredictable number) 4 bytes
+    8D (CDOL 2 - Card risk management data object list 2): 8A029F02069F03069F1A0295055F2A029A039C019F3704
+      8A (authorisation response code) 2 bytes
+      9F02 (amount authorized) 6 bytes
+      9F03 (amount other) 6 bytes
+      9F1A (terminal country code) 2 bytes
+      95 (TVR - Terminal Verification Results) 5 bytes
+      5F2A (terminal currency code) 2 bytes
+      9A (transaction date) 3 bytes
+      9C (transaction type) 1 bytes
+      9F37 (unpredictable number) 4 bytes
+    5F24 (card expiry): 171231
+    9F07 (application usage control): FF80
+      8000 (Byte 1 Bit 8): Valid for domestic cash transactions
+      4000 (Byte 1 Bit 7): Valid for international cash transactions
+      2000 (Byte 1 Bit 6): Valid for domestic goods
+      1000 (Byte 1 Bit 5): Valid for international goods
+      0800 (Byte 1 Bit 4): Valid for domestic services
+      0400 (Byte 1 Bit 3): Valid for international services
+      0200 (Byte 1 Bit 2): Valid at ATMs
+      0100 (Byte 1 Bit 1): Valid at terminals other than ATMs
+      0080 (Byte 2 Bit 8): Domestic cashback allowed
+    9F08 (card application version number): 008C
+    9F0D (IAC default): 0000000000
+    9F0E (IAC denial): 0000000000
+    9F0F (IAC online): 0000000000
+C-APDU: Read Record: SFI 3 record 3
+R-APDU: 9000
+  70 (response template): 8E100000000000000000410342031E031F02
+    8E (CVM List - Cardholder Verification Method List): 0000000000000000410342031E031F02
+      4103: Plain PIN by ICC, If terminal supports CVM, next
+      4203: Encrypted PIN online, If terminal supports CVM, next
+      1E03: Signature, If terminal supports CVM, FAIL
+      1F02: No CVM required, If not (unattended cash, manual cash, purchase + cash), FAIL
+C-APDU: Read Record: SFI 3 record 4
+R-APDU: 9000
+  70 (response template): 5F28020702
+    5F28 (issuer country code): SGP (Singapore)
+C-APDU: Select: AID A0000000031010
+R-APDU: 9000
+  6F (FCI template): 8407A0000000031010A50B5009564953412054455354
+    84 (dedicated file name): A0000000031010
+    A5 (FCI proprietary template): 5009564953412054455354
+      50 (application label): VISA TEST
+C-APDU: GPO: No PDOL included
+R-APDU: 9000
+  80 (Fixed response template): 1C00080101001001010018030400
+    82 (AIP - Application Interchange Profile): 1C00
+      1000 (Byte 1 Bit 5): Cardholder verification is supported
+      0800 (Byte 1 Bit 4): Terminal risk management is to be performed
+      0400 (Byte 1 Bit 3): Issuer authentication is supported
+      0000 (Byte 2 Bit 8): Magstripe Mode Only Supported
+    94 (AFL - Application File Locator): 080101001001010018030400
+      SFI 1 record 1
+      SFI 2 record 1
+      SFI 3 records 3-4
+C-APDU: Read Record: SFI 1 record 1
+R-APDU: 9000
+  70 (response template): 57104761340000000050D1712201125234515F20104341524420352F...3030
+    57 (track 2 equivalent data): 4761340000000050D171220112523451
+    5F20 (card holder name): CARD 5/VISA TEST
+    9F1F (track 1 discretionary data): 1252300451000000
+C-APDU: Read Record: SFI 2 record 1
+R-APDU: 9000
+  70 (response template): 5A0847613400000000508C159F02069F03069F1A0295055F2A029A03...0000
+    5A (PAN): 4761340000000050
+    8C (CDOL 1 - Card risk management data object list 1): 9F02069F03069F1A0295055F2A029A039C019F3704
+      9F02 (amount authorized) 6 bytes
+      9F03 (amount other) 6 bytes
+      9F1A (terminal country code) 2 bytes
+      95 (TVR - Terminal Verification Results) 5 bytes
+      5F2A (terminal currency code) 2 bytes
+      9A (transaction date) 3 bytes
+      9C (transaction type) 1 bytes
+      9F37 (unpredictable number) 4 bytes
+    8D (CDOL 2 - Card risk management data object list 2): 8A029F02069F03069F1A0295055F2A029A039C019F3704
+      8A (authorisation response code) 2 bytes
+      9F02 (amount authorized) 6 bytes
+      9F03 (amount other) 6 bytes
+      9F1A (terminal country code) 2 bytes
+      95 (TVR - Terminal Verification Results) 5 bytes
+      5F2A (terminal currency code) 2 bytes
+      9A (transaction date) 3 bytes
+      9C (transaction type) 1 bytes
+      9F37 (unpredictable number) 4 bytes
+    5F24 (card expiry): 171231
+    9F07 (application usage control): FF80
+      8000 (Byte 1 Bit 8): Valid for domestic cash transactions
+      4000 (Byte 1 Bit 7): Valid for international cash transactions
+      2000 (Byte 1 Bit 6): Valid for domestic goods
+      1000 (Byte 1 Bit 5): Valid for international goods
+      0800 (Byte 1 Bit 4): Valid for domestic services
+      0400 (Byte 1 Bit 3): Valid for international services
+      0200 (Byte 1 Bit 2): Valid at ATMs
+      0100 (Byte 1 Bit 1): Valid at terminals other than ATMs
+      0080 (Byte 2 Bit 8): Domestic cashback allowed
+    9F08 (card application version number): 008C
+    9F0D (IAC default): 0000000000
+    9F0E (IAC denial): 0000000000
+    9F0F (IAC online): 0000000000
+C-APDU: Read Record: SFI 3 record 3
+R-APDU: 9000
+  70 (response template): 8E100000000000000000410342031E031F02
+    8E (CVM List - Cardholder Verification Method List): 0000000000000000410342031E031F02
+      4103: Plain PIN by ICC, If terminal supports CVM, next
+      4203: Encrypted PIN online, If terminal supports CVM, next
+      1E03: Signature, If terminal supports CVM, FAIL
+      1F02: No CVM required, If not (unattended cash, manual cash, purchase + cash), FAIL
+C-APDU: Read Record: SFI 3 record 4
+R-APDU: 9000
+  70 (response template): 5F28020702
+    5F28 (issuer country code): SGP (Singapore)
+C-APDU: GetData: 9F17 (pin try counter)
+R-APDU: 9000
+  9F17 (pin try counter): 10
+C-APDU: Generate AC (ARQC): CDOL 00000000100000000000000000368000008000003612031600D...3A1F
+  9F02 (amount authorized): 000000001000
+  9F03 (amount other): 000000000000
+  9F1A (terminal country code): AUS (Australia)
+  95 (TVR - Terminal Verification Results): 8000008000
+    8000000000 (Byte 1 Bit 8): Offline data authentication was not performed
+    0000008000 (Byte 4 Bit 8): Transaction exceeds floor limit
+  5F2A (terminal currency code): AUD (Australian Dollar)
+  9A (transaction date): 120316
+  9C (transaction type): 00
+  9F37 (unpredictable number): D3173A1F
+R-APDU: 9000
+  80 (Fixed response template): 8000297CB3BA090724C52406010A03A4B8000F112233445566778899...EEFF
+    9F27 (cryptogram information data): ARQC (Authorisation Request Cryptogram - Go ask the issuer)
+    9F36 (ATC - application transaction counter): 41
+    9F26 (application cryptogram): 7CB3BA090724C524
+    9F10 (issuer application data): 06010A03A4B8000F112233445566778899AABBCCDDEEFF
+      Derivation key index: 01
+      Cryptogram version number: 0A
+      Card verification results: 03A4B800
+        Byte 2 Bit 8 = 1, Byte 2 Bit 7 = 0: Second GENERATE AC not requested
+        Byte 2 Bit 6 = 1, Byte 2 Bit 5 = 0: ARQC Returned in GPO/first GENERATE AC
+        Byte 2 Bit 3 = 1: Offline PIN Verification Performed
+        Byte 3 Bit 8 = 1: Last online transaction not completed
+        Byte 3 Bit 6 = 1: Exceeded velocity checking counters
+        Byte 3 Bit 5 = 1: New card
+        Byte 3 Bit 4 = 1: Issuer Authentication failure on last online transaction
+        Byte 4 Bits 8-5: Issuer Script Commands processed on last transaction = 0
+      Issuer discretionary data: 112233445566778899AABBCCDDEEFF
+C-APDU: External Authenticate: 1122334455667788
+  ARPC: 1122334455667788
+  Issuer Specific:
+R-APDU: 6700 Wrong length
+C-APDU: Generate AC (TC): CDOL 303000000000100000000000000000368000008040003612031...3A1F
+  8A (authorisation response code): 00
+  9F02 (amount authorized): 000000001000
+  9F03 (amount other): 000000000000
+  9F1A (terminal country code): AUS (Australia)
+  95 (TVR - Terminal Verification Results): 8000008040
+    8000000000 (Byte 1 Bit 8): Offline data authentication was not performed
+    0000008000 (Byte 4 Bit 8): Transaction exceeds floor limit
+    0000000040 (Byte 5 Bit 7): Issuer authentication failed
+  5F2A (terminal currency code): AUD (Australian Dollar)
+  9A (transaction date): 120316
+  9C (transaction type): 00
+  9F37 (unpredictable number): D3173A1F
+R-APDU: 9000
+  80 (Fixed response template): 400029BB31D191BCED0CF206010A0364BC00
+    9F27 (cryptogram information data): TC (Transaction Certificate - Approved)
+    9F36 (ATC - application transaction counter): 41
+    9F26 (application cryptogram): BB31D191BCED0CF2
+    9F10 (issuer application data): 06010A0364BC00
+      Derivation key index: 01
+      Cryptogram version number: 0A
+      Card verification results: 0364BC00
+        Byte 2 Bit 8 = 0, Byte 2 Bit 7 = 1: TC Returned in Second GENERATE AC
+        Byte 2 Bit 6 = 1, Byte 2 Bit 5 = 0: ARQC Returned in GPO/first GENERATE AC
+        Byte 2 Bit 3 = 1: Offline PIN Verification Performed
+        Byte 3 Bit 8 = 1: Last online transaction not completed
+        Byte 3 Bit 6 = 1: Exceeded velocity checking counters
+        Byte 3 Bit 5 = 1: New card
+        Byte 3 Bit 4 = 1: Issuer Authentication failure on last online transaction
+        Byte 3 Bit 3 = 1: Issuer Authentication not performed after online authorization
+        Byte 4 Bits 8-5: Issuer Script Commands processed on last transaction = 0

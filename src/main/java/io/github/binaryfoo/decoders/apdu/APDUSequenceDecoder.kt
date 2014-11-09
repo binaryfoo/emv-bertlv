@@ -35,7 +35,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         var runningStartIndexInBytes = startIndexInBytes
         val list = ArrayList<DecodedData>()
-        input.split("\\s+").forEach { line ->
+        input.toUpperCase().split("\\s+").forEach { line ->
             try {
                 val commandDecoder = getCommandDecoder(line)
                 val decoded: DecodedData
