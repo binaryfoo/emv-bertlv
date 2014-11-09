@@ -3,6 +3,7 @@ package io.github.binaryfoo.decoders.apdu
 public enum class APDUCommand private(public val firstTwoBytes: String) {
     Select : APDUCommand("00A4")
     ReadRecord : APDUCommand("00B2")
+    ReadBinary : APDUCommand("00B0")
     GetProcessingOptions : APDUCommand("80A8")
     GenerateAC : APDUCommand("80AE")
     ComputeCryptographicChecksum : APDUCommand("802A")

@@ -54,7 +54,7 @@ public class RootDecoder {
             "dol" to TagInfo.treeStructured("DOL", "Data Object List", DataObjectListDecoder()),
             "filled-dol" to TagInfo.treeStructured("Filled DOL", "Data Object List", PopulatedDOLDecoder()),
             "constructed" to TagInfo.treeStructured("TLV Data", "Constructed TLV data", TLVDecoder()),
-            "apdu-sequence" to TagInfo.treeStructured("APDUs", "Sequence of Command/Reply APDUs", APDUSequenceDecoder(ReplyAPDUDecoder(TLVDecoder()), SelectCommandAPDUDecoder(), GetProcessingOptionsCommandAPDUDecoder(), ReadRecordAPDUDecoder(), GenerateACAPDUDecoder(), GetDataAPDUDecoder(), ExternalAuthenticateAPDUDecoder(), ComputeCryptoChecksumDecoder(), InternalAuthenticateAPDUDecoder(), VerifyPinAPDUDecoder(), GetChallengeAPDUDecoder(), PutDataAPDUDecoder())),
+            "apdu-sequence" to TagInfo.treeStructured("APDUs", "Sequence of Command/Reply APDUs", APDUSequenceDecoder(ReplyAPDUDecoder(TLVDecoder()), SelectCommandAPDUDecoder(), GetProcessingOptionsCommandAPDUDecoder(), ReadRecordAPDUDecoder(), GenerateACAPDUDecoder(), GetDataAPDUDecoder(), ExternalAuthenticateAPDUDecoder(), ComputeCryptoChecksumDecoder(), InternalAuthenticateAPDUDecoder(), VerifyPinAPDUDecoder(), GetChallengeAPDUDecoder(), PutDataAPDUDecoder(), ReadBinaryAPDUDecoder())),
             "bit-string" to TagInfo.treeStructured("Bits", "EMV Bit String", ByteLabeller())
         )
 
