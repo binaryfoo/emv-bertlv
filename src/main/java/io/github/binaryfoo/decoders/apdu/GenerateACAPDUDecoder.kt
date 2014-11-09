@@ -49,8 +49,8 @@ public class GenerateACAPDUDecoder : CommandAPDUDecoder {
     }
 
     private fun findCDOL(session: DecodeSession): String? {
-        if (session.isFirstGenerateACCommand()) {
-            session.setFirstGenerateACCommand(false)
+        if (session.firstGenerateACCommand) {
+            session.firstGenerateACCommand = false
             return session.get(EmvTags.CDOL_1)
         } else {
             return session.get(EmvTags.CDOL_2)

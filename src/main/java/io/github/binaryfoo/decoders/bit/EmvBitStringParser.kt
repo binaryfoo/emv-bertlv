@@ -18,7 +18,6 @@ public class EmvBitStringParser {
         private val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)-(\\d+)\\)=INT\\s*")
         private val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+)\\)=0x([0-9a-fA-F]{2})\\s*")
 
-        throws(javaClass<IOException>())
         platformStatic public fun parse(lines: List<String>): List<BitStringField> {
             val bitMappings = ArrayList<BitStringField>()
             for (line in lines) {

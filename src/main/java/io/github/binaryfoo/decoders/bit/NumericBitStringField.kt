@@ -23,7 +23,7 @@ public class NumericBitStringField(private val byteNumber: Int, private val firs
         val theByte = BitSet(8)
         for (bit in bits) {
             if (bit.byteNumber == byteNumber && bit.bitNumber <= firstBit && bit.bitNumber >= lastBit) {
-                theByte.set(bit.bitNumber - 1, bit.isSet())
+                theByte.set(bit.bitNumber - 1, bit.set)
             }
         }
         val bytes = theByte.toByteArray()
@@ -31,11 +31,7 @@ public class NumericBitStringField(private val byteNumber: Int, private val firs
         return "${name} = ${i}"
     }
 
-    override fun getStartBytesOffset(): Int {
-        return byteNumber - 1
-    }
+    override fun getStartBytesOffset(): Int = byteNumber - 1
 
-    override fun getLengthInBytes(): Int {
-        return 1
-    }
+    override fun getLengthInBytes(): Int  = 1
 }

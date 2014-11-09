@@ -9,23 +9,16 @@ import java.util.TreeSet
  * EMV specs seem to follow the convention: bytes are numbered left to right, bits are numbered byte right to left,
  * both start at 1.
  */
-public data class EmvBit(val byteNumber: Int, val bitNumber: Int, val set: Boolean) : Comparable<EmvBit> {
+public data class EmvBit(public val byteNumber: Int, public val bitNumber: Int, public val set: Boolean) : Comparable<EmvBit> {
 
-    public fun isSet(): Boolean {
-        return set
-    }
+    public val value: String
+    get() = if (set) "1" else "0"
 
-    public fun getValue(): String {
-        return if (set) "1" else "0"
-    }
-
-    override fun toString(): String {
-        return toLabel(true)
-    }
+    override fun toString(): String = toLabel(true)
 
     public fun toLabel(includeComma: Boolean): String {
         val separator = if (includeComma) "," else ""
-        return "Byte ${byteNumber}${separator} Bit ${bitNumber} = ${getValue()}"
+        return "Byte ${byteNumber}${separator} Bit ${bitNumber} = ${value}"
     }
 
     override fun compareTo(other: EmvBit): Int {
@@ -41,9 +34,8 @@ public data class EmvBit(val byteNumber: Int, val bitNumber: Int, val set: Boole
     }
 }
 
-public fun fromHex(hex: String): Set<EmvBit> {
-    return fromHex(hex, 1)
-}
+// java interop
+public fun fromHex(hex: String): Set<EmvBit> = fromHex(hex, 1)
 
 public fun fromHex(hex: String, firstByteNumber: Int): Set<EmvBit> {
     val set = TreeSet<EmvBit>()
@@ -60,7 +52,7 @@ public fun fromHex(hex: String, firstByteNumber: Int): Set<EmvBit> {
 public fun toHex(bits: Set<EmvBit>, fieldLengthInBytes: Int): String {
     val bytes = ByteArray(fieldLengthInBytes)
     for (bit in bits) {
-        if (bit.isSet()) {
+        if (bit.set) {
             val byteIndex = bit.byteNumber - 1
             var b = bytes[byteIndex]
             b = (b.toInt() or (1 shl bit.bitNumber - 1)).toByte()
@@ -77,7 +69,7 @@ public fun toHex(bits: Set<EmvBit>, fieldLengthInBytes: Int): String {
 public fun labelFor(hex: String): String {
     val label = StringBuilder()
     for (bit in fromHex(hex)) {
-        if (bit.isSet()) {
+        if (bit.set) {
             if (label.length() > 0) {
                 label.append(",")
             }

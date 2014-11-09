@@ -5,6 +5,9 @@ import io.github.binaryfoo.tlv.ISOUtil
 
 import java.math.BigInteger
 
+/**
+ * RSA public key decryption
+ */
 public class SignedDataRecoverer {
 
     public fun recover(signed: String, exponent: String, modulus: String): ByteArray {

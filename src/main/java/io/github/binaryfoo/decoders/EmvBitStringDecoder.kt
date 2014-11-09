@@ -19,10 +19,6 @@ import java.util.ArrayList
  */
 open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode: Boolean) : Decoder {
 
-    override fun getMaxLength(): Int {
-        return maxLength
-    }
-
     private val bitMappings: List<BitStringField>
     private val maxLength: Int
 
@@ -37,6 +33,8 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode
         }
         this.maxLength = findMaxLengthInBytes() * 2
     }
+
+    override fun getMaxLength(): Int = maxLength
 
     private fun findMaxLengthInBytes(): Int {
         var maxLength = 0

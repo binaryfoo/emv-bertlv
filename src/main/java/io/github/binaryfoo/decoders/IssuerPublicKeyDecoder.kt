@@ -14,6 +14,7 @@ import io.github.binaryfoo.HexDumpFactory
 import io.github.binaryfoo.crypto.CaPublicKey
 import io.github.binaryfoo.findTlvForTag
 import io.github.binaryfoo.findValueForTag
+import io.github.binaryfoo.crypto.CaPublicKeyTable
 
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
@@ -25,7 +26,7 @@ public class IssuerPublicKeyDecoder : SignedDataDecoder {
         val encryptedCertificate = decoded.findTlvForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)
         val rid = extractRid(decoded.findValueForTag(EmvTags.DEDICATED_FILE_NAME))
         if (keyIndex != null && encryptedCertificate != null && rid != null) {
-            val caPublicKey = crypto.CaPublicKeyTable.getEntry(rid, keyIndex)
+            val caPublicKey = CaPublicKeyTable.getEntry(rid, keyIndex)
             if (caPublicKey != null) {
                 for (decodedCertificate in decoded.findAllForTag(EmvTags.ISSUER_PUBLIC_KEY_CERTIFICATE)) {
                     val result = recoverCertificate(encryptedCertificate, decodedCertificate, caPublicKey, ::decodeIssuerPublicKey)

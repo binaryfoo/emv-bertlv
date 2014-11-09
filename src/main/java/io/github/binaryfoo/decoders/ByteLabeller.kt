@@ -27,7 +27,5 @@ public class ByteLabeller : Decoder {
         return null
     }
 
-    override fun getMaxLength(): Int {
-        return Integer.MAX_VALUE
-    }
+    override fun getMaxLength(): Int = Integer.MAX_VALUE
 }

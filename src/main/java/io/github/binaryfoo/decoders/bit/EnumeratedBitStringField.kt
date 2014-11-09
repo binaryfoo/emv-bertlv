@@ -31,13 +31,9 @@ public class EnumeratedBitStringField(field: Set<EmvBit>, private val value: Str
         return null
     }
 
-    override fun getStartBytesOffset(): Int {
-        return field.iterator().next().byteNumber - 1
-    }
+    override fun getStartBytesOffset(): Int = field.first().byteNumber - 1
 
-    override fun getLengthInBytes(): Int {
-        return 1
-    }
+    override fun getLengthInBytes(): Int = 1
 
     private fun intersects(targetBits: Set<EmvBit>, bits: Set<EmvBit>): Boolean {
         val intersection = HashSet(targetBits)

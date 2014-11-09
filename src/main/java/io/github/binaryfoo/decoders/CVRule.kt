@@ -14,21 +14,17 @@ public class CVRule(hexString: String) {
     }
 
     public fun getDescription(x: Int, y: Int): String {
-        var baseRule = getVerificationMethodDescription() + ", " + getConditionCodeDescription() + ", " + (if (failIfUnsuccessful) "FAIL" else "next")
+        var baseRule = "$verificationMethodDescription, $conditionCodeDescription, ${if (failIfUnsuccessful) "FAIL" else "next"}"
         if (conditionCode == CardholderVerificationConditionCode.TxLessThanX || conditionCode == CardholderVerificationConditionCode.TxMoreThanX) {
-            baseRule += " (x = " + x + ")"
+            baseRule += " (x = $x)"
         } else if (conditionCode == CardholderVerificationConditionCode.TxLessThanY || conditionCode == CardholderVerificationConditionCode.TxMoreThanY) {
-            baseRule += " (y = " + y + ")"
+            baseRule += " (y = $y)"
         }
         return baseRule
     }
 
-    public fun getVerificationMethodDescription(): String {
-        return if (verificationMethod == null) "Unknown" else verificationMethod.getDescription()
-    }
+    public val verificationMethodDescription: String = if (verificationMethod == null) "Unknown" else verificationMethod.description
 
-    public fun getConditionCodeDescription(): String {
-        return if (conditionCode == null) "Unknown" else conditionCode.getDescription()
-    }
+    public val conditionCodeDescription: String = if (conditionCode == null) "Unknown" else conditionCode.description
 
 }

@@ -4,7 +4,7 @@ import java.util.Arrays
 import java.util.TreeSet
 
 public fun reduceToOnBits(emvBits: Set<EmvBit>): Set<EmvBit> {
-    return TreeSet(emvBits.filter { it.isSet() })
+    return TreeSet(emvBits.filter { it.set })
 }
 
 public fun setOf(vararg bits: EmvBit): Set<EmvBit> {
@@ -23,7 +23,7 @@ public fun toConfigString(bits: Set<EmvBit>): String {
 }
 
 public fun toConfigString(b: EmvBit): String {
-    return "(${b.byteNumber},${b.bitNumber})=${b.getValue()}"
+    return "(${b.byteNumber},${b.bitNumber})=${b.value}"
 }
 
 public fun getByteCount(bitString: Set<EmvBit>): Int {

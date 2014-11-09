@@ -12,8 +12,8 @@ public class CVMResultsDecoder : Decoder {
         val rule = CVRule(input.substring(0, 4))
         val result = input.substring(4, 6)
         return listOf(
-                DecodedData.primitive(input.substring(0, 2), rule.getVerificationMethodDescription(), startIndexInBytes, startIndexInBytes + 1),
-                DecodedData.primitive(input.substring(2, 4), rule.getConditionCodeDescription(), startIndexInBytes + 1, startIndexInBytes + 2),
+                DecodedData.primitive(input.substring(0, 2), rule.verificationMethodDescription, startIndexInBytes, startIndexInBytes + 1),
+                DecodedData.primitive(input.substring(2, 4), rule.conditionCodeDescription, startIndexInBytes + 1, startIndexInBytes + 2),
                 DecodedData.primitive(result, decodeResult(result), startIndexInBytes + 2, startIndexInBytes + 3))
     }
 
@@ -23,9 +23,7 @@ public class CVMResultsDecoder : Decoder {
         else if ("02" == result) "Sucessful" else "Unknown"
     }
 
-    override fun getMaxLength(): Int {
-        return FIELD_LENGTH
-    }
+    override fun getMaxLength(): Int = FIELD_LENGTH
 
     override fun validate(input: String?): String? {
         if (input == null || input.length() != FIELD_LENGTH) {

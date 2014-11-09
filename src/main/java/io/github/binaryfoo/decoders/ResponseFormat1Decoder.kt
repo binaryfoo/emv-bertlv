@@ -42,11 +42,7 @@ public class ResponseFormat1Decoder : Decoder {
         return DecodedData.withTag(tag, tagMetaData, tagMetaData.get(tag).decodePrimitiveTlvValue(value), startIndexInBytes, startIndexInBytes + length, children)
     }
 
-    override fun validate(input: String?): String? {
-        return null
-    }
+    override fun validate(input: String?): String? = null
 
-    override fun getMaxLength(): Int {
-        return 0
-    }
+    override fun getMaxLength(): Int = 0
 }
