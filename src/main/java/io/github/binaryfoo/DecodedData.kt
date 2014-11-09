@@ -217,3 +217,16 @@ public fun List<DecodedData>.findForValue(value: String): DecodedData? {
 public fun List<DecodedData>.findAllForValue(value: String): List<DecodedData> {
     return DecodedData.findAllForValue(value, this)
 }
+
+public fun List<DecodedData>.toSimpleString(indent: String): String {
+    val b = StringBuilder()
+    for (d in this) {
+        b.append(indent)
+        if ("" != d.rawData) {
+            b.append(d.rawData).append(": ")
+        }
+        b.append(d.getDecodedData()).append("\n")
+        b.append(d.children.toSimpleString(indent + "  "))
+    }
+    return b.toString()
+}

@@ -1,6 +1,5 @@
 package io.github.binaryfoo;
 
-import io.github.binaryfoo.cmdline.DecodedWriter;
 import org.junit.Before;
 import org.junit.Test;
 
