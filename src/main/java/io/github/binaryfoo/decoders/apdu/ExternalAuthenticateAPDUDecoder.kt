@@ -18,6 +18,8 @@ public class ExternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
 
     // EMV v4.3 Book 3, 6.5.4.3 Data Field Sent in the Command Message
     private fun decodePayload(data: String, startIndexInBytes: Int): List<DecodedData> {
-        return Arrays.asList<DecodedData>(DecodedData.primitive("ARPC", data.substring(0, 16), startIndexInBytes, startIndexInBytes + 8), DecodedData.primitive("Issuer Specific", data.substring(16), startIndexInBytes + 8, startIndexInBytes + 8 + data.substring(16).length() / 2))
+        return listOf(
+                DecodedData.primitive("ARPC", data.substring(0, 16), startIndexInBytes, startIndexInBytes + 8),
+                DecodedData.primitive("Issuer Specific", data.substring(16), startIndexInBytes + 8, startIndexInBytes + 8 + data.substring(16).length() / 2))
     }
 }

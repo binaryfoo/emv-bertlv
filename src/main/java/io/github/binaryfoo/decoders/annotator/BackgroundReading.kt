@@ -16,8 +16,17 @@ public class BackgroundReading {
             return apduDescriptions["$apdu"]
         }
 
+
+        platformStatic public fun readingFor(field: String): Map<String, String?>? {
+            return descriptions["$field"]
+        }
+
         private val apduDescriptions: Map<String, Map<String, String?>> by Delegates.blockingLazy {
             Yaml().load(ClasspathIO.open("apdus.yaml")) as Map<String, Map<String, String?>>
+        }
+
+        private val descriptions: Map<String, Map<String, String?>> by Delegates.blockingLazy {
+            Yaml().load(ClasspathIO.open("descriptions.yaml")) as Map<String, Map<String, String?>>
         }
 
     }

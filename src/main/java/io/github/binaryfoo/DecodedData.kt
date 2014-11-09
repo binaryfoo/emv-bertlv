@@ -12,6 +12,7 @@ import java.util.ArrayList
 import java.util.LinkedList
 import io.github.binaryfoo.tlv.ISOUtil
 import io.github.binaryfoo.tlv.BerTlv
+import io.github.binaryfoo.decoders.annotator.BackgroundReading
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -125,7 +126,7 @@ public data class DecodedData(
     class object {
 
         platformStatic public fun primitive(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0): DecodedData {
-            return DecodedData(null, rawData, decodedData, startIndex, endIndex, listOf<DecodedData>())
+            return DecodedData(null, rawData, decodedData, startIndex, endIndex, backgroundReading = BackgroundReading.readingFor(rawData))
         }
 
         platformStatic public fun byteRange(rawData: String, bytes: ByteArray, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
@@ -138,7 +139,7 @@ public data class DecodedData(
         }
 
         platformStatic public fun constructed(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0, children: List<DecodedData>): DecodedData {
-            return DecodedData(null, rawData, decodedData, startIndex, endIndex, children)
+            return DecodedData(null, rawData, decodedData, startIndex, endIndex, children, BackgroundReading.readingFor(rawData))
         }
 
         /**

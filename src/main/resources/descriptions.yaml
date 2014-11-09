@@ -1,0 +1,17 @@
+Derivation key index:
+ short: >
+  Part of card's unique crypto key
+ long: Combined with the issuer's secret master key, and the public PAN and card sequence to produce the card's key.
+
+Cryptogram version number:
+ short: Identifies which receipe was used to make the application cryptogram.
+
+Card verification results:
+ short: The card's view of what happened during the transaction.
+
+ARPC:
+ short: Cryptogram from issuer to the card.
+ long: Let's the card verify the authenticity of the issuer's approval code.
+
+Issuer specific:
+ short: Two digit online approval code from the issuer.

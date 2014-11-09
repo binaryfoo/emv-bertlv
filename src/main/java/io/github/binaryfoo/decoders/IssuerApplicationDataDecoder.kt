@@ -5,6 +5,7 @@ import io.github.binaryfoo.Decoder
 
 import java.util.ArrayList
 import java.util.Collections
+import io.github.binaryfoo.decoders.annotator.BackgroundReading
 
 public class IssuerApplicationDataDecoder : Decoder {
 

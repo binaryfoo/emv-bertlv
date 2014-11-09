@@ -19,6 +19,6 @@ public class ReadRecordAPDUDecoder : CommandAPDUDecoder {
         val recordNumber = Integer.parseInt(input.substring(4, 6), 16)
         val referenceControlParameter = Integer.parseInt(input.substring(6, 8), 16)
         val sfi = (referenceControlParameter and 0x000000f8) shr 3
-        return DecodedData.primitive("C-APDU: Read Record", "SFI ${sfi} record ${recordNumber}", startIndexInBytes, startIndexInBytes + 5)
+        return DecodedData(null, "C-APDU: Read Record", "SFI ${sfi} record ${recordNumber}", startIndexInBytes, startIndexInBytes + 5)
     }
 }

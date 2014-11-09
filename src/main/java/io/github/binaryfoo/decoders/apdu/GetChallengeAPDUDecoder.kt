@@ -9,6 +9,6 @@ public class GetChallengeAPDUDecoder : CommandAPDUDecoder {
     }
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): DecodedData {
-        return DecodedData.primitive("C-APDU: Get Challenge", "", startIndexInBytes, startIndexInBytes + 5)
+        return DecodedData(null, "C-APDU: Get Challenge", "", startIndexInBytes, startIndexInBytes + 5)
     }
 }

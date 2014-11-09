@@ -18,7 +18,7 @@ public class SelectCommandAPDUDecoder : CommandAPDUDecoder {
         } else {
             name = String(ISOUtil.hex2byte(name))
         }
-        return DecodedData.primitive("C-APDU: Select", name, startIndexInBytes, startIndexInBytes + 5 + length + 1)
+        return DecodedData(null, "C-APDU: Select", name, startIndexInBytes, startIndexInBytes + 5 + length + 1)
     }
 
 }
