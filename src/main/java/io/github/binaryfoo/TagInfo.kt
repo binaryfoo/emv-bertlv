@@ -43,8 +43,8 @@ public data class TagInfo(
 
     class object {
 
-        platformStatic public fun treeStructured(shortName: String, longName: String, decoder: Decoder): TagInfo {
-            return TagInfo(shortName, longName, decoder, PrimitiveDecoder.HEX)
+        platformStatic public fun treeStructured(shortName: String, longName: String, decoder: Decoder, shortBackground: String? = null, longBackground: String? = null): TagInfo {
+            return TagInfo(shortName, longName, decoder, PrimitiveDecoder.HEX, shortBackground, longBackground)
         }
 
     }
