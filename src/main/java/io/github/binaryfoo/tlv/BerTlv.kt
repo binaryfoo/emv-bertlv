@@ -157,7 +157,7 @@ public abstract class BerTlv(public val tag: Tag) {
                         tlvs.add(newInstance(tag, value))
                     }
                 } catch (e: Exception) {
-                    throw RuntimeException("Failed parsing $tag," + (if (e.getMessage() == null) e.javaClass.getSimpleName() else e.getMessage()), e)
+                    throw TlvParseException(tlvs, "Failed parsing $tag", e)
                 }
 
             }

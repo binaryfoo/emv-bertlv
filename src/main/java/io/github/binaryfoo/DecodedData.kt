@@ -32,12 +32,9 @@ public data class DecodedData(
         val endIndex: Int, // in bytes
         kids: List<DecodedData> = listOf(),
         var backgroundReading: Map<String, String?>? = null, // wordy explanation. Eg to show in tooltip/popover,
-        val tlv: BerTlv? = null
+        val tlv: BerTlv? = null,
+        var category: String = ""
 ) {
-    /**
-     * Allow Command and Response APDUs to be displayed specially.
-     */
-    public var category: String = ""
     public var hexDump: List<HexDumpElement>? = null
     private val _children: MutableList<DecodedData> = ArrayList(kids)
     public val children: List<DecodedData>
