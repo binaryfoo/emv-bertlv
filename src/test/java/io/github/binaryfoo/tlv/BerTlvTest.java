@@ -18,7 +18,7 @@ public class BerTlvTest {
         try {
             BerTlv.newInstance(Tag.fromHex("9A"), 256);
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 
@@ -238,6 +238,26 @@ public class BerTlvTest {
 
         List<BerTlv> tlv = BerTlv.parseList(ISOUtil.hex2byte(crap), true);
         assertThat(tlv.get(1).getChildren().size(), is(4));
+    }
+
+    @Test
+    public void detailInExceptionForInsufficientBytes() throws Exception {
+        try {
+            BerTlv.parse(ISOUtil.hex2byte("918211"));
+            fail();
+        } catch (TlvParseException e) {
+            assertThat(e.getMessage(), is("Failed parsing TLV with tag 91: Bad length: expected to read 2 (0x82) bytes. Only have 1."));
+        }
+    }
+
+    @Test
+    public void detailInExceptionForNegativeLength() throws Exception {
+        try {
+            BerTlv.parse(ISOUtil.hex2byte("91FE4C94B779BC04"));
+            fail();
+        } catch (TlvParseException e) {
+            assertThat(e.getMessage(), is("Failed parsing TLV with tag 91: Bad length: -1799915264 < 0. Read 4 of 126 (0xFE) bytes used to encode length of TLV."));
+        }
     }
 }
 

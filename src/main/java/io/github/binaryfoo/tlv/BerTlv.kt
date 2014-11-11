@@ -157,7 +157,7 @@ public abstract class BerTlv(public val tag: Tag) {
                         tlvs.add(newInstance(tag, value))
                     }
                 } catch (e: Exception) {
-                    throw TlvParseException(tlvs, "Failed parsing $tag", e)
+                    throw TlvParseException(tlvs, "Failed parsing TLV with tag $tag: " + e.getMessage(), e)
                 }
 
             }
@@ -176,26 +176,29 @@ public abstract class BerTlv(public val tag: Tag) {
         }
 
         private fun parseLength(data: ByteBuffer): Int {
-            val lengthByte = data.get().toInt()
-            var dataLength = 0
-            if ((lengthByte and 0x80) == 0x80) {
-                var numberOfBytesToEncodeLength = (lengthByte and 0x7F)
-                while (numberOfBytesToEncodeLength > 0) {
-                    dataLength += (data.get().toInt() and 0xFF)
-
-                    if (numberOfBytesToEncodeLength > 1) {
-                        dataLength *= 256
+            val firstByte = data.get().toInt()
+            var length = 0
+            if ((firstByte and 0x80) == 0x80) {
+                var numberOfBytesToEncodeLength = (firstByte and 0x7F)
+                for (i in 1..numberOfBytesToEncodeLength) {
+                    if (!data.hasRemaining()) {
+                        throw IllegalArgumentException("Bad length: expected to read $numberOfBytesToEncodeLength (0x${firstByte.toByte().toHexString()}) bytes. Only have ${i-1}.")
                     }
-                    numberOfBytesToEncodeLength--
+                    length += (data.get().toInt() and 0xFF)
+                    if (i != numberOfBytesToEncodeLength) {
+                        length *= 256
+                    }
+                    if (length < 0) {
+                        throw IllegalArgumentException("Bad length: $length < 0. Read $i of $numberOfBytesToEncodeLength (0x${firstByte.toByte().toHexString()}) bytes used to encode length of TLV.")
+                    }
                 }
             } else {
-                dataLength = lengthByte
+                length = firstByte
             }
-            return dataLength
+            return length
         }
 
         platformStatic public fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? = tlvs.firstOrNull { it.tag == tag }
     }
 
 }
-

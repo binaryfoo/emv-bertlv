@@ -21,12 +21,31 @@ public class ISOUtil {
     public static @NotNull String hexString(byte[] b, int offset, int len) {
         StringBuilder d = new StringBuilder(b.length * 2);
         for (int i = 0; i < len; i++) {
-            char hi = Character.forDigit((b[offset + i] >> 4) & 0x0F, 16);
-            char lo = Character.forDigit(b[offset + i] & 0x0F, 16);
-            d.append(Character.toUpperCase(hi));
-            d.append(Character.toUpperCase(lo));
+            byte byteI = b[offset + i];
+            toHex(d, byteI);
         }
         return d.toString();
+    }
+
+    public static @NotNull String hexString(Iterable<Byte> iterable) {
+        StringBuilder s = new StringBuilder();
+        for (Byte b : iterable) {
+            toHex(s, b);
+        }
+        return s.toString();
+    }
+
+    public static @NotNull String hexString(byte b) {
+        StringBuilder s = new StringBuilder();
+        toHex(s, b);
+        return s.toString();
+    }
+
+    public static void toHex(StringBuilder s, byte b) {
+        char hi = Character.forDigit((b >> 4) & 0x0F, 16);
+        char lo = Character.forDigit(b & 0x0F, 16);
+        s.append(Character.toUpperCase(hi));
+        s.append(Character.toUpperCase(lo));
     }
 
     /**
