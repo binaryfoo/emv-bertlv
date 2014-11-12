@@ -122,24 +122,26 @@ public abstract class BerTlv(public val tag: Tag) {
         }
 
         platformStatic public fun parse(data: ByteArray): BerTlv {
-            val tlvs = parseList(ByteBuffer.wrap(data), true)
-            return tlvs.get(0)
+            return parseList(ByteBuffer.wrap(data), true).get(0)
         }
 
         platformStatic public fun parseAsPrimitiveTag(data: ByteArray): BerTlv {
-            val tlvs = parseList(ByteBuffer.wrap(data), false)
-            return tlvs.get(0)
+            return parseList(ByteBuffer.wrap(data), false).get(0)
         }
 
         platformStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean): List<BerTlv> {
             return parseList(ByteBuffer.wrap(data), parseConstructedTags)
         }
 
-        private fun parseList(data: ByteBuffer, parseConstructedTags: Boolean): List<BerTlv> {
+        platformStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean, recognitionMode: TagRecognitionMode): List<BerTlv> {
+            return parseList(ByteBuffer.wrap(data), parseConstructedTags, recognitionMode)
+        }
+
+        private fun parseList(data: ByteBuffer, parseConstructedTags: Boolean, recognitionMode: TagRecognitionMode = CompliantTagMode): List<BerTlv> {
             val tlvs = ArrayList<BerTlv>()
 
             while (data.hasRemaining()) {
-                val tag = Tag.parse(data)
+                val tag = Tag.parse(data, recognitionMode)
                 if (isPaddingByte(tag)) {
                     continue
                 }
@@ -148,7 +150,7 @@ public abstract class BerTlv(public val tag: Tag) {
                     val value = readUpToLength(data, length)
                     if (tag.constructed && parseConstructedTags) {
                         try {
-                            tlvs.add(newInstance(tag, parseList(value, true)))
+                            tlvs.add(newInstance(tag, parseList(value, true, recognitionMode)))
                         } catch (e: Exception) {
                             tlvs.add(newInstance(tag, value))
                         }

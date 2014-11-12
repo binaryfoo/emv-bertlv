@@ -7,6 +7,8 @@ import io.github.binaryfoo.tlv.Tag
 import java.util.LinkedHashMap
 import kotlin.platform.platformStatic
 import java.util.ArrayList
+import io.github.binaryfoo.tlv.TagRecognitionMode
+import io.github.binaryfoo.tlv.CommonVendorErrorMode
 
 /**
  * The main entry point.
@@ -22,9 +24,10 @@ public class RootDecoder {
      *
      * @return Somewhat english description.
      */
-    public fun decode(value: String, meta: String, tagInfo: TagInfo): List<DecodedData> {
+    public fun decode(value: String, meta: String, tagInfo: TagInfo, tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode): List<DecodedData> {
         val decodeSession = DecodeSession()
         decodeSession.tagMetaData = getTagMetaData(meta)
+        decodeSession.tagRecognitionMode = tagRecognitionMode
         return tagInfo.decoder.decode(value, 0, decodeSession)
     }
 

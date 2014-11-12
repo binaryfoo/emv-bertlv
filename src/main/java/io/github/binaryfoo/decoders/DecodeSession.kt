@@ -8,6 +8,8 @@ import java.util.HashMap
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import java.util.LinkedHashMap
+import io.github.binaryfoo.tlv.TagRecognitionMode
+import io.github.binaryfoo.tlv.CommonVendorErrorMode
 
 public class DecodeSession : HashMap<Tag, String>() {
 
@@ -17,4 +19,6 @@ public class DecodeSession : HashMap<Tag, String>() {
     public var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
     public var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
     public var signedDynamicAppData: String? = null
+    public var tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode
+
 }

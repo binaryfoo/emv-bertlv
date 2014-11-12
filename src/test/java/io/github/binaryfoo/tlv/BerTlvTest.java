@@ -1,12 +1,11 @@
 package io.github.binaryfoo.tlv;
 
-import java.util.Arrays;
-import java.util.List;
-
-import junit.framework.TestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -34,14 +33,14 @@ public class BerTlvTest {
 
     @Test
     public void testToBinary_ValueLengthLessThan127() throws Exception {
-        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
+        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A}, true);
         BerTlv tlv = BerTlv.newInstance(tag, new byte[] {0x01, 0x02, 0x03, 0x04});
         BerTlvUtils.assertEquals("9F1A0401020304", tlv.toBinary());
     }
 
     @Test
     public void testToBinary_ValueLength128() throws Exception {
-        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
+        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A}, true);
         BerTlv tlv = BerTlv.newInstance(tag, new byte[128]);
         BerTlvUtils.assertEquals("9F1A8180" + StringUtils.repeat("00", 128), tlv.toBinary());
     }
@@ -122,7 +121,7 @@ public class BerTlvTest {
 
     @Test
     public void testParsePrimitive() throws Exception {
-        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
+        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A}, true);
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[] {0x01, 0x02, 0x03, 0x04});
         BerTlv actualTlv = BerTlv.parse(ISOUtil.hex2byte("9F1A0401020304"));
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
@@ -130,7 +129,7 @@ public class BerTlvTest {
 
     @Test
     public void testParsePrimitive_Length128() throws Exception {
-        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
+        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A}, true);
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[128]);
         BerTlv actualTlv = BerTlv.parse(ISOUtil.hex2byte("9F1A8180" + StringUtils.repeat("00", 128)));
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
@@ -138,7 +137,7 @@ public class BerTlvTest {
 
     @Test
     public void testParsePrimitive_Length255() throws Exception {
-        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
+        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A}, true);
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[255]);
         BerTlv actualTlv = BerTlv.parse(ISOUtil.hex2byte("9F1A81FF" + StringUtils.repeat("00", 255)));
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
@@ -146,7 +145,7 @@ public class BerTlvTest {
 
     @Test
     public void testParsePrimitive_Length314() throws Exception {
-        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A});
+        Tag tag = new Tag(new byte[] {(byte) 0x9F, (byte) 0x1A}, true);
         BerTlv expectedTlv = BerTlv.newInstance(tag, new byte[314]);
         BerTlv actualTlv = BerTlv.parse(ISOUtil.hex2byte("9F1A82013A" + StringUtils.repeat("00", 314)));
         BerTlvUtils.assertEquals(expectedTlv.toBinary(), actualTlv.toBinary());
@@ -258,6 +257,13 @@ public class BerTlvTest {
         } catch (TlvParseException e) {
             assertThat(e.getMessage(), is("Failed parsing TLV with tag 91: Bad length: -1799915264 < 0. Read 4 of 126 (0xFE) bytes used to encode length of TLV."));
         }
+    }
+
+    @Test
+    public void withNonStandardTag() throws Exception {
+        List<BerTlv> parsed = BerTlv.parseList(ISOUtil.hex2byte("9F84101C9291EA7DB1EA276A8C96999DF512A6"), true, new QuirkListTagMode(Collections.singleton("9F84")));
+        assertThat(parsed.get(0).getTag().getHexString(), is("9F84"));
+        assertThat(parsed.get(0).getValueAsHexString(), is("1C9291EA7DB1EA276A8C96999DF512A6"));
     }
 }
 

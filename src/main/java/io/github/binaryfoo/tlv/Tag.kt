@@ -12,10 +12,12 @@ import io.github.binaryfoo.TagInfo
 /**
  * The tag in T-L-V. Sometimes called Type but EMV 4.3 Book 3 - B3 Coding of the Value Field of Data Objects uses the term.
  */
-public data class Tag(val bytes: ByteArray) {
+public data class Tag(val bytes: ByteArray, val compliant: Boolean = true) {
 
     {
-        validate(bytes)
+        if (compliant) {
+            validate(bytes)
+        }
     }
 
     private fun validate(b: ByteArray?) {
@@ -66,7 +68,9 @@ public data class Tag(val bytes: ByteArray) {
             return Tag(ISOUtil.hex2byte(hexString))
         }
 
-        platformStatic public fun parse(buffer: ByteBuffer): Tag {
+        platformStatic public fun parse(buffer: ByteBuffer): Tag = parse(buffer, CompliantTagMode)
+
+        platformStatic public fun parse(buffer: ByteBuffer, recognitionMode: TagRecognitionMode): Tag {
             val out = ByteArrayOutputStream()
             var b = buffer.get()
             out.write(b.toInt())
@@ -74,9 +78,52 @@ public data class Tag(val bytes: ByteArray) {
                 do {
                     b = buffer.get()
                     out.write(b.toInt())
-                } while ((b.toInt() and 0x80) == 0x80)
+                } while (recognitionMode.keepReading(b, out))
             }
-            return Tag(out.toByteArray())
+            return Tag(out.toByteArray(), recognitionMode == CompliantTagMode)
         }
     }
 }
+
+public trait TagRecognitionMode {
+    fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean
+}
+
+/**
+ * Follows EMV 4.3 Book 3, Annex B Rules for BER-TLV Data Objects to the letter.
+ */
+public object CompliantTagMode: TagRecognitionMode {
+    override fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean = (current.toInt() and 0x80) == 0x80
+}
+
+/**
+ * EMV 4.3 Book 3, Annex B Rules for BER-TLV Data Objects unless it's in a list of special cases.
+ */
+public class QuirkListTagMode(val nonStandard: Set<String>) : TagRecognitionMode {
+    override fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean {
+        return CompliantTagMode.keepReading(current, all) && !nonStandard.contains(all.toByteArray().toHexString())
+    }
+}
+
+/**
+ * Seems at least one vendor read the following and thought I'll pick 9F80 as the start of my private tag range.
+ * According to Book 3 anything greater than 7F in byte two means the tag is at least 3 three bytes long, not two.
+ *
+ * <blockquote>
+ *     The coding of primitive context-specific class data objects in the range '9F50' to '9F7F' is reserved for the payment systems.
+ *     <footer>
+ *     <cite>EMV 4.3 Book 3, Annex B Rules for BER-TLV Data Objects</cite>
+ *     </footer>
+ * </blockquote>
+ */
+public object CommonVendorErrorMode: TagRecognitionMode {
+    override fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean {
+        return CompliantTagMode.keepReading(current, all) && (all.size() != 2 || !isCommonError(all.toByteArray()))
+    }
+
+    public fun isCommonError(tag: ByteArray): Boolean {
+        return tag.size > 1 && (tag[0] == 0x9F.toByte() && (tag[1].toInt() and 0xF0) == 0x80)
+    }
+}
+
+public fun hasCommonVendorErrorTag(tlv: BerTlv): Boolean = CommonVendorErrorMode.isCommonError(tlv.tag.bytes)
