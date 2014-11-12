@@ -19,7 +19,7 @@ R-APDU: 9000
     9F6C (application version number): 0001
     9F62 (position of CVC3 in track 1): 000000000007
     9F63 (position of UN and ATC in track 1): 000000000000
-    56 (track 1): B5413330056003511^CUST IMP MC 351/^1412101067750500
+    56 (track 1 equivalent data): B5413330056003511^CUST IMP MC 351/^1412101067750500
     9F64 (number of digits from ATC in track 1): 00
     9F65 (position of CVC3 in track 2): 0007
     9F66 (position of UN and ATC in track 2): 0000

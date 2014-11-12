@@ -522,6 +522,11 @@ DF53:
  name: CA public key modulus
  scheme: EMV
 
+56:
+ name: track 1 equivalent data
+ primitiveDecoder: AsciiPrimitiveDecoder
+ scheme: EMV
+
 57:
  name: track 2 equivalent data
  scheme: EMV

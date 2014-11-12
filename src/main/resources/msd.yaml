@@ -1,8 +1,3 @@
-56:
- name: track 1
- primitiveDecoder: AsciiPrimitiveDecoder
- scheme: MSD
-
 9F60:
  name: CVC3 track 1
  primitiveDecoder: Base10PrimitiveDecoder
