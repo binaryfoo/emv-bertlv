@@ -268,7 +268,7 @@ DF2E:
 
 5F34:
  name: PAN sequence number
- short: Allows mulitple psyhical cards to share the same PAN whilst each has a unique cryptographic key.
+ short: Allows mulitple physical cards to share the same PAN whilst each has a unique cryptographic key.
  long: >
   Eg. a husband and wife each a two cards for the same account. The card's crypto key is derived from the PAN. For
   each card to have its own key there needs to be something to distinguish the two cards. That's this field.
