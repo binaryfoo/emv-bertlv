@@ -2,29 +2,18 @@ package io.github.binaryfoo.decoders.apdu
 
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
-import io.github.binaryfoo.HexDumpFactory
 import io.github.binaryfoo.decoders.DecodeSession
 
 import java.util.ArrayList
 import io.github.binaryfoo.decoders.IssuerPublicKeyDecoder
-import io.github.binaryfoo.EmvTags
-import io.github.binaryfoo.DecodedData
-import io.github.binaryfoo.Decoder
-import io.github.binaryfoo.HexDumpFactory
-import io.github.binaryfoo.decoders.DecodeSession
-
-import java.util.ArrayList
-import io.github.binaryfoo.decoders.IssuerPublicKeyDecoder
-import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.decoders.SignedStaticApplicationDataDecoder
 import io.github.binaryfoo.decoders.ICCPublicKeyDecoder
 import io.github.binaryfoo.decoders.SignedDynamicApplicationDataDecoder
-import io.github.binaryfoo.decoders.annotator
 import io.github.binaryfoo.decoders.annotator.BackgroundReading
+import io.github.binaryfoo.hex.HexDumpElement
 
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
-    private val hexDumpFactory = HexDumpFactory()
     private val signedDataRecoverers = listOf(
         IssuerPublicKeyDecoder(),
         ICCPublicKeyDecoder(),
@@ -48,7 +37,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                     decoded = replyDecoder.decode(line, runningStartIndexInBytes, session)
                     decoded.category = "r-apdu"
                 }
-                decoded.hexDump = hexDumpFactory.splitIntoByteLengthStrings(line, runningStartIndexInBytes)
+                decoded.hexDump = HexDumpElement.splitIntoByteLengthStrings(line, runningStartIndexInBytes)
                 runningStartIndexInBytes = decoded.endIndex
                 list.add(decoded)
             } catch (e: Exception) {

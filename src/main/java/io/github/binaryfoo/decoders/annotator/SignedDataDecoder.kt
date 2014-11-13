@@ -7,8 +7,7 @@ import io.github.binaryfoo.crypto.RecoveredPublicKeyCertificate
 import io.github.binaryfoo.decoders.SignedDataRecoverer
 import io.github.binaryfoo.crypto.PublicKeyCertificate
 import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.crypto.CaPublicKey
-import io.github.binaryfoo.HexDumpFactory
+import io.github.binaryfoo.hex.HexDumpElement
 
 /**
  * Signed data in EMV is RSA encrypted using the private key. Recovery means decrypt using the public key.
@@ -78,7 +77,7 @@ trait SignedDataDecoder {
     private fun updateWithRecoveredData(source: DecodedData, result: RecoveryResult, startIndex: Int) {
         source.addChildren(result.decoded)
         if (result.recoveredHex != null) {
-            source.hexDump = HexDumpFactory().splitIntoByteLengthStrings(result.recoveredHex, startIndex)
+            source.hexDump = HexDumpElement.splitIntoByteLengthStrings(result.recoveredHex, startIndex)
             source.category = "recovered"
         }
     }
