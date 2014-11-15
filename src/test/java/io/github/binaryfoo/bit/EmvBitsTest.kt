@@ -1,0 +1,42 @@
+package io.github.binaryfoo.bit
+
+import org.junit.Test
+
+import org.hamcrest.Matchers.`is`
+import org.junit.Assert.*
+
+public class EmvBitsTest {
+
+    Test
+    public fun bitsToConfigString() {
+        val bits = setOf(EmvBit(1, 8, true), EmvBit(1, 1, false))
+        assertThat(bits.toConfigString(), `is`("(1,8)=1 & (1,1)=0"))
+    }
+
+    Test
+    public fun bitToConfigString() {
+        assertThat(EmvBit(2, 5, true).toConfigString(), `is`("(2,5)=1"))
+    }
+
+    Test
+    public fun count() {
+        assertThat(fromHex("01").getByteCount(), `is`(1))
+        assertThat(fromHex("0000").getByteCount(), `is`(2))
+    }
+
+    Test
+    public fun match() {
+        val byteOneBit4 = fromHex("0800").reduceToOnBits()
+        assertThat(byteOneBit4.matches(fromHex("FFFF")), `is`(true));
+        assertThat(byteOneBit4.matches(fromHex("8000")), `is`(false));
+        assertThat(byteOneBit4.matches(fromHex("08")), `is`(true));
+        assertThat(setOf(EmvBit(2, 3, false)).matches(fromHex("FF0B")), `is`(true));
+    }
+
+    Test
+    public fun setToString() {
+        val set = setOf(EmvBit(1, 8, true), EmvBit(1, 1, false))
+        assertThat(set.toString(false), `is`("Byte 1 Bit 8, Byte 1 Bit 1"))
+        assertThat(set.toString(true), `is`("Byte 1 Bit 8 = 1, Byte 1 Bit 1 = 0"))
+    }
+}

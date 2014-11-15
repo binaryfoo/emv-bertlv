@@ -4,6 +4,7 @@ import io.github.binaryfoo.bit.EmvBit
 
 import java.util.HashSet
 import java.util.TreeSet
+import io.github.binaryfoo.bit.matches
 
 /**
  * An english description for a hex literal of a single byte.
@@ -21,20 +22,11 @@ public class FullByteField(field: Set<EmvBit>, private val byteNumber: Int, priv
     }
 
     override public fun getValueIn(bits: Set<EmvBit>): String? {
-        if (intersects(field, bits)) {
-            return decodedValue
-        }
-        return null
+        return if (field.matches(bits)) decodedValue else null
     }
 
     override fun getStartBytesOffset(): Int = byteNumber - 1
 
     override fun getLengthInBytes(): Int = 1
-
-    private fun intersects(targetBits: Set<EmvBit>, bits: Set<EmvBit>): Boolean {
-        val intersection = HashSet(targetBits)
-        intersection.retainAll(bits)
-        return intersection.size() == targetBits.size()
-    }
 
 }
