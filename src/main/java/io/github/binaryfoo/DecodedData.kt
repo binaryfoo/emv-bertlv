@@ -28,8 +28,8 @@ public data class DecodedData(
         val tag: Tag?,
         val rawData: String, // Not a great name. Used as a label for the decoded data.
         val fullDecodedData: String,
-        val startIndex: Int, // in bytes
-        val endIndex: Int, // in bytes
+        val startIndex: Int = 0, // in bytes
+        val endIndex: Int = 0, // in bytes
         kids: List<DecodedData> = listOf(),
         var backgroundReading: Map<String, String?>? = null, // wordy explanation. Eg to show in tooltip/popover,
         val tlv: BerTlv? = null,

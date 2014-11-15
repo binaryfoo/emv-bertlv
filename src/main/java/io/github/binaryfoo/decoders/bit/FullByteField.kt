@@ -27,13 +27,9 @@ public class FullByteField(field: Set<EmvBit>, private val byteNumber: Int, priv
         return null
     }
 
-    override fun getStartBytesOffset(): Int {
-        return byteNumber - 1
-    }
+    override fun getStartBytesOffset(): Int = byteNumber - 1
 
-    override fun getLengthInBytes(): Int {
-        return 1
-    }
+    override fun getLengthInBytes(): Int = 1
 
     private fun intersects(targetBits: Set<EmvBit>, bits: Set<EmvBit>): Boolean {
         val intersection = HashSet(targetBits)

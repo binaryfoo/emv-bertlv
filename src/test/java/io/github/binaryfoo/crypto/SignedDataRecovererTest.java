@@ -1,4 +1,4 @@
-package io.github.binaryfoo.decoders;
+package io.github.binaryfoo.crypto;
 
 import io.github.binaryfoo.tlv.ISOUtil;
 import org.junit.Test;

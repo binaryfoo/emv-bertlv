@@ -36,5 +36,21 @@ public class DecodedDataTest {
         assertEquals(null, decoded.tagPositionInHexDump)
         assertEquals(null, decoded.lengthPositionInHexDump)
     }
+
+    Test
+    public fun findAll() {
+        val first91 = DecodedData(Tag.fromHex("91"), "1st 91", "value")
+        val second91 = DecodedData(Tag.fromHex("91"), "2nd 91", "")
+        val nested91 = DecodedData(Tag.fromHex("91"), "nested 91", "value")
+        val decoded = listOf(DecodedData(Tag.fromHex("6C"), "template", "", kids = listOf(
+                DecodedData(Tag.fromHex("92"), "92", ""),
+                first91,
+                second91,
+                DecodedData(Tag.fromHex("93"), "93", "", kids = listOf(nested91))
+        )))
+
+        assertThat(decoded.findAllForTag(Tag.fromHex("91")), `is`(listOf(first91, second91, nested91)))
+        assertThat(decoded.findAllForValue("value"), `is`(listOf(first91, nested91)))
+    }
 }
 

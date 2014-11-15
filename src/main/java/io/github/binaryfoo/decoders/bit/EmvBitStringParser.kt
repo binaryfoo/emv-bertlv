@@ -10,74 +10,66 @@ import java.util.TreeSet
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.platform.platformStatic
+import kotlin.reflect.KMemberFunction1
 
-public class EmvBitStringParser {
-    class object {
+object EmvBitStringParser {
+    val SINGLE_BIT_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<bit>\\d+)\\)=(?<value>\\d+)\\s*")
+    val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<firstBit>\\d+)-(?<lastBit>\\d+)\\)=INT\\s*")
+    val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+)\\)=0x(?<value>[0-9a-fA-F]{2})\\s*")
 
-        private val ENUMERATED_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)\\)=(\\d+)\\s*")
-        private val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)-(\\d+)\\)=INT\\s*")
-        private val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+)\\)=0x([0-9a-fA-F]{2})\\s*")
+    platformStatic public fun parse(lines: List<String>): List<BitStringField> {
+        fun usefulLine(line: String) = StringUtils.isNotBlank(line) && !line.startsWith("#")
 
-        platformStatic public fun parse(lines: List<String>): List<BitStringField> {
-            val bitMappings = ArrayList<BitStringField>()
-            for (line in lines) {
-                if (StringUtils.isNotBlank(line) && !line.startsWith("#")) {
-                    val fields = line.split("\\s*:\\s*", 2)
-                    bitMappings.add(parseField(fields[0], fields[1]))
-                }
-            }
-            return bitMappings
-        }
-
-        private fun parseField(key: String, label: String): BitStringField {
-            if (key.contains("-")) {
-                return parseNumericField(key, label)
-            } else if (key.contains(",")) {
-                return parseEnumeratedField(key, label)
-            } else {
-                return parseFullByteField(key, label)
-            }
-        }
-
-        private fun parseNumericField(key: String, label: String): BitStringField {
-            val matcher = NUMERIC_FIELD_PATTERN.matcher(key)
-            if (!matcher.matches()) {
-                throw IllegalArgumentException("Not a valid numeric field mapping [" + key + "]")
-            }
-            val byteNumber = Integer.parseInt(matcher.group(1))
-            val firstBit = Integer.parseInt(matcher.group(2))
-            val lastBit = Integer.parseInt(matcher.group(3))
-            return NumericBitStringField(byteNumber, firstBit, lastBit, label)
-        }
-
-        private fun parseEnumeratedField(key: String, label: String): BitStringField {
-            val bits = TreeSet<EmvBit>()
-            for (bit in key.split("&")) {
-                bits.add(parseBit(bit))
-            }
-            return EnumeratedBitStringField(bits, label)
-        }
-
-        private fun parseBit(key: String): EmvBit {
-            val matcher = ENUMERATED_FIELD_PATTERN.matcher(key)
-            if (!matcher.matches()) {
-                throw IllegalArgumentException("Not a valid enumerated field mapping [" + key + "]")
-            }
-            val byteNumber = Integer.parseInt(matcher.group(1))
-            val bitNumber = Integer.parseInt(matcher.group(2))
-            val bitValue = matcher.group(3) == "1"
-            return EmvBit(byteNumber, bitNumber, bitValue)
-        }
-
-        private fun parseFullByteField(key: String, label: String): BitStringField {
-            val matcher = FULL_BYTE_FIELD_PATTERN.matcher(key)
-            if (!matcher.matches()) {
-                throw IllegalArgumentException("Not a valid full byte field mapping [" + key + "]")
-            }
-            val byteNumber = Integer.parseInt(matcher.group(1))
-            val hexValue = matcher.group(2)
-            val bits = fromHex(hexValue, byteNumber)
-            return FullByteField(bits, byteNumber, hexValue, label)
+        return lines.filter(::usefulLine).map {
+            val fields = it.split("\\s*:\\s*", 2)
+            parseField(fields[0], fields[1])
         }
     }
+
+    private fun parseField(key: String, label: String): BitStringField {
+        if (key.contains("-")) {
+            return parseNumericField(key, label)
+        } else if (key.contains(",")) {
+            return parseEnumeratedField(key, label)
+        } else {
+            return parseFullByteField(key, label)
+        }
+    }
+
+    private fun parseNumericField(key: String, label: String): BitStringField {
+        val matcher = match(key, NUMERIC_FIELD_PATTERN, "numeric")
+        val byteNumber = matcher.group("byte").toInt()
+        val firstBit = matcher.group("firstBit").toInt()
+        val lastBit = matcher.group("lastBit").toInt()
+        return NumericBitStringField(byteNumber, firstBit, lastBit, label)
+    }
+
+    private fun parseEnumeratedField(key: String, label: String): BitStringField {
+        val bits = TreeSet(key.split("&").map(::parseBit))
+        return EnumeratedBitStringField(bits, label)
+    }
+
+    private fun parseFullByteField(key: String, label: String): BitStringField {
+        val matcher = match(key, FULL_BYTE_FIELD_PATTERN, "full byte")
+        val byteNumber = matcher.group("byte").toInt()
+        val hexValue = matcher.group("value")
+        val bits = fromHex(hexValue, byteNumber)
+        return FullByteField(bits, byteNumber, hexValue, label)
+    }
+}
+
+private fun parseBit(key: String): EmvBit {
+    val matcher = match(key, EmvBitStringParser.SINGLE_BIT_PATTERN, "enumerated")
+    val byteNumber = matcher.group("byte").toInt()
+    val bitNumber = matcher.group("bit").toInt()
+    val bitValue = matcher.group("value") == "1"
+    return EmvBit(byteNumber, bitNumber, bitValue)
+}
+
+private fun match(key: String, pattern: Pattern, name: String): Matcher {
+    val matcher = pattern.matcher(key)
+    if (!matcher.matches()) {
+        throw IllegalArgumentException("Not a valid $name field mapping [$key]")
+    }
+    return matcher
 }

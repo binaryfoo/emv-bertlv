@@ -15,9 +15,16 @@ import java.io.InputStream
 import java.util.ArrayList
 
 /**
- * Build a decoder based on the config language (DSL...).
+ * Decoder based on the config language (DSL...).
+ * <p>
+ * Each line in fileName should be parseable in one of the 3 formats:
+ * <ul>
+ *     <li>Enumerated - a direct mapping from a set of bits to a name. Bits can be spread over multiple bytes.</li>
+ *     <li>Full byte - similar to enumerated but only handles a single byte.</li>
+ *     <li>Numeric - the left or right nibble in a byte is interpreted as an integer.</li>
+ * </ul>
  */
-open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode: Boolean) : Decoder {
+open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecoding: Boolean) : Decoder {
 
     private val bitMappings: List<BitStringField>
     private val maxLength: Int
@@ -37,11 +44,11 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode
     override fun getMaxLength(): Int = maxLength
 
     private fun findMaxLengthInBytes(): Int {
-        var maxLength = 0
-        for (mapping in bitMappings) {
-            maxLength = Math.max(mapping.getStartBytesOffset() + mapping.getLengthInBytes(), maxLength)
+        if (bitMappings.empty) {
+            return 0
         }
-        return maxLength
+        fun max(a: Int, b: Int): Int = if ((a >= b)) a else b
+        return bitMappings.map { it.getStartBytesOffset() + it.getLengthInBytes() }.reduce(::max)
     }
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
@@ -51,7 +58,7 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecode
             val v = field.getValueIn(bits)
             if (v != null) {
                 val fieldStartIndex = startIndexInBytes + field.getStartBytesOffset()
-                decoded.add(DecodedData.primitive(field.getPositionIn(if (showFieldHexInDecode) bits else null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()))
+                decoded.add(DecodedData.primitive(field.getPositionIn(if (showFieldHexInDecoding) bits else null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()))
             }
         }
         return decoded
