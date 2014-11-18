@@ -283,11 +283,21 @@ public class RootDecoderTest {
         String expected = "DF5D (Default DDOL - Default dynamic data auth object list): 000000\n" +
                 "  Error: Failed parsing 000000: BufferUnderflowException\n";
         String tlv = "DF5D03000000";
-        List<DecodedData> decoded = rootDecoder.decode(tlv, "EMV", "constructed");
+        List<DecodedData> decoded = decodeTlvs(tlv);
         assertThat(decoded, decodedAsString(expected));
+    }
+
+    @Test
+    public void truncatedATC() {
+        List<DecodedData> decoded = decodeTlvs("9F0602");
+        assertThat(decoded, decodedAsString("9F06 (application id):\n"));
     }
 
     private List<DecodedData> decodeApdus(String apdus) {
         return rootDecoder.decode(apdus, "EMV", "apdu-sequence");
+    }
+
+    private List<DecodedData> decodeTlvs(String apdus) {
+        return rootDecoder.decode(apdus, "EMV", "constructed");
     }
 }
