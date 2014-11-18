@@ -216,7 +216,7 @@ public fun List<DecodedData>.findAllForValue(value: String): List<DecodedData> {
     return DecodedData.findAllForValue(value, this)
 }
 
-public fun List<DecodedData>.toSimpleString(indent: String): String {
+public fun List<DecodedData>.toSimpleString(indent: String = ""): String {
     val b = StringBuilder()
     for (d in this) {
         b.append(indent)
