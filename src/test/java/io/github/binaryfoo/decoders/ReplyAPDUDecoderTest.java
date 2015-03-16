@@ -34,6 +34,16 @@ public class ReplyAPDUDecoderTest {
     }
 
     @Test
+    public void replyWithDDOL() throws Exception {
+        String input = "701B9F080200205F300202019F49039F37049F420201565F25031109019000";
+        DecodeSession session = new DecodeSession();
+        session.setTagMetaData(EmvTags.METADATA);
+        DecodedData decoded = new ReplyAPDUDecoder(new TLVDecoder()).decode(input, 0, session);
+        assertThat(decoded.getRawData(), is("R-APDU"));
+        assertThat(session, hasEntry(EmvTags.DDOL, "9F3704"));
+    }
+
+    @Test
     public void status() throws Exception {
         String input = "9000";
         DecodeSession session = new DecodeSession();

@@ -216,6 +216,7 @@ C-APDU: GetData: 9F13 (Last online ATC value)
 R-APDU: 9000
   9F13 (Last online ATC value): 1
 C-APDU: Internal Authenticate: 7863AFC6
+  9F37 (unpredictable number): 7863AFC6
 R-APDU: 9000
   80 (Fixed response template): 352B18497D05FA834B99349185EE0AE2C710F41AC81E6CB0931388C3...E636
     Recovered using ICC public key

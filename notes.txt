@@ -3,6 +3,9 @@ Visa: https://technologypartner.visa.com/Download.aspx?id=34
 Mastercard (paypass): https://www.paypass.com/PP_Imp_Guides/PayPass_v3_TTAL2-Testing%20Env_26Feb2013.pdf
 Full List: https://www.eftlab.com.au/index.php/site-map/knowledge-base/243-ca-public-keys
 
+Full list of tags:
+http://www.emvlab.org/emvtags/all/
+
 Similar project:
 https://code.google.com/p/javaemvreader/
 

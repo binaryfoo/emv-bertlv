@@ -24,7 +24,7 @@ public class ReplyAPDUDecoder(private val tlvDecoder: TLVDecoder) {
         } else {
             decodedData = input.substring(statusBytesStart)
             children = tlvDecoder.decode(input.substring(0, statusBytesStart), startIndexInBytes, session)
-            addToSession(session, children, Arrays.asList(EmvTags.PDOL, EmvTags.CDOL_1, EmvTags.CDOL_2))
+            addToSession(session, children, Arrays.asList(EmvTags.PDOL, EmvTags.CDOL_1, EmvTags.CDOL_2, EmvTags.DDOL))
             val payload = children.get(0)
             endIndex = payload.endIndex + 2
         }
