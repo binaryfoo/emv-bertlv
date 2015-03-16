@@ -214,7 +214,7 @@ public class TLVDecoderTest {
 				"DF43 (?): 0000\n" +
 				"DF44 (?): 0000\n" +
 				"9F51 (?): 9F3704\n" +
-				"Warning: This result is a second attempt ignoring the spec for these (often abused) tags: [9F8B, 9F8A, 9F8D, 9F8C, 9F8E, 9F87, 9F88, 9F89, 9F83, 9F84, 9F85, 9F86]. The first attempt (following the the spec) produced an error: Failed parsing TLV with tag 9F8C81B0A817: Bad length: -1799915264 < 0. Read 4 of 126 (0xFE) bytes used to encode length of TLV.\n"));
+				"Warning: This result is a second attempt ignoring the spec for these (often abused) tags: [9F83, 9F84, 9F85, 9F86, 9F87, 9F88, 9F89, 9F8A, 9F8B, 9F8C, 9F8D, 9F8E]. The first attempt (following the the spec) produced an error: Failed parsing TLV with tag 9F8C81B0A817: Bad length: -1799915264 < 0. Read 4 of 126 (0xFE) bytes used to encode length of TLV.\n"));
 	}
 
 	@Test

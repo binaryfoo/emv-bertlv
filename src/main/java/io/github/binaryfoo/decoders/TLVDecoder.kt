@@ -28,7 +28,7 @@ public class TLVDecoder : Decoder {
                 if (!e.resultsSoFar.filter(::hasCommonVendorErrorTag).empty) {
                     try {
                         val (tlvs, decoded) = decode(input, session, startIndexInBytes, CommonVendorErrorMode)
-                        val tagErrors = HashSet(tlvs.filter(::hasCommonVendorErrorTag).map { it.tag.hexString })
+                        val tagErrors = HashSet(tlvs.filter(::hasCommonVendorErrorTag).map { it.tag.hexString }).toList().sort()
                         val warning = DecodedData(null, "Warning", "This result is a second attempt ignoring the spec for these (often abused) tags: $tagErrors. " +
                                 "The first attempt (following the the spec) produced an error: $errorMessage", 0, 0, category = "parse-warning")
                         return decoded + warning
