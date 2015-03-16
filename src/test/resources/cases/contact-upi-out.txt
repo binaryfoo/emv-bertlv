@@ -1,0 +1,293 @@
+C-APDU: Select: 1PAY.SYS.DDF01
+R-APDU: 9000
+  6F (FCI template): 840E315041592E5359532E4444463031A503880101
+    84 (dedicated file name): 1PAY.SYS.DDF01
+    A5 (FCI proprietary template): 880101
+      88 (SFI - Short file identifier): 01
+C-APDU: Read Record: SFI 1 record 1
+R-APDU: 9000
+  70 (response template): 611A4F08A000000333010102500B5549434320435245444954870101
+    61 (?): 4F08A000000333010102500B5549434320435245444954870101
+      4F (ADF - Application dedicated file name): A000000333010102
+      50 (application label): UICC CREDIT
+      87 (application priority indicator): 01
+C-APDU: Read Record: SFI 1 record 2
+R-APDU: 9000
+  70 (response template): 61194F08A000000333010101500A55494343204445424954870102
+    61 (?): 4F08A000000333010101500A55494343204445424954870102
+      4F (ADF - Application dedicated file name): A000000333010101
+      50 (application label): UICC DEBIT
+      87 (application priority indicator): 02
+C-APDU: Read Record: SFI 1 record 3
+R-APDU: 9000
+  70 (response template): 611F4F08A00000033301010350105549434320515541534943524544...0103
+    61 (?): 4F08A000000333010103501055494343205155415349435245444954...0103
+      4F (ADF - Application dedicated file name): A000000333010103
+      50 (application label): UICC QUASICREDIT
+      87 (application priority indicator): 03
+C-APDU: Read Record: SFI 1 record 4
+R-APDU: 6A83 Record not found
+C-APDU: Select: AID A000000333010102
+R-APDU: 9000
+  6F (FCI template): 8408A000000333010102A52F500B5549434320435245444954870101...0B0A
+    84 (dedicated file name): A000000333010102
+    A5 (FCI proprietary template): 500B55494343204352454449548701015F2D02636E9F1101019F120B...0B0A
+      50 (application label): UICC CREDIT
+      87 (application priority indicator): 01
+      5F2D (language preference): cn
+      9F11 (issuer code table index): 01
+      9F12 (application preferred name): UICC CREDIT
+      BF0C (FCI discretionary data): 9F4D020B0A
+        9F4D (Log Entry): 0B0A
+C-APDU: GPO: No PDOL included
+R-APDU: 9000
+  80 (Fixed response template): 7C00080103001001050120010100
+    82 (AIP - Application Interchange Profile): 7C00
+      4000 (Byte 1 Bit 7): SDA supported
+      2000 (Byte 1 Bit 6): DDA supported
+      1000 (Byte 1 Bit 5): Cardholder verification is supported
+      0800 (Byte 1 Bit 4): Terminal risk management is to be performed
+      0400 (Byte 1 Bit 3): Issuer authentication is supported
+      0000 (Byte 2 Bit 8): Magstripe Mode Only Supported
+    94 (AFL - Application File Locator): 080103001001050120010100
+      SFI 1 records 1-3
+      SFI 2 records 1-5
+      SFI 4 record 1
+C-APDU: Read Record: SFI 1 record 1
+R-APDU: 9000
+  70 (response template): 570F6210948000000011D301020100000F9F1F423632313039343830...3539
+    57 (track 2 equivalent data): 6210948000000011D301020100000F
+    9F1F (track 1 discretionary data): 6210948000000011^ￒ￸￁ﾪ62ﾱ￪ￗﾼ﾿ﾨ@ﾲ￢ￊￔￗﾨￓￃCards^3010201^20141115105759
+C-APDU: Read Record: SFI 1 record 2
+R-APDU: 9000
+  70 (response template): 5F201AD2F8C1AA3632B1EAD7BCBFA840B2E2CAD4D7A8D3C343617264...0100
+    5F20 (card holder name): ￒ￸￁ﾪ62ﾱ￪ￗﾼ﾿ﾨ@ﾲ￢ￊￔￗﾨￓￃCards
+    9F61 (Cardholder ID number): 110101198606200010
+    9F62 (Cardholder ID type): ID card
+C-APDU: Read Record: SFI 1 record 3
+R-APDU: 9000
+  70 (response template): 9F080200205F300202019F49039F37049F420201565F2503110901
+    9F08 (card application version number): 0020
+    5F30 (service code): 0201
+    9F49 (DDOL - dynamic data authentication data object list): 9F3704
+      9F37 (unpredictable number) 4 bytes
+    9F42 (application currency code): CNY (Yuan Renminbi)
+    5F25 (application effective date): 110901
+C-APDU: Read Record: SFI 2 record 1
+R-APDU: 9000
+  70 (response template): 5F24033010315A0862109480000000115F3401019F0702FF008E0E00...0182
+    5F24 (card expiry): 301031
+    5A (PAN): 6210948000000011
+    5F34 (PAN sequence number): 01
+    9F07 (application usage control): FF00
+      8000 (Byte 1 Bit 8): Valid for domestic cash transactions
+      4000 (Byte 1 Bit 7): Valid for international cash transactions
+      2000 (Byte 1 Bit 6): Valid for domestic goods
+      1000 (Byte 1 Bit 5): Valid for international goods
+      0800 (Byte 1 Bit 4): Valid for domestic services
+      0400 (Byte 1 Bit 3): Valid for international services
+      0200 (Byte 1 Bit 2): Valid at ATMs
+      0100 (Byte 1 Bit 1): Valid at terminals other than ATMs
+    8E (CVM List - Cardholder Verification Method List): 00000000000000005E0342031F00
+      5E03: Signature, If terminal supports CVM, next
+      4203: Encrypted PIN online, If terminal supports CVM, next
+      1F00: No CVM required, Always, FAIL
+    9F0D (IAC default): D8609CA800
+      8000000000 (Byte 1 Bit 8): Offline data authentication was not performed
+      4000000000 (Byte 1 Bit 7): SDA failed
+      1000000000 (Byte 1 Bit 5): Card appears on terminal exception file
+      0800000000 (Byte 1 Bit 4): DDA failed
+      0040000000 (Byte 2 Bit 7): Expired application
+      0020000000 (Byte 2 Bit 6): Application not yet effective
+      0000800000 (Byte 3 Bit 8): Cardholder verification was not successful
+      0000100000 (Byte 3 Bit 5): PIN entry required and PIN pad not present or not working
+      0000080000 (Byte 3 Bit 4): PIN entry required, PIN pad present, but PIN was not entered
+      0000040000 (Byte 3 Bit 3): Online PIN entered
+      0000008000 (Byte 4 Bit 8): Transaction exceeds floor limit
+      0000002000 (Byte 4 Bit 6): Upper consecutive offline limit exceeded
+      0000000800 (Byte 4 Bit 4): Merchant forced transaction online
+    9F0E (IAC denial): 0010000000
+      0010000000 (Byte 2 Bit 5): Requested service not allowed for card product
+    9F0F (IAC online): D8689CF800
+      8000000000 (Byte 1 Bit 8): Offline data authentication was not performed
+      4000000000 (Byte 1 Bit 7): SDA failed
+      1000000000 (Byte 1 Bit 5): Card appears on terminal exception file
+      0800000000 (Byte 1 Bit 4): DDA failed
+      0040000000 (Byte 2 Bit 7): Expired application
+      0020000000 (Byte 2 Bit 6): Application not yet effective
+      0008000000 (Byte 2 Bit 4): New card
+      0000800000 (Byte 3 Bit 8): Cardholder verification was not successful
+      0000100000 (Byte 3 Bit 5): PIN entry required and PIN pad not present or not working
+      0000080000 (Byte 3 Bit 4): PIN entry required, PIN pad present, but PIN was not entered
+      0000040000 (Byte 3 Bit 3): Online PIN entered
+      0000008000 (Byte 4 Bit 8): Transaction exceeds floor limit
+      0000004000 (Byte 4 Bit 7): Lower consecutive offline limit exceeded
+      0000002000 (Byte 4 Bit 6): Upper consecutive offline limit exceeded
+      0000001000 (Byte 4 Bit 5): Transaction selected randomly for online processing
+      0000000800 (Byte 4 Bit 4): Merchant forced transaction online
+    5F28 (issuer country code): CHN (China)
+    8C (CDOL 1 - Card risk management data object list 1): 9F02069F03069F1A0295055F2A029A039C019F37049F21039F4E149F...3403
+      9F02 (amount authorized) 6 bytes
+      9F03 (amount other) 6 bytes
+      9F1A (terminal country code) 2 bytes
+      95 (TVR - Terminal Verification Results) 5 bytes
+      5F2A (terminal currency code) 2 bytes
+      9A (transaction date) 3 bytes
+      9C (transaction type) 1 bytes
+      9F37 (unpredictable number) 4 bytes
+      9F21 (transaction time) 3 bytes
+      9F4E (Merchant name) 20 bytes
+      9F34 (CVM Results - Cardholder Verification Results) 3 bytes
+    8D (CDOL 2 - Card risk management data object list 2): 8A029F02069F03069F1A0295055F2A029A039C019F37049F21039B02
+      8A (authorisation response code) 2 bytes
+      9F02 (amount authorized) 6 bytes
+      9F03 (amount other) 6 bytes
+      9F1A (terminal country code) 2 bytes
+      95 (TVR - Terminal Verification Results) 5 bytes
+      5F2A (terminal currency code) 2 bytes
+      9A (transaction date) 3 bytes
+      9C (transaction type) 1 bytes
+      9F37 (unpredictable number) 4 bytes
+      9F21 (transaction time) 3 bytes
+      9B (TSI - Transaction Status Indicator) 2 bytes
+    9F4A (SDA tag list): 82
+C-APDU: Read Record: SFI 2 record 2
+R-APDU: 9000
+  70 (response template): 9081B09401D74DAE33CF028845A9F4277C19CA003C8A8E95A00CF6A8...D04B
+    90 (issuer public key certificate): 9401D74DAE33CF028845A9F4277C19CA003C8A8E95A00CF6A88CC64F...D04B
+      Recovered using CA public key (A000000333,09)
+      Header: 6A
+      Format: 02
+      Identifier (PAN prefix): 621094FF
+      Expiry Date (MMYY): 1230
+      Serial number: 001156
+      Hash algorithm: 01
+      Public key algorithm: 01
+      Public key length: 176
+      Public key exponent length: 01
+      Public key: 9E584E1BDA1E9DF3657DAE6B28B9D7553AEFDDE33547F4C63FE124659DB77C0B9794B0E98F8A02B0210DAB56B163CBEEE8F93E4D9F3E8EDA586CEF5BD1C44AFBC1BF176F0EDAD0C647464B137BEEA03735EABF524D6113C49C3D072735662D026B168A9F4A445EDB7B88F48D586BB2E93BD2AC44CBE58B3EDE9F03B2141A326D2DFDC252BB866B5B72BA18B7
+      Hash: 790E04B3C6183A02D7B1B72339E54290AB78DF71
+      Trailer: BC
+C-APDU: Read Record: SFI 2 record 3
+R-APDU: 9000
+  70 (response template): 9381B07FDA0E5F859F59C91103707F2F49B93D00648C5918A05D3732...CF7F
+    93 (signed static application data): 7FDA0E5F859F59C91103707F2F49B93D00648C5918A05D3732F99538...CF7F
+      Recovered using Issuer public key
+      Header: 6A
+      Format: 03
+      Hash Algorithm: 01
+      Data Auth Code: DAC5
+      Hash: 5834FBCC73B921A27EA0716235070B470F83FC19
+      Trailer: BC
+C-APDU: Read Record: SFI 2 record 4
+R-APDU: 9000
+  70 (response template): 9F4681B0032EC93EF022299080E099AA0869FB6820ABA12A3B83F839...1200
+    9F46 (ICC public key certificate): 032EC93EF022299080E099AA0869FB6820ABA12A3B83F839261A8BFA...1200
+      Recovered using Issuer public key
+      Header: 6A
+      Format: 04
+      PAN: 6210948000000011FFFF
+      Expiry Date (MMYY): 1230
+      Serial number: 000001
+      Hash algorithm: 01
+      Public key algorithm: 01
+      Public key length: 176
+      Public key exponent length: 03
+      Public key: 9960625F704B89BB23D1AAE6333D7702D7D0A28DA83BE997CDB6F3C6BF2854A6AB4C506FE33B2966A7F805BF27751A93F9105B694630F40C2DDD5630FDA7F94218449A3E42AC11FCFF4B842E87CB5C071499DC04D33E1D4DDF16513C7E52B79B7E17C2465D4CFD9CD9E2FC91AB9E6B2E20D7D8C0889574019AE0EB1693BBB0D319EA8E8C1552
+      Hash: 5C3619C54E083331C2F4BD6AAD8E023FAEBFAA33
+      Trailer: BC
+C-APDU: Read Record: SFI 2 record 5
+R-APDU: 9000
+  70 (response template): 8F010992249876E27A8C9DF0056BD6270367EB2994B5D338DDB54436...1BED
+    8F (ca public key index): 09
+    92 (issuer public key remainder): 9876E27A8C9DF0056BD6270367EB2994B5D338DDB5443681E127F86F4DFAF3337CBBECB1
+    9F32 (issuer public key exponent): 03
+    9F47 (ICC public key exponent): 010001
+    9F48 (ICC public key remainder): BE5E4213706106D4F32861D52BDF8F3D35419A5441EE069BCF439B2DF42F0254C369128493DD305B1BED
+C-APDU: Read Record: SFI 4 record 1
+R-APDU: 9000
+  70 (response template): 9F14017F9F2301FF
+    9F14 (Lower consecutive floor limit): 127
+    9F23 (Upper consecutive floor limit): 255
+C-APDU: GetData: 9F36 (ATC - application transaction counter)
+R-APDU: 9000
+  9F36 (ATC - application transaction counter): 6
+C-APDU: GetData: 9F13 (Last online ATC value)
+R-APDU: 9000
+  9F13 (Last online ATC value): 1
+C-APDU: Internal Authenticate: 7863AFC6
+R-APDU: 9000
+  80 (Fixed response template): 352B18497D05FA834B99349185EE0AE2C710F41AC81E6CB0931388C3...E636
+    Failed to recover: java.lang.IllegalStateException: Recover failed: bad header byte 0
+C-APDU: Generate AC (ARQC): CDOL 000000006580000000000000003600000080000036150316003...0300
+  9F02 (amount authorized): 000000006580
+  9F03 (amount other): 000000000000
+  9F1A (terminal country code): AUS (Australia)
+  95 (TVR - Terminal Verification Results): 0000008000
+    0000008000 (Byte 4 Bit 8): Transaction exceeds floor limit
+  5F2A (terminal currency code): AUD (Australian Dollar)
+  9A (transaction date): 150316
+  9C (transaction type): 00
+  9F37 (unpredictable number): 3510540E
+  9F21 (transaction time): 160136
+  9F4E (Merchant name): {NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}{NULL}
+  9F34 (CVM Results - Cardholder Verification Results): 5E0300
+    5E: Signature
+    03: If terminal supports CVM
+    00: Unknown
+R-APDU: 9000
+  80 (Fixed response template): 800006B04398D218017BF907000103A0A80201
+    9F27 (cryptogram information data): ARQC (Authorisation Request Cryptogram - Go ask the issuer)
+    9F36 (ATC - application transaction counter): 6
+    9F26 (application cryptogram): B04398D218017BF9
+    9F10 (issuer application data): 07000103A0A80201
+      Derivation key index: 00
+      Cryptogram version number: 01
+      Card verification results: 03A0A80201
+        Byte 2 Bit 8 = 1, Byte 2 Bit 7 = 0: Second GENERATE AC not requested
+        Byte 2 Bit 6 = 1, Byte 2 Bit 5 = 0: ARQC Returned in GPO/first GENERATE AC
+        Byte 3 Bit 8 = 1: Last online transaction not completed
+        Byte 3 Bit 6 = 1: Exceeded velocity checking counters
+        Byte 3 Bit 4 = 1: Issuer Authentication failure on last online transaction
+        Byte 4 Bits 8-5: Issuer Script Commands processed on last transaction = 0
+        Byte 4 Bit 2 = 1: Offline dynamic data authentication performed
+C-APDU: External Authenticate: 1122334455667788
+  ARPC: 1122334455667788
+  Issuer Specific:
+R-APDU: 6700 Wrong length
+C-APDU: Generate AC (TC): CDOL 303000000000658000000000000000360000008040003615031...F800
+  8A (authorisation response code): 00
+  9F02 (amount authorized): 000000006580
+  9F03 (amount other): 000000000000
+  9F1A (terminal country code): AUS (Australia)
+  95 (TVR - Terminal Verification Results): 0000008040
+    0000008000 (Byte 4 Bit 8): Transaction exceeds floor limit
+    0000000040 (Byte 5 Bit 7): Issuer authentication failed
+  5F2A (terminal currency code): AUD (Australian Dollar)
+  9A (transaction date): 150316
+  9C (transaction type): 00
+  9F37 (unpredictable number): 3510540E
+  9F21 (transaction time): 160136
+  9B (TSI - Transaction Status Indicator): F800
+    8000 (Byte 1 Bit 8): Offline data authentication was performed
+    4000 (Byte 1 Bit 7): Cardholder verification was performed
+    2000 (Byte 1 Bit 6): Card risk management was performed
+    1000 (Byte 1 Bit 5): Issuer authentication was performed
+    0800 (Byte 1 Bit 4): Terminal risk management was performed
+R-APDU: 9000
+  80 (Fixed response template): 400006E5869B494D460AB40700010360AC0201
+    9F27 (cryptogram information data): TC (Transaction Certificate - Approved)
+    9F36 (ATC - application transaction counter): 6
+    9F26 (application cryptogram): E5869B494D460AB4
+    9F10 (issuer application data): 0700010360AC0201
+      Derivation key index: 00
+      Cryptogram version number: 01
+      Card verification results: 0360AC0201
+        Byte 2 Bit 8 = 0, Byte 2 Bit 7 = 1: TC Returned in Second GENERATE AC
+        Byte 2 Bit 6 = 1, Byte 2 Bit 5 = 0: ARQC Returned in GPO/first GENERATE AC
+        Byte 3 Bit 8 = 1: Last online transaction not completed
+        Byte 3 Bit 6 = 1: Exceeded velocity checking counters
+        Byte 3 Bit 4 = 1: Issuer Authentication failure on last online transaction
+        Byte 3 Bit 3 = 1: Issuer Authentication not performed after online authorization
+        Byte 4 Bits 8-5: Issuer Script Commands processed on last transaction = 0
+        Byte 4 Bit 2 = 1: Offline dynamic data authentication performed

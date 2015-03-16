@@ -24,6 +24,9 @@ public class RegressionTest {
     Test
     public fun contactAmexCda(): Unit = execute("amex-cda", "Amex")
 
+    Test
+    public fun contactUpi(): Unit = execute("contact-upi", "UPI")
+
     private fun execute(name: String, meta: String = "EMV") {
         val (input, expectedOutput) = loadCase(name)
         assertThat(decode(input, meta), DecodedAsStringMatcher(expectedOutput))
