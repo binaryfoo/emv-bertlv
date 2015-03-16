@@ -1,0 +1,15 @@
+9F61:
+ name: Cardholder ID number
+ primitiveDecoder: AsciiPrimitiveDecoder
+ scheme: UPI
+
+9F62:
+ name: Cardholder ID type
+ primitiveDecoder: UpiIdTypeDecoder
+ scheme: UPI
+
+9F4D:
+ name: Log Entry
+ short: "Byte 1 is SFI of log entries, Byte 2 is number in cyclic buffer"
+ scheme: UPI
+

@@ -44,7 +44,8 @@ public class RootDecoder {
             "EMV" to EmvTags.METADATA,
             "qVSDC" to QVsdcTags.METADATA,
             "MSD" to MSDTags.METADATA,
-            "Amex" to AmexTags.METADATA
+            "Amex" to AmexTags.METADATA,
+            "UPI" to UpiTags.METADATA
         )
         private val ROOT_TAG_INFO = linkedMapOf(
             EmvTags.TERMINAL_VERIFICATION_RESULTS to EmvTags.METADATA,
