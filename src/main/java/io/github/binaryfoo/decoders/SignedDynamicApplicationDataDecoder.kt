@@ -21,7 +21,7 @@ public class SignedDynamicApplicationDataDecoder : SignedDataDecoder {
         val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData
         if (signedData != null && iccPublicKeyCertificate != null) {
             for (decodedSignedData in decoded.findAllForValue(signedData)) {
-                val signedDynamicData = decoded.findTlvForTag(decodedSignedData.tag!!)!!
+                val signedDynamicData = decodedSignedData.tlv!!
                 recoverSignedData(signedDynamicData, decodedSignedData, iccPublicKeyCertificate, ::decodeSignedDynamicData)
             }
         }

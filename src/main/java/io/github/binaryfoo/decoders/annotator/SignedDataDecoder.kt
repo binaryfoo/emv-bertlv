@@ -17,14 +17,22 @@ trait SignedDataDecoder {
 
     /**
      * Use for static and dynamic data from the chip.
+     *
+     * @param signedData The lump of bytes encrypted using certificateOfSigner.
+     * @param decodedSignedData Provides the position of signedData in the stream of data being decoded.
+     *                          The output of decode will be added to this element as children.
+     * @param certificateOfSigner The RSA public key modulus and exponent used to recover the signedData.
+     *                           If recovery works then the holder of the cert encrypted signedData.
+     *                           Or the security of the system is broken...
+     * @param decode Function to break apart the bytes recovered from signedData.
      */
-    public fun recoverSignedData(signedStaticData: BerTlv,
-                                 decodedSSD: DecodedData,
+    public fun recoverSignedData(signedData: BerTlv,
+                                 decodedSignedData: DecodedData,
                                  certificateOfSigner: RecoveredPublicKeyCertificate,
                                  decode: (ByteArray, Int) -> List<DecodedData>) {
-        val startIndex = decodedSSD.startIndex + signedStaticData.startIndexOfValue
-        val result = recoverText(signedStaticData.valueAsHexString, certificateOfSigner, startIndex, decode)
-        updateWithRecoveredData(decodedSSD, result, startIndex)
+        val startIndex = decodedSignedData.startIndex + signedData.startIndexOfValue
+        val result = recoverText(signedData.valueAsHexString, certificateOfSigner, startIndex, decode)
+        updateWithRecoveredData(decodedSignedData, result, startIndex)
     }
 
     public fun recoverText(signedData: String,

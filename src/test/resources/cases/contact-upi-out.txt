@@ -218,7 +218,15 @@ R-APDU: 9000
 C-APDU: Internal Authenticate: 7863AFC6
 R-APDU: 9000
   80 (Fixed response template): 352B18497D05FA834B99349185EE0AE2C710F41AC81E6CB0931388C3...E636
-    Failed to recover: java.lang.IllegalStateException: Recover failed: bad header byte 0
+    Recovered using ICC public key
+    Header: 6A
+    Format: 05
+    Hash algorithm: 01
+    Dynamic data length: 8
+    ICC dynamic number length: 7
+    ICC dynamic number: 000659A2F145F4
+    Hash: 3C4A3B8F8114E9DEC97A4EB6424C67A04C528165
+    Trailer: BC
 C-APDU: Generate AC (ARQC): CDOL 000000006580000000000000003600000080000036150316003...0300
   9F02 (amount authorized): 000000006580
   9F03 (amount other): 000000000000
