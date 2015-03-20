@@ -64,3 +64,16 @@ Or say you have a file containing a set of [APDUs](http://en.wikipedia.org/wiki/
     
     cat apdus.txt | java -jar emv-bertlv-x.y.z-shaded.jar apdu-sequence - 
 
+Domain Knowledge
+================
+
+Visa's [chip terms explained](http://www.visa-asia.com/ap/center/merchants/productstech/includes/uploads/CTENov02.pdf) document is a good list.
+
+Eftlab's [knowledge base](https://www.eftlab.com.au/index.php/site-map/knowledge-base).
+
+Alternative Tools
+=================
+
+Eftlab's [BP-Tools](https://www.eftlab.com.au/index.php/site-map/tutorials/256-bp-tools-emvt)
+
+Emvlab's [tlvtool](http://www.emvlab.org/tlvutils/)
