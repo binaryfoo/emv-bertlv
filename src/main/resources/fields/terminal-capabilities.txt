@@ -1,0 +1,28 @@
+# Annex A Coding of Terminal Data Elements EMV 4.1 Book 4, A2 Terminal Capabilities
+
+(1,8)=1 : Manual key entry
+(1,7)=1 : Magnetic stripe
+(1,6)=1 : IC with contacts
+(1,5)=1 : (RFU)
+(1,4)=1 : (RFU)
+(1,3)=1 : (RFU)
+(1,2)=1 : (RFU)
+(1,1)=1 : (RFU)
+
+(2,8)=1 : Plaintext PIN for ICC verification
+(2,7)=1 : Enciphered PIN for online verification
+(2,6)=1 : Signature (paper)
+(2,5)=1 : Enciphered PIN for offline verification
+(2,4)=1 : No CVM Required
+(2,3)=1 : (RFU)
+(2,2)=1 : (RFU)
+(2,1)=1 : (RFU)
+
+(3,8)=1 : SDA
+(3,7)=1 : DDA
+(3,6)=1 : Card capture
+(3,5)=1 : (RFU)
+(3,4)=1 : CDA
+(3,3)=1 : (RFU)
+(3,2)=1 : (RFU)
+(3,1)=1 : (RFU)

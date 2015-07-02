@@ -366,6 +366,7 @@ DF2E:
 9F33:
  name: terminal capabilities
  short: Set of features supported by the terminal
+ decoder: TerminalCapabilitiesDecoder
  scheme: EMV
 
 8C:
