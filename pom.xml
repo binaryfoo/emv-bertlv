@@ -4,7 +4,7 @@
 
     <groupId>io.github.binaryfoo</groupId>
     <artifactId>emv-bertlv</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6-SNAPSHOT</version>
     <name>EMV BER-TLV Decoder</name>
     <description>
         Some decoders for the data used in EMV credit card transactions.
@@ -23,7 +23,7 @@
         <connection>scm:git:git@github.com:binaryfoo/emv-bertlv.git</connection>
         <developerConnection>scm:git:git@github.com:binaryfoo/emv-bertlv.git</developerConnection>
         <url>git@github.com:binaryfoo/emv-bertlv.git</url>
-      <tag>emv-bertlv-0.1.5</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <developers>
