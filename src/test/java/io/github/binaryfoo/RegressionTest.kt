@@ -1,30 +1,28 @@
 package io.github.binaryfoo
 
-import org.junit.Test
-import java.nio.file.Files
-import java.io.File
-import java.nio.charset.Charset
-import org.hamcrest.Matchers
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Test
+import java.io.File
+import java.nio.file.Files
 
 public class RegressionTest {
 
-    Test
+    @Test
     public fun contactMastercard(): Unit = execute("contact-mastercard")
 
-    Test
+    @Test
     public fun contactVisa(): Unit = execute("contact-visa")
 
-    Test
+    @Test
     public fun contactlessMastercard(): Unit = execute("contactless-mastercard")
 
-    Test
+    @Test
     public fun contactlessMsd(): Unit = execute("contactless-msd", "MSD")
 
-    Test
+    @Test
     public fun contactAmexCda(): Unit = execute("amex-cda", "Amex")
 
-    Test
+    @Test
     public fun contactUpi(): Unit = execute("contact-upi", "UPI")
 
     private fun execute(name: String, meta: String = "EMV") {

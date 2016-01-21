@@ -2,17 +2,14 @@ package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
-import io.github.binaryfoo.bit.*
-import io.github.binaryfoo.bit.EmvBit
+import io.github.binaryfoo.bit.fromHex
 import io.github.binaryfoo.decoders.bit.BitStringField
 import io.github.binaryfoo.decoders.bit.EmvBitStringParser
 import io.github.binaryfoo.res.ClasspathIO
 import io.github.binaryfoo.tlv.ISOUtil
 import org.apache.commons.io.IOUtils
-
 import java.io.IOException
-import java.io.InputStream
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Decoder based on the config language (DSL...).
@@ -29,7 +26,7 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecodi
     private val bitMappings: List<BitStringField>
     private val maxLength: Int
 
-    {
+    init {
         val input = ClasspathIO.open(fileName)
         try {
             bitMappings = EmvBitStringParser.parse(IOUtils.readLines(input))
@@ -44,7 +41,7 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecodi
     override fun getMaxLength(): Int = maxLength
 
     private fun findMaxLengthInBytes(): Int {
-        if (bitMappings.empty) {
+        if (bitMappings.isEmpty()) {
             return 0
         }
         fun max(a: Int, b: Int): Int = if ((a >= b)) a else b
@@ -65,8 +62,8 @@ open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecodi
     }
 
     override fun validate(input: String?): String? {
-        if (input == null || input.length() != maxLength) {
-            return "Value must be exactly ${maxLength} characters"
+        if (input == null || input.length != maxLength) {
+            return "Value must be exactly $maxLength characters"
         }
         if (!ISOUtil.isValidHexString(input)) {
             return "Value must contain only the characters 0-9 and A-F"

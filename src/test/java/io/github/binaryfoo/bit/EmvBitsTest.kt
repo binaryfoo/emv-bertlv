@@ -7,24 +7,24 @@ import org.junit.Assert.*
 
 public class EmvBitsTest {
 
-    Test
+    @Test
     public fun bitsToConfigString() {
         val bits = setOf(EmvBit(1, 8, true), EmvBit(1, 1, false))
         assertThat(bits.toConfigString(), `is`("(1,8)=1 & (1,1)=0"))
     }
 
-    Test
+    @Test
     public fun bitToConfigString() {
         assertThat(EmvBit(2, 5, true).toConfigString(), `is`("(2,5)=1"))
     }
 
-    Test
+    @Test
     public fun count() {
         assertThat(fromHex("01").getByteCount(), `is`(1))
         assertThat(fromHex("0000").getByteCount(), `is`(2))
     }
 
-    Test
+    @Test
     public fun match() {
         val byteOneBit4 = fromHex("0800").reduceToOnBits()
         assertThat(byteOneBit4.matches(fromHex("FFFF")), `is`(true));
@@ -33,7 +33,7 @@ public class EmvBitsTest {
         assertThat(setOf(EmvBit(2, 3, false)).matches(fromHex("FF0B")), `is`(true));
     }
 
-    Test
+    @Test
     public fun setToString() {
         val set = setOf(EmvBit(1, 8, true), EmvBit(1, 1, false))
         assertThat(set.toString(false), `is`("Byte 1 Bit 8, Byte 1 Bit 1"))

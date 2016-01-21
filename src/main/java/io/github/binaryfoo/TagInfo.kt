@@ -1,7 +1,8 @@
 package io.github.binaryfoo
 
 import io.github.binaryfoo.decoders.*
-import kotlin.platform.platformStatic
+import kotlin.collections.mapOf
+import kotlin.text.isEmpty
 
 /**
  * How a single tag should be decoded.
@@ -41,9 +42,9 @@ public data class TagInfo(
         return primitiveDecoder.decode(valueAsHexString)
     }
 
-    class object {
+    companion object {
 
-        platformStatic public fun treeStructured(shortName: String, longName: String, decoder: Decoder, shortBackground: String? = null, longBackground: String? = null): TagInfo {
+        @JvmStatic public fun treeStructured(shortName: String, longName: String, decoder: Decoder, shortBackground: String? = null, longBackground: String? = null): TagInfo {
             return TagInfo(shortName, longName, decoder, PrimitiveDecoder.HEX, shortBackground, longBackground)
         }
 

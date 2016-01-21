@@ -5,6 +5,8 @@ import io.github.binaryfoo.decoders.DecodeSession
 import io.github.binaryfoo.decoders.PopulatedDOLDecoder
 import io.github.binaryfoo.EmvTags
 import java.util.logging.Logger
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 public class InternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
@@ -24,15 +26,15 @@ public class InternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
             try {
                 return PopulatedDOLDecoder().decode(cdol, populatedDdol, startIndexInBytes, session)
             } catch (e: Exception) {
-                LOG.throwing(javaClass<GenerateACAPDUDecoder>().getSimpleName(), "decodeDDOLElements", e)
+                LOG.throwing(GenerateACAPDUDecoder::class.java.simpleName, "decodeDDOLElements", e)
             }
 
         }
         return listOf()
     }
 
-    class object {
-        private val LOG = Logger.getLogger(javaClass<InternalAuthenticateAPDUDecoder>().getName())
+    companion object {
+        private val LOG = Logger.getLogger(InternalAuthenticateAPDUDecoder::class.java.name)
     }
 
 }

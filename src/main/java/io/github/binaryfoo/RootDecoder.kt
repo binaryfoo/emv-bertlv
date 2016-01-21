@@ -2,13 +2,11 @@ package io.github.binaryfoo
 
 import io.github.binaryfoo.decoders.*
 import io.github.binaryfoo.decoders.apdu.*
-import io.github.binaryfoo.tlv.Tag
-
-import java.util.LinkedHashMap
-import kotlin.platform.platformStatic
-import java.util.ArrayList
-import io.github.binaryfoo.tlv.TagRecognitionMode
 import io.github.binaryfoo.tlv.CommonVendorErrorMode
+import io.github.binaryfoo.tlv.Tag
+import io.github.binaryfoo.tlv.TagRecognitionMode
+import kotlin.collections.linkedMapOf
+import kotlin.collections.toTypedArray
 
 /**
  * The main entry point.
@@ -36,10 +34,10 @@ public class RootDecoder {
     }
 
     public fun getTagMetaData(meta: String): TagMetaData {
-        return TAG_META_SETS.get(meta) ?: EmvTags.METADATA
+        return TAG_META_SETS[meta] ?: EmvTags.METADATA
     }
 
-    class object {
+    companion object {
         private val TAG_META_SETS = linkedMapOf(
             "EMV" to EmvTags.METADATA,
             "qVSDC" to QVsdcTags.METADATA,
@@ -67,20 +65,20 @@ public class RootDecoder {
             "filled-dol" to TagInfo.treeStructured("Filled DOL", "Data Object List", PopulatedDOLDecoder(), "Two lines: 1st is a DOL. 2nd the values to populate it with.")
         )
 
-        private fun Tag.to(that: TagMetaData): Pair<String, TagInfo> = Pair(this.hexString, that.get(this))
+        private infix fun Tag.to(that: TagMetaData): Pair<String, TagInfo> = Pair(this.hexString, that.get(this))
 
-        platformStatic public fun getTagInfo(tag: String): TagInfo? {
-            return ROOT_TAG_INFO.get(tag)
+        @JvmStatic public fun getTagInfo(tag: String): TagInfo? {
+            return ROOT_TAG_INFO[tag]
         }
 
         // array because List<TagInfo> and friends seem to show up in .java as List<Object>
         // at least when using emv-bertlv as a library
-        platformStatic public fun getSupportedTags(): Array<Map.Entry<String, TagInfo>> {
-            return ROOT_TAG_INFO.entrySet().copyToArray()
+        @JvmStatic public fun getSupportedTags(): Array<Map.Entry<String, TagInfo>> {
+            return ROOT_TAG_INFO.entries.toTypedArray()
         }
 
-        platformStatic public fun getAllTagMeta(): Set<String> {
-            return TAG_META_SETS.keySet()
+        @JvmStatic public fun getAllTagMeta(): Set<String> {
+            return TAG_META_SETS.keys
         }
     }
 }

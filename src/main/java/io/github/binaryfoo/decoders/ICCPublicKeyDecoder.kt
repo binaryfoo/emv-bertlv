@@ -8,6 +8,7 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.findTlvForTag
 import io.github.binaryfoo.findValueForTag
+import kotlin.collections.listOf
 
 /**
  * EMV 4.3 Book2, Table 14: Format of Data Recovered from ICC Public Key Certificate

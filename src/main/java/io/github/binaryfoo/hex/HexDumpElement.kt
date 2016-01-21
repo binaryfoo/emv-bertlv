@@ -1,16 +1,12 @@
 package io.github.binaryfoo.hex
 
-import org.apache.commons.lang.builder.EqualsBuilder
-import org.apache.commons.lang.builder.HashCodeBuilder
-import org.apache.commons.lang.builder.ToStringBuilder
-import org.apache.commons.lang.builder.ToStringStyle
-import java.util.ArrayList
-import kotlin.platform.platformStatic
+import java.util.*
+import kotlin.text.substring
 
 public data class HexDumpElement(val value: String, val byteOffset: Int) {
 
-    class object {
-        platformStatic public fun splitIntoByteLengthStrings(hexString: String, startIndexInBytes: Int): List<HexDumpElement> {
+    companion object {
+        @JvmStatic public fun splitIntoByteLengthStrings(hexString: String, startIndexInBytes: Int): List<HexDumpElement> {
             val elements = ArrayList<HexDumpElement>()
             var byteOffset = startIndexInBytes
             for (i in 0..hexString.length-2 step 2) {

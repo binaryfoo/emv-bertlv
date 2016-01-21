@@ -1,19 +1,17 @@
 package io.github.binaryfoo
 
-import io.github.binaryfoo.decoders.*
-import io.github.binaryfoo.tlv.Tag
-
-import java.util.HashMap
-import kotlin.platform.platformStatic
-import java.io.IOException
-import java.io.PrintWriter
-import java.io.FileWriter
+import io.github.binaryfoo.decoders.Decoders
+import io.github.binaryfoo.decoders.PrimitiveDecoder
 import io.github.binaryfoo.res.ClasspathIO
-import org.yaml.snakeyaml.Yaml
-import java.util.LinkedHashMap
-import org.yaml.snakeyaml.Loader
-import org.yaml.snakeyaml.resolver.Resolver
+import io.github.binaryfoo.tlv.Tag
 import org.yaml.snakeyaml.Dumper
+import org.yaml.snakeyaml.Loader
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.resolver.Resolver
+import java.io.FileWriter
+import java.io.PrintWriter
+import java.util.*
+import kotlin.collections.*
 
 /**
  * A set of rules for interpreting a set of tags.
@@ -59,16 +57,16 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
         return joined
     }
 
-    class object {
-        platformStatic public fun empty(): TagMetaData {
+    companion object {
+        @JvmStatic public fun empty(): TagMetaData {
             return TagMetaData(HashMap())
         }
 
-        platformStatic public fun copy(metadata: TagMetaData): TagMetaData {
+        @JvmStatic public fun copy(metadata: TagMetaData): TagMetaData {
             return TagMetaData(HashMap(metadata.metadata))
         }
 
-        platformStatic public fun load(name: String): TagMetaData {
+        @JvmStatic public fun load(name: String): TagMetaData {
             return TagMetaData(LinkedHashMap((Yaml(Loader(), Dumper(), Resolver(false)).load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>).mapValues {
                 val shortName = it.value["name"]!!
                 val longName = it.value.getOrElse("longName", {shortName})!!
@@ -88,9 +86,9 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
 
         public fun toYaml(fileName: String, meta: TagMetaData, scheme: String) {
             PrintWriter(FileWriter(fileName)).use { writer ->
-                for (e in meta.metadata.entrySet()) {
-                    writer.println(e.getKey() + ":")
-                    val tagInfo = e.getValue()
+                for (e in meta.metadata.entries) {
+                    writer.println(e.key + ":")
+                    val tagInfo = e.value
                     writer.println(" name: " + tagInfo.shortName)
                     if (tagInfo.shortName != tagInfo.longName) {
                         writer.println(" longName: " + tagInfo.longName)

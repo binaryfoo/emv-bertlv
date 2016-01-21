@@ -1,12 +1,12 @@
 package io.github.binaryfoo.decoders
 
-import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.decoders.annotator.SignedDataDecoder
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.EmvTags
+import io.github.binaryfoo.decoders.annotator.SignedDataDecoder
 import io.github.binaryfoo.findAllForValue
 import io.github.binaryfoo.findForTag
-import io.github.binaryfoo.findTlvForTag
+import io.github.binaryfoo.tlv.ISOUtil
+import kotlin.collections.listOf
 
 /**
  * Dynamic data auth means CA (scheme) -> Issuer -> ICC -> data
@@ -41,13 +41,13 @@ fun decodeSignedDynamicData(recovered: ByteArray, startIndexInBytes: Int): List<
         DecodedData.byteRange("ICC dynamic number length", iccDynamicNumberLength.toString(), 4, 1, startIndexInBytes),
         DecodedData.byteRange("ICC dynamic number", recovered, 5, iccDynamicNumberLength, startIndexInBytes),
         *if (cryptogramInformationData != "BB") {
-            array(
+            arrayOf(
                 DecodedData.byteRange("Cryptogram information data", cryptogramInformationData, 5 + iccDynamicNumberLength, 1, startIndexInBytes),
                 DecodedData.byteRange("Cryptogram", recovered, 5 + iccDynamicNumberLength + 1, 8, startIndexInBytes),
                 DecodedData.byteRange("Transaction data hash code", recovered, 5 + iccDynamicNumberLength + 1 + 8, 20, startIndexInBytes)
             )
         } else {
-            array()
+            arrayOf()
         },
         DecodedData.byteRange("Hash", recovered, recovered.size - 21, 20, startIndexInBytes),
         DecodedData.byteRange("Trailer", recovered, recovered.size - 1, 1, startIndexInBytes)

@@ -11,9 +11,16 @@ import io.github.binaryfoo.decoders.ICCPublicKeyDecoder
 import io.github.binaryfoo.decoders.SignedDynamicApplicationDataDecoder
 import io.github.binaryfoo.decoders.annotator.BackgroundReading
 import io.github.binaryfoo.hex.HexDumpElement
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.listOf
+import kotlin.text.Regex
+import kotlin.text.split
+import kotlin.text.substring
+import kotlin.text.toUpperCase
 
 public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
-    private val _commandDecoders: Array<CommandAPDUDecoder> = array(*commandDecoders)
+    private val _commandDecoders: Array<CommandAPDUDecoder> = arrayOf(*commandDecoders)
     private val signedDataRecoverers = listOf(
         IssuerPublicKeyDecoder(),
         ICCPublicKeyDecoder(),
@@ -24,7 +31,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         var runningStartIndexInBytes = startIndexInBytes
         val list = ArrayList<DecodedData>()
-        input.toUpperCase().split("\\s+").forEach { line ->
+        input.toUpperCase().split(Regex("\\s+")).filter { it.isNotBlank() }.forEach { line ->
             try {
                 val commandDecoder = getCommandDecoder(line)
                 val decoded: DecodedData
@@ -41,7 +48,7 @@ public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, var
                 runningStartIndexInBytes = decoded.endIndex
                 list.add(decoded)
             } catch (e: Exception) {
-                list.add(DecodedData.primitive(line, "Failed to decode: " + e.getMessage(), 0, 0))
+                list.add(DecodedData.primitive(line, "Failed to decode: " + e.message, 0, 0))
             }
         }
         postProcess(list, session)

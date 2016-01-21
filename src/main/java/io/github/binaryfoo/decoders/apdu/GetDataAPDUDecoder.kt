@@ -3,6 +3,7 @@ package io.github.binaryfoo.decoders.apdu
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
 import io.github.binaryfoo.tlv.Tag
+import kotlin.text.substring
 
 public class GetDataAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {

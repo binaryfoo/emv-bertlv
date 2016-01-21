@@ -2,6 +2,7 @@ package io.github.binaryfoo.crypto
 
 import io.github.binaryfoo.tlv.ISOUtil
 import java.math.BigInteger
+import kotlin.collections.lastIndex
 
 public class SignedDataRecoverer {
 

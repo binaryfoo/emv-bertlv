@@ -7,8 +7,6 @@ import io.github.binaryfoo.decoders.PopulatedDOLDecoder
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.tlv.ISOUtil
 
-import java.util.Collections
-
 public class GetProcessingOptionsCommandAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.GetProcessingOptions
@@ -25,7 +23,7 @@ public class GetProcessingOptionsCommandAPDUDecoder : CommandAPDUDecoder {
     }
 
     private fun decodePDOLElements(session: DecodeSession, populatedPdol: String, startIndexInBytes: Int): List<DecodedData> {
-        val pdol = session.get(EmvTags.PDOL)
+        val pdol = session[EmvTags.PDOL]
         if (pdol != null) {
             return PopulatedDOLDecoder().decode(pdol, populatedPdol, startIndexInBytes, session)
         } else {

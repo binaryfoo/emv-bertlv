@@ -8,11 +8,13 @@ import io.github.binaryfoo.crypto.SignedDataRecoverer
 import io.github.binaryfoo.crypto.PublicKeyCertificate
 import io.github.binaryfoo.tlv.ISOUtil
 import io.github.binaryfoo.hex.HexDumpElement
+import kotlin.collections.listOf
+import kotlin.collections.plus
 
 /**
  * Signed data in EMV is RSA encrypted using the private key. Recovery means decrypt using the public key.
  */
-trait SignedDataDecoder {
+interface SignedDataDecoder {
     fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>)
 
     /**
@@ -47,7 +49,7 @@ trait SignedDataDecoder {
                 val recoveredData = decode(recoveredBytes, startIndexInBytes)
                 return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredData, ISOUtil.hexString(recoveredBytes))
             } catch(e: Exception) {
-                return RecoveryResult("Failed to recover: ${e}")
+                return RecoveryResult("Failed to recover: $e")
             }
         }
     }
@@ -77,7 +79,7 @@ trait SignedDataDecoder {
                 val recoveredCertificate = decode(recoveredBytes, certificateOfSigner.modulusLength, startIndexInBytes)
                 return RecoveryResult("Recovered using ${certificateOfSigner.name}", recoveredCertificate.detail, ISOUtil.hexString(recoveredBytes), recoveredCertificate)
             } catch(e: Exception) {
-                return RecoveryResult("Failed to recover: ${e}")
+                return RecoveryResult("Failed to recover: $e")
             }
         }
     }

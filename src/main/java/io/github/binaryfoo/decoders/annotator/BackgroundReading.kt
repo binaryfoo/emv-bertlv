@@ -1,31 +1,28 @@
 package io.github.binaryfoo.decoders.annotator
 
-import org.yaml.snakeyaml.Yaml
-import io.github.binaryfoo.res.ClasspathIO
-import kotlin.properties.Delegates
-import java.util.HashMap
 import io.github.binaryfoo.decoders.apdu.APDUCommand
-import kotlin.platform.platformStatic
-import io.github.binaryfoo.tlv.Tag
+import io.github.binaryfoo.res.ClasspathIO
+import org.yaml.snakeyaml.Yaml
+import kotlin.collections.mapOf
 
 public class BackgroundReading {
 
-    class object {
+    companion object {
 
-        platformStatic public fun readingFor(apdu: APDUCommand): Map<String, String?>? {
+        @JvmStatic public fun readingFor(apdu: APDUCommand): Map<String, String?>? {
             return apduDescriptions["$apdu"]
         }
 
 
-        platformStatic public fun readingFor(field: String): Map<String, String?>? {
+        @JvmStatic public fun readingFor(field: String): Map<String, String?>? {
             return descriptions["$field"]
         }
 
-        private val apduDescriptions: Map<String, Map<String, String?>> by Delegates.blockingLazy {
+        private val apduDescriptions: Map<String, Map<String, String?>> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             Yaml().load(ClasspathIO.open("apdus.yaml")) as Map<String, Map<String, String?>>
         }
 
-        private val descriptions: Map<String, Map<String, String?>> by Delegates.blockingLazy {
+        private val descriptions: Map<String, Map<String, String?>> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
             Yaml().load(ClasspathIO.open("descriptions.yaml")) as Map<String, Map<String, String?>>
         }
 

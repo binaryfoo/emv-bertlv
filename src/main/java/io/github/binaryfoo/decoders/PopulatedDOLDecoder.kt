@@ -2,20 +2,16 @@ package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
-import io.github.binaryfoo.TagInfo
-import io.github.binaryfoo.TagMetaData
 import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.tlv.Tag
-
 import java.nio.ByteBuffer
-import java.util.ArrayList
+import java.util.*
 
 public class PopulatedDOLDecoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): MutableList<DecodedData> {
         val fields = input.split(":")
         val pdol = fields[0]
         val populatedPDOL = fields[1]
-        return decode(pdol, populatedPDOL, pdol.length() / 2, session)
+        return decode(pdol, populatedPDOL, pdol.length / 2, session)
     }
 
     public fun decode(pdol: String, populatedPDOL: String, startIndexInBytes: Int, session: DecodeSession): MutableList<DecodedData> {

@@ -2,17 +2,16 @@ package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
-
-import java.util.ArrayList
-import java.util.Collections
-import io.github.binaryfoo.decoders.annotator.BackgroundReading
+import java.util.*
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 public class IssuerApplicationDataDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         try {
             // should do something better to tell the difference like use the session
-            if (input.length() == 36 || input.length() == 52) {
+            if (input.length == 36 || input.length == 52) {
                 return decodeMChipIad(input, startIndexInBytes, session)
             }
             return decodeVisaIad(input, startIndexInBytes, session)
@@ -37,10 +36,10 @@ public class IssuerApplicationDataDecoder : Decoder {
         val trueCvr = input.substring(6, 2 + length * 2)
         val decodableCvr = input.substring(6, 6 + 8) // until more specs about CVR
         decoded.add(DecodedData.constructed("Card verification results", trueCvr, startIndexInBytes + 3, startIndexInBytes + (6 + Math.min(8, length * 2)) / 2, VisaCardVerificationResultsDecoder().decode(decodableCvr, startIndexInBytes + 3, decodeSession)))
-        if (input.length() > 2 + length * 2) {
+        if (input.length > 2 + length * 2) {
             val iddLength = Integer.parseInt(input.substring(14, 16), 16)
             val endIndex = 16 + iddLength * 2
-            if ((iddLength > 0) && (endIndex <= input.length())) {
+            if ((iddLength > 0) && (endIndex <= input.length)) {
                 val idd = input.substring(16, endIndex)
                 decoded.add(DecodedData.primitive("Issuer discretionary data", idd, startIndexInBytes + 8, startIndexInBytes + 1 + iddLength))
             }

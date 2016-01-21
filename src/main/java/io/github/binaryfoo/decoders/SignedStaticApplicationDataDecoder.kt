@@ -5,6 +5,7 @@ import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.findTlvForTag
+import kotlin.collections.listOf
 
 /**
  * EMV 4.3 Book 2, Table 7: Format of Data Recovered from Signed Static Application Data

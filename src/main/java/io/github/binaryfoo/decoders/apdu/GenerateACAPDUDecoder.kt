@@ -8,6 +8,8 @@ import io.github.binaryfoo.tlv.ISOUtil
 
 import java.util.Collections
 import java.util.logging.Logger
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 public class GenerateACAPDUDecoder : CommandAPDUDecoder {
 
@@ -41,7 +43,7 @@ public class GenerateACAPDUDecoder : CommandAPDUDecoder {
             try {
                 return PopulatedDOLDecoder().decode(cdol, populatedCdol, startIndexInBytes, session)
             } catch (e: Exception) {
-                LOG.throwing(javaClass<GenerateACAPDUDecoder>().getSimpleName(), "decodeCDOLElements", e)
+                LOG.throwing(GenerateACAPDUDecoder::class.java.getSimpleName(), "decodeCDOLElements", e)
             }
 
         }
@@ -57,7 +59,7 @@ public class GenerateACAPDUDecoder : CommandAPDUDecoder {
         }
     }
 
-    class object {
-        private val LOG = Logger.getLogger(javaClass<GenerateACAPDUDecoder>().getName())
+    companion object {
+        private val LOG = Logger.getLogger(GenerateACAPDUDecoder::class.java.getName())
     }
 }

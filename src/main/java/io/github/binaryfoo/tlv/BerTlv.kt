@@ -3,7 +3,7 @@ package io.github.binaryfoo.tlv
 import java.nio.ByteBuffer
 import java.util.ArrayList
 import java.util.Arrays
-import kotlin.platform.platformStatic
+import kotlin.collections.firstOrNull
 
 /**
  * Model data elements encoded using the Basic Encoding Rules: http://en.wikipedia.org/wiki/X.690#BER_encoding.
@@ -16,7 +16,7 @@ public abstract class BerTlv(public val tag: Tag) {
         val encodedLength = getLength(value)
 
         val b = ByteBuffer.allocate(encodedTag.size + encodedLength.size + value.size)
-        b.put(encodedTag)
+        b.put(encodedTag.toByteArray())
         b.put(encodedLength)
         b.put(value)
         b.flip()
@@ -70,10 +70,10 @@ public abstract class BerTlv(public val tag: Tag) {
     private fun getLength(value: ByteArray?): ByteArray {
         val length: ByteArray
         if (value == null) {
-            return byteArray(0.toByte())
+            return byteArrayOf(0.toByte())
         }
         if (value.size <= 0x7F) {
-            length = byteArray(value.size.toByte())
+            length = byteArrayOf(value.size.toByte())
         } else {
             val wanted = value.size
             var expected = 256
@@ -96,44 +96,44 @@ public abstract class BerTlv(public val tag: Tag) {
         return length
     }
 
-    class object {
+    companion object {
 
-        platformStatic public fun newInstance(tag: Tag, value: ByteArray): BerTlv {
+        @JvmStatic public fun newInstance(tag: Tag, value: ByteArray): BerTlv {
             return PrimitiveBerTlv(tag, value)
         }
 
-        platformStatic public fun newInstance(tag: Tag, hexString: String): BerTlv {
+        @JvmStatic public fun newInstance(tag: Tag, hexString: String): BerTlv {
             return PrimitiveBerTlv(tag, ISOUtil.hex2byte(hexString))
         }
 
-        platformStatic public fun newInstance(tag: Tag, value: Int): BerTlv {
+        @JvmStatic public fun newInstance(tag: Tag, value: Int): BerTlv {
             if (value > 255) {
                 throw IllegalArgumentException("Value greater than 255 must be encoded in a byte array")
             }
-            return PrimitiveBerTlv(tag, byteArray(value.toByte()))
+            return PrimitiveBerTlv(tag, byteArrayOf(value.toByte()))
         }
 
-        platformStatic public fun newInstance(tag: Tag, value: List<BerTlv>): BerTlv {
+        @JvmStatic public fun newInstance(tag: Tag, value: List<BerTlv>): BerTlv {
             return ConstructedBerTlv(tag, value)
         }
 
-        platformStatic public fun newInstance(tag: Tag, tlv1: BerTlv, tlv2: BerTlv): BerTlv {
+        @JvmStatic public fun newInstance(tag: Tag, tlv1: BerTlv, tlv2: BerTlv): BerTlv {
             return ConstructedBerTlv(tag, Arrays.asList<BerTlv>(tlv1, tlv2))
         }
 
-        platformStatic public fun parse(data: ByteArray): BerTlv {
+        @JvmStatic public fun parse(data: ByteArray): BerTlv {
             return parseList(ByteBuffer.wrap(data), true).get(0)
         }
 
-        platformStatic public fun parseAsPrimitiveTag(data: ByteArray): BerTlv {
+        @JvmStatic public fun parseAsPrimitiveTag(data: ByteArray): BerTlv {
             return parseList(ByteBuffer.wrap(data), false).get(0)
         }
 
-        platformStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean): List<BerTlv> {
+        @JvmStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean): List<BerTlv> {
             return parseList(ByteBuffer.wrap(data), parseConstructedTags)
         }
 
-        platformStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean, recognitionMode: TagRecognitionMode): List<BerTlv> {
+        @JvmStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean, recognitionMode: TagRecognitionMode): List<BerTlv> {
             return parseList(ByteBuffer.wrap(data), parseConstructedTags, recognitionMode)
         }
 
@@ -159,7 +159,7 @@ public abstract class BerTlv(public val tag: Tag) {
                         tlvs.add(newInstance(tag, value))
                     }
                 } catch (e: Exception) {
-                    throw TlvParseException(tlvs, "Failed parsing TLV with tag $tag: " + e.getMessage(), e)
+                    throw TlvParseException(tlvs, "Failed parsing TLV with tag $tag: " + e.message, e)
                 }
 
             }
@@ -200,7 +200,7 @@ public abstract class BerTlv(public val tag: Tag) {
             return length
         }
 
-        platformStatic public fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? = tlvs.firstOrNull { it.tag == tag }
+        @JvmStatic public fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? = tlvs.firstOrNull { it.tag == tag }
     }
 
 }

@@ -1,20 +1,22 @@
 package io.github.binaryfoo.decoders.apdu
 
-public enum class APDUCommand private(public val firstTwoBytes: String) {
-    Select : APDUCommand("00A4")
-    ReadRecord : APDUCommand("00B2")
-    ReadBinary : APDUCommand("00B0")
-    GetProcessingOptions : APDUCommand("80A8")
-    GenerateAC : APDUCommand("80AE")
-    ComputeCryptographicChecksum : APDUCommand("802A")
-    GetData : APDUCommand("80CA")
-    ExternalAuthenticate : APDUCommand("0082")
-    InternalAuthenticate : APDUCommand("0088")
-    Verify : APDUCommand("0020")
-    GetChallenge : APDUCommand("0084")
-    PutData : APDUCommand("04DA")
+import kotlin.collections.firstOrNull
 
-    class object {
+public enum class APDUCommand private constructor(public val firstTwoBytes: String) {
+    Select("00A4"),
+    ReadRecord("00B2"),
+    ReadBinary("00B0"),
+    GetProcessingOptions("80A8"),
+    GenerateAC("80AE"),
+    ComputeCryptographicChecksum("802A"),
+    GetData("80CA"),
+    ExternalAuthenticate("0082"),
+    InternalAuthenticate("0088"),
+    Verify("0020"),
+    GetChallenge("0084"),
+    PutData("04DA");
+
+    companion object {
         public fun fromHex(hex: String): APDUCommand? = values().firstOrNull { it.firstTwoBytes == hex }
     }
 }

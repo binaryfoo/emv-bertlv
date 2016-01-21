@@ -9,6 +9,8 @@ import io.github.binaryfoo.findAllForTag
 import io.github.binaryfoo.findTlvForTag
 import io.github.binaryfoo.findValueForTag
 import io.github.binaryfoo.crypto.CaPublicKeyTable
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate

@@ -5,7 +5,7 @@ import io.github.binaryfoo.decoders.DecodeSession
 /**
  * Idea being children are shown in a tree structure.
  */
-public trait Decoder {
+public interface Decoder {
 
     /**
      * Turn bits into something more mind friendly.

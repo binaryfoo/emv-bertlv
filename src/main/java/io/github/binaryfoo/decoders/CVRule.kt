@@ -1,11 +1,13 @@
 package io.github.binaryfoo.decoders
 
+import kotlin.text.substring
+
 public class CVRule(hexString: String) {
     private val failIfUnsuccessful: Boolean
     private val verificationMethod: CardholderVerificationMethod?
     private val conditionCode: CardholderVerificationConditionCode?
 
-    {
+    init {
         val leftByte = Integer.parseInt(hexString.substring(0, 2), 16)
         val rightByte = Integer.parseInt(hexString.substring(2, 4), 16)
         failIfUnsuccessful = (leftByte and 0x40) == 0

@@ -1,6 +1,6 @@
 package io.github.binaryfoo.tlv
 
-import java.util.Collections
+import kotlin.collections.listOf
 
 /**
  * The V is just some bytes.
@@ -21,6 +21,6 @@ class PrimitiveBerTlv(tag: Tag, private val value: ByteArray) : BerTlv(tag) {
         return listOf()
     }
 
-    override fun toString(): String = "${tag}: ${ISOUtil.hexString(value)}"
+    override fun toString(): String = "$tag: ${ISOUtil.hexString(value)}"
 }
 

@@ -1,7 +1,7 @@
 package io.github.binaryfoo.decoders
 
-import java.util.HashMap
 import io.github.binaryfoo.res.ClasspathIO
+import java.util.*
 
 /**
  * Read a CSV into a map. Say alpha to numeric code.
@@ -11,10 +11,10 @@ import io.github.binaryfoo.res.ClasspathIO
  */
 fun csvToMap(fileName: String, codeLength: Int): Map<String, String> {
     val map = HashMap<String, String>()
-    map.putAll(ClasspathIO.readLines(fileName).map { line ->
+    ClasspathIO.readLines(fileName).forEach { line ->
         val numeric = line.substring(0, codeLength)
         val alpha = line.substring(codeLength + 2)
-        numeric to alpha
-    })
+        map.put(numeric, alpha)
+    }
     return map
 }

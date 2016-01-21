@@ -1,8 +1,12 @@
+@file:JvmName("BitPackage")
 package io.github.binaryfoo.bit
 
-import java.util.Arrays
 import java.util.TreeSet
 import io.github.binaryfoo.tlv.ISOUtil
+import kotlin.collections.*
+import kotlin.ranges.downTo
+import kotlin.ranges.step
+import kotlin.text.substring
 
 
 // java interop
@@ -40,7 +44,7 @@ public fun setOf(vararg bits: EmvBit): Set<EmvBit> = sortedSetOf(*bits)
 public fun Set<EmvBit>.toConfigString(): String {
     val b = StringBuilder()
     for (bit in this) {
-        if (b.length() > 0) {
+        if (b.length > 0) {
             b.append(" & ")
         }
         b.append(bit.toConfigString())
@@ -49,24 +53,31 @@ public fun Set<EmvBit>.toConfigString(): String {
 }
 
 public fun EmvBit.toConfigString(): String {
-    return "(${byteNumber},${bitNumber})=${value}"
+    return "($byteNumber,$bitNumber)=$value"
 }
 
 public fun Set<EmvBit>.getByteCount(): Int {
-    return map { it.byteNumber }.reduce { (a, b) -> if (a >= b) a else b }
+    return map { it.byteNumber }.reduce { a, b -> if (a >= b) a else b }
 }
 
 public fun Set<EmvBit>.matches(other: Set<EmvBit>): Boolean {
-    return intersect(other).size() == size()
+    return intersect(other).size == size
 }
 
 public fun Set<EmvBit>.toString(includeValue: Boolean): String {
     val b = StringBuilder()
     for (bit in this) {
-        if (b.length() > 0) {
+        if (b.length > 0) {
             b.append(", ")
         }
         b.append(bit.toString(false, includeValue))
     }
     return b.toString()
+}
+
+/**
+ * Label set bits (those = 1) in hex.
+ */
+public fun labelFor(hex: String): String {
+    return fromHex(hex).toString(includeValue = false)
 }

@@ -1,10 +1,10 @@
 package io.github.binaryfoo.decoders
 
-import java.util.Arrays
-
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
 import io.github.binaryfoo.tlv.ISOUtil
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 public class CVMResultsDecoder : Decoder {
 
@@ -26,7 +26,7 @@ public class CVMResultsDecoder : Decoder {
     override fun getMaxLength(): Int = FIELD_LENGTH
 
     override fun validate(input: String?): String? {
-        if (input == null || input.length() != FIELD_LENGTH) {
+        if (input == null || input.length != FIELD_LENGTH) {
             return "Value must be exactly ${FIELD_LENGTH} characters"
         }
         if (!ISOUtil.isValidHexString(input)) {
@@ -35,7 +35,7 @@ public class CVMResultsDecoder : Decoder {
         return null
     }
 
-    class object {
+    companion object {
         private val FIELD_LENGTH = 6
     }
 

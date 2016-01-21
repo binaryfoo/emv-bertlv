@@ -2,10 +2,8 @@ package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
-import io.github.binaryfoo.bit.*
-import io.github.binaryfoo.bit.EmvBit
-
-import java.util.ArrayList
+import io.github.binaryfoo.bit.fromHex
+import java.util.*
 
 /**
  * Decode and label bits in a string according to the EMV spec convention.
@@ -21,7 +19,7 @@ public class ByteLabeller : Decoder {
     }
 
     override fun validate(input: String?): String? {
-        if (input != null && (input.length() % 2) != 0) {
+        if (input != null && (input.length % 2) != 0) {
             return "Must be an even number of characters"
         }
         return null

@@ -9,7 +9,7 @@ public class DecodedWriter(private val out: PrintStream) {
     public fun write(decoded: List<DecodedData>, indent: String) {
         for (d in decoded) {
             out.print(indent)
-            if (d.rawData.length() > 0) {
+            if (d.rawData.length > 0) {
                 out.print("[")
                 out.print(d.rawData)
                 out.print("] ")

@@ -25,7 +25,7 @@ public class TagTest {
     @Test
     public void testHexStringFactoryMethod() throws Exception {
         Tag tag = Tag.fromHex("9FC81A");
-        assertTrue(Arrays.equals(TAG_9FC81A, tag.getBytes()));
+        assertTrue(Arrays.equals(TAG_9FC81A, tag.getByteArray()));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class TagTest {
 
     private void doValidTest(byte[] bytes) {
         Tag tag = new Tag(bytes, true);
-        assertTrue(Arrays.equals(bytes, tag.getBytes()));
+        assertTrue(Arrays.equals(bytes, tag.getByteArray()));
     }
 
     private void doIllegalArgumentTest(byte[] bytes) {
@@ -125,10 +125,10 @@ public class TagTest {
         byteBuffer.put(TAG_9FC81A);
         int endPosition = byteBuffer.position();
         byteBuffer.flip();
-        BerTlvUtils.assertEquals(TAG_E1, Tag.parse(byteBuffer).getBytes());
-        BerTlvUtils.assertEquals(TAG_9F39, Tag.parse(byteBuffer).getBytes());
-        BerTlvUtils.assertEquals(TAG_9F1A, Tag.parse(byteBuffer).getBytes());
-        BerTlvUtils.assertEquals(TAG_9FC81A, Tag.parse(byteBuffer).getBytes());
+        BerTlvUtils.assertEquals(TAG_E1, Tag.parse(byteBuffer).getByteArray());
+        BerTlvUtils.assertEquals(TAG_9F39, Tag.parse(byteBuffer).getByteArray());
+        BerTlvUtils.assertEquals(TAG_9F1A, Tag.parse(byteBuffer).getByteArray());
+        BerTlvUtils.assertEquals(TAG_9FC81A, Tag.parse(byteBuffer).getByteArray());
         assertEquals(endPosition, byteBuffer.position());
     }
 
@@ -149,7 +149,7 @@ public class TagTest {
     private void doTestParse(byte[] rawTag) {
         ByteBuffer buffer = asBuffer(rawTag);
         Tag parsedTag = Tag.parse(buffer);
-        BerTlvUtils.assertEquals(rawTag, parsedTag.getBytes());
+        BerTlvUtils.assertEquals(rawTag, parsedTag.getByteArray());
         assertEquals(rawTag.length, buffer.position());
     }
 

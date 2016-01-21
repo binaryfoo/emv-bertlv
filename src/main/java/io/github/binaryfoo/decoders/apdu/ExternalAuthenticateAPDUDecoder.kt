@@ -4,6 +4,8 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
 
 import java.util.Arrays
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 public class ExternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
@@ -20,6 +22,6 @@ public class ExternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
     private fun decodePayload(data: String, startIndexInBytes: Int): List<DecodedData> {
         return listOf(
                 DecodedData.primitive("ARPC", data.substring(0, 16), startIndexInBytes, startIndexInBytes + 8),
-                DecodedData.primitive("Issuer Specific", data.substring(16), startIndexInBytes + 8, startIndexInBytes + 8 + data.substring(16).length() / 2))
+                DecodedData.primitive("Issuer Specific", data.substring(16), startIndexInBytes + 8, startIndexInBytes + 8 + data.substring(16).length / 2))
     }
 }

@@ -1,18 +1,16 @@
 package io.github.binaryfoo
 
-import java.util.Collections
-
+import io.github.binaryfoo.decoders.annotator.BackgroundReading
 import io.github.binaryfoo.hex.HexDumpElement
+import io.github.binaryfoo.tlv.BerTlv
+import io.github.binaryfoo.tlv.ISOUtil
 import io.github.binaryfoo.tlv.Tag
 import org.apache.commons.lang.StringUtils
-import org.apache.commons.lang.builder.EqualsBuilder
-import org.apache.commons.lang.builder.HashCodeBuilder
-import kotlin.platform.platformStatic
-import java.util.ArrayList
-import java.util.LinkedList
-import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.tlv.BerTlv
-import io.github.binaryfoo.decoders.annotator.BackgroundReading
+import java.util.*
+import kotlin.collections.forEach
+import kotlin.collections.last
+import kotlin.collections.listOf
+import kotlin.text.substring
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -30,7 +28,7 @@ public data class DecodedData(
         val fullDecodedData: String,
         val startIndex: Int = 0, // in bytes
         val endIndex: Int = 0, // in bytes
-        kids: List<DecodedData> = listOf(),
+        var kids: List<DecodedData> = listOf(),
         var backgroundReading: Map<String, String?>? = null, // wordy explanation. Eg to show in tooltip/popover,
         val tlv: BerTlv? = null,
         var category: String = ""
@@ -75,7 +73,7 @@ public data class DecodedData(
     }
 
     private fun trim(decodedData: String): String {
-        return if (decodedData.length() >= 60) decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) else decodedData
+        return if (decodedData.length >= 60) decodedData.substring(0, 56) + "..." + StringUtils.right(decodedData, 4) else decodedData
     }
 
     /**
@@ -102,7 +100,7 @@ public data class DecodedData(
     }
 
     override fun toString(): String {
-        var s = "raw=[${rawData}] decoded=[${fullDecodedData}] indexes=[${startIndex},${endIndex}]"
+        var s = "raw=[${rawData}] decoded=[$fullDecodedData] indexes=[${startIndex},${endIndex}]"
         if (backgroundReading != null) {
             s += " background=[$backgroundReading]"
         }
@@ -120,29 +118,29 @@ public data class DecodedData(
         return s
     }
 
-    class object {
+    companion object {
 
-        platformStatic public fun primitive(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0): DecodedData {
+        @JvmStatic public fun primitive(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0): DecodedData {
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, backgroundReading = BackgroundReading.readingFor(rawData))
         }
 
-        platformStatic public fun byteRange(rawData: String, bytes: ByteArray, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
+        @JvmStatic public fun byteRange(rawData: String, bytes: ByteArray, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
             val decodedData = ISOUtil.hexString(bytes, startIndexWithinBytes, length)
             return DecodedData(null, rawData, decodedData, startIndexWithinFullDecoding + startIndexWithinBytes, startIndexWithinFullDecoding + startIndexWithinBytes + length, listOf<DecodedData>())
         }
 
-        platformStatic public fun byteRange(rawData: String, decodedData: String, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
+        @JvmStatic public fun byteRange(rawData: String, decodedData: String, startIndexWithinBytes: Int, length: Int, startIndexWithinFullDecoding: Int): DecodedData {
             return DecodedData(null, rawData, decodedData, startIndexWithinFullDecoding + startIndexWithinBytes, startIndexWithinFullDecoding + startIndexWithinBytes + length, listOf<DecodedData>())
         }
 
-        platformStatic public fun constructed(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0, children: List<DecodedData>): DecodedData {
+        @JvmStatic public fun constructed(rawData: String, decodedData: String, startIndex: Int = 0, endIndex: Int = 0, children: List<DecodedData>): DecodedData {
             return DecodedData(null, rawData, decodedData, startIndex, endIndex, children, BackgroundReading.readingFor(rawData))
         }
 
         /**
          * Attach a Tag but the data wasn't actually encoded as TLV. Eg a bunch of values are concatenated in a stream.
          */
-        platformStatic public fun withTag(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
+        @JvmStatic public fun withTag(tag: Tag, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
             val tagInfo = metadata.get(tag)
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading)
         }
@@ -150,18 +148,18 @@ public data class DecodedData(
         /**
          * Decoded from a TLV.
          */
-        platformStatic public fun fromTlv(tlv: BerTlv, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
+        @JvmStatic public fun fromTlv(tlv: BerTlv, metadata: TagMetaData, decodedData: String, startIndex: Int, endIndex: Int, children: List<DecodedData> = listOf()): DecodedData {
             val tag = tlv.tag
             val tagInfo = metadata.get(tag)
             return DecodedData(tag, tag.toString(tagInfo), decodedData, startIndex, endIndex, children, tagInfo.backgroundReading, tlv)
         }
 
-        platformStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {
+        @JvmStatic public fun findForTag(tag: Tag, decoded: List<DecodedData>): DecodedData? {
             val matches = decoded.findAllForTag(tag)
-            return if (matches.empty) null else matches[0]
+            return if (matches.isEmpty()) null else matches[0]
         }
 
-        platformStatic public fun findAllForTag(tag: Tag, decoded: List<DecodedData>): List<DecodedData> {
+        @JvmStatic public fun findAllForTag(tag: Tag, decoded: List<DecodedData>): List<DecodedData> {
             var matches = ArrayList<DecodedData>()
             decoded.forEach {
                 if (it.tag == tag) {
@@ -172,12 +170,12 @@ public data class DecodedData(
             return matches
         }
 
-        platformStatic public fun findForValue(value: String, decoded: List<DecodedData>): DecodedData? {
+        @JvmStatic public fun findForValue(value: String, decoded: List<DecodedData>): DecodedData? {
             val matches = decoded.findAllForValue(value)
-            return if (matches.empty) null else matches[0]
+            return if (matches.isEmpty()) null else matches[0]
         }
 
-        platformStatic public fun findAllForValue(value: String, decoded: List<DecodedData>): List<DecodedData> {
+        @JvmStatic public fun findAllForValue(value: String, decoded: List<DecodedData>): List<DecodedData> {
             var matches = ArrayList<DecodedData>()
             decoded.forEach {
                 if (it.fullDecodedData == value) {
@@ -197,11 +195,11 @@ public fun List<DecodedData>.findForTag(tag: Tag): DecodedData? {
 }
 
 public fun List<DecodedData>.findTlvForTag(tag: Tag): BerTlv? {
-    return DecodedData.findAllForTag(tag, this).last?.tlv
+    return DecodedData.findAllForTag(tag, this).lastOrNull()?.tlv
 }
 
 public fun List<DecodedData>.findValueForTag(tag: Tag): String? {
-    return DecodedData.findAllForTag(tag, this).last?.tlv?.valueAsHexString
+    return DecodedData.findAllForTag(tag, this).lastOrNull()?.tlv?.valueAsHexString
 }
 
 public fun List<DecodedData>.findAllForTag(tag: Tag): List<DecodedData> {

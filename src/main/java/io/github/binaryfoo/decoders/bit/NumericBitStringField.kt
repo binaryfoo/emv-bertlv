@@ -9,14 +9,14 @@ import java.util.BitSet
  */
 public class NumericBitStringField(private val byteNumber: Int, private val firstBit: Int, private val lastBit: Int, private val name: String) : BitStringField {
 
-    {
+    init {
         if (lastBit > firstBit) {
-            throw IllegalArgumentException("Must be left to right order: " + lastBit + " > " + firstBit)
+            throw IllegalArgumentException("Must be left to right order: $lastBit > $firstBit")
         }
     }
 
     override public fun getPositionIn(bits: Set<EmvBit>?): String {
-        return "Byte ${byteNumber} Bits ${firstBit}-${lastBit}"
+        return "Byte $byteNumber Bits $firstBit-$lastBit"
     }
 
     override public fun getValueIn(bits: Set<EmvBit>): String {
@@ -28,7 +28,7 @@ public class NumericBitStringField(private val byteNumber: Int, private val firs
         }
         val bytes = theByte.toByteArray()
         val i = if (bytes.size == 0) 0 else (bytes[0].toInt() and 255).ushr((lastBit - 1))
-        return "${name} = ${i}"
+        return "$name = $i"
     }
 
     override fun getStartBytesOffset(): Int = byteNumber - 1

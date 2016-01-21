@@ -1,21 +1,11 @@
 package io.github.binaryfoo.decoders
 
-import java.util.ArrayList
-
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
 import io.github.binaryfoo.TagInfo
-import io.github.binaryfoo.TagMetaData
-import io.github.binaryfoo.tlv.BerTlv
-import io.github.binaryfoo.tlv.ISOUtil
-import io.github.binaryfoo.tlv.Tag
-import io.github.binaryfoo.tlv.TlvParseException
-import io.github.binaryfoo.tlv.hasCommonVendorErrorTag
-import java.util.HashSet
-import io.github.binaryfoo.tlv.decodeAsHex
-import io.github.binaryfoo.tlv.CommonVendorErrorMode
-import io.github.binaryfoo.tlv.TagRecognitionMode
-import io.github.binaryfoo.tlv.CompliantTagMode
+import io.github.binaryfoo.tlv.*
+import java.util.*
+import kotlin.collections.*
 
 public class TLVDecoder : Decoder {
 
@@ -23,12 +13,12 @@ public class TLVDecoder : Decoder {
         try {
             return decode(input, session, startIndexInBytes).second
         } catch(e: TlvParseException) {
-            val errorMessage = e.getMessage() ?: e.javaClass.getSimpleName()
+            val errorMessage = e.message ?: e.javaClass.getSimpleName()
             if (session.tagRecognitionMode == CommonVendorErrorMode) {
-                if (!e.resultsSoFar.filter(::hasCommonVendorErrorTag).empty) {
+                if (!e.resultsSoFar.filter(::hasCommonVendorErrorTag).isEmpty()) {
                     try {
                         val (tlvs, decoded) = decode(input, session, startIndexInBytes, CommonVendorErrorMode)
-                        val tagErrors = HashSet(tlvs.filter(::hasCommonVendorErrorTag).map { it.tag.hexString }).toList().sort()
+                        val tagErrors = HashSet(tlvs.filter(::hasCommonVendorErrorTag).map { it.tag.hexString }).toList().sorted()
                         val warning = DecodedData(null, "Warning", "This result is a second attempt ignoring the spec for these (often abused) tags: $tagErrors. " +
                                 "The first attempt (following the the spec) produced an error: $errorMessage", 0, 0, category = "parse-warning")
                         return decoded + warning
@@ -37,7 +27,7 @@ public class TLVDecoder : Decoder {
                 }
             }
             val decoded = decodeTlvs(e.resultsSoFar, startIndexInBytes, session)
-            val error = DecodedData(null, "Error", errorMessage, decoded.last?.endIndex ?: 0, input.length / 2, category = "parse-error")
+            val error = DecodedData(null, "Error", errorMessage, decoded.lastOrNull()?.endIndex ?: 0, input.length / 2, category = "parse-error")
             return decoded + error
         }
     }
@@ -74,7 +64,7 @@ public class TLVDecoder : Decoder {
         try {
             return tagInfo.decoder.decode(valueAsHexString, compositeStartElementIndex, session)
         } catch(e: Exception) {
-            return listOf(DecodedData(null, "Error: Failed parsing " + valueAsHexString, e.getMessage()?:e.javaClass.getSimpleName(), compositeStartElementIndex, compositeStartElementIndex + valueAsHexString.size/2, category = "parse-error"))
+            return listOf(DecodedData(null, "Error: Failed parsing " + valueAsHexString, e.message ?:e.javaClass.getSimpleName(), compositeStartElementIndex, compositeStartElementIndex + valueAsHexString.length /2, category = "parse-error"))
         }
     }
 
@@ -83,10 +73,10 @@ public class TLVDecoder : Decoder {
     }
 
     override fun validate(input: String?): String? {
-        if (input == null || input.length() < 2) {
+        if (input == null || input.length < 2) {
             return "Value must be at least 2 characters"
         }
-        if (input.length() % 2 != 0) {
+        if (input.length % 2 != 0) {
             return "Length must be a multiple of 2"
         }
         if (!ISOUtil.isValidHexString(input)) {

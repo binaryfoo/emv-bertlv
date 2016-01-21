@@ -1,27 +1,25 @@
 package io.github.binaryfoo.decoders.bit
 
-import io.github.binaryfoo.bit.*
 import io.github.binaryfoo.bit.EmvBit
+import io.github.binaryfoo.bit.fromHex
 import org.apache.commons.lang.StringUtils
-
-import java.io.IOException
-import java.util.ArrayList
-import java.util.TreeSet
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import kotlin.platform.platformStatic
-import kotlin.reflect.KMemberFunction1
+import kotlin.collections.filter
+import kotlin.collections.map
+import kotlin.text.*
 
 object EmvBitStringParser {
     val SINGLE_BIT_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<bit>\\d+)\\)=(?<value>\\d+)\\s*")
     val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<firstBit>\\d+)-(?<lastBit>\\d+)\\)=INT\\s*")
     val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+)\\)=0x(?<value>[0-9a-fA-F]{2})\\s*")
 
-    platformStatic public fun parse(lines: List<String>): List<BitStringField> {
+    @JvmStatic public fun parse(lines: List<String>): List<BitStringField> {
         fun usefulLine(line: String) = StringUtils.isNotBlank(line) && !line.startsWith("#")
 
         return lines.filter(::usefulLine).map {
-            val fields = it.split("\\s*:\\s*", 2)
+            val fields = it.split(Regex("\\s*:\\s*"), 2)
             parseField(fields[0], fields[1])
         }
     }

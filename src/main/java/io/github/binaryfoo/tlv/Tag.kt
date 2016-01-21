@@ -1,27 +1,25 @@
 package io.github.binaryfoo.tlv
 
+import io.github.binaryfoo.TagInfo
+import io.github.binaryfoo.TagMetaData
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
-import java.util.Arrays
-
-import io.github.binaryfoo.TagMetaData
-import org.apache.commons.lang.builder.HashCodeBuilder
-import kotlin.platform.platformStatic
-import io.github.binaryfoo.TagInfo
 
 /**
  * The tag in T-L-V. Sometimes called Type but EMV 4.3 Book 3 - B3 Coding of the Value Field of Data Objects uses the term.
  */
-public data class Tag(val bytes: ByteArray, val compliant: Boolean = true) {
+public data class Tag constructor(val bytes: List<Byte>, val compliant: Boolean = true) {
 
-    {
+    constructor(bytes: ByteArray, compliant: Boolean = true): this(bytes.toArrayList(), compliant)
+
+    init {
         if (compliant) {
             validate(bytes)
         }
     }
 
-    private fun validate(b: ByteArray?) {
-        if (b == null || b.size == 0) {
+    private fun validate(b: List<Byte>) {
+        if (b.size == 0) {
             throw IllegalArgumentException("Tag must be constructed with a non-empty byte array")
         }
         if (b.size == 1) {
@@ -48,6 +46,9 @@ public data class Tag(val bytes: ByteArray, val compliant: Boolean = true) {
     public val constructed: Boolean
         get() = (bytes[0].toInt() and 0x20) == 0x20
 
+    public val byteArray: ByteArray
+        get() = bytes.toByteArray()
+
     public fun isConstructed(): Boolean = constructed
 
     override fun toString(): String {
@@ -62,15 +63,15 @@ public data class Tag(val bytes: ByteArray, val compliant: Boolean = true) {
         return "${ISOUtil.hexString(bytes)} (${tagInfo.fullName})"
     }
 
-    class object {
+    companion object {
 
-        platformStatic public fun fromHex(hexString: String): Tag {
+        @JvmStatic public fun fromHex(hexString: String): Tag {
             return Tag(ISOUtil.hex2byte(hexString))
         }
 
-        platformStatic public fun parse(buffer: ByteBuffer): Tag = parse(buffer, CompliantTagMode)
+        @JvmStatic public fun parse(buffer: ByteBuffer): Tag = parse(buffer, CompliantTagMode)
 
-        platformStatic public fun parse(buffer: ByteBuffer, recognitionMode: TagRecognitionMode): Tag {
+        @JvmStatic public fun parse(buffer: ByteBuffer, recognitionMode: TagRecognitionMode): Tag {
             val out = ByteArrayOutputStream()
             var b = buffer.get()
             out.write(b.toInt())
@@ -85,7 +86,7 @@ public data class Tag(val bytes: ByteArray, val compliant: Boolean = true) {
     }
 }
 
-public trait TagRecognitionMode {
+public interface TagRecognitionMode {
     fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean
 }
 
@@ -122,6 +123,10 @@ public object CommonVendorErrorMode: TagRecognitionMode {
     }
 
     public fun isCommonError(tag: ByteArray): Boolean {
+        return isCommonError(tag.toArrayList())
+    }
+
+    public fun isCommonError(tag: List<Byte>): Boolean {
         return tag.size > 1 && (tag[0] == 0x9F.toByte() && (tag[1].toInt() and 0xF0) == 0x80)
     }
 }

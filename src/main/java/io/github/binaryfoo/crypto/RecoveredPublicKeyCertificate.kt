@@ -18,6 +18,6 @@ public data class RecoveredPublicKeyCertificate(
         get() = leftKeyPart + (rightKeyPart ?: "")
 
     public override val name: String
-        get() = "${owner} public key"
+        get() = "$owner public key"
 }
 

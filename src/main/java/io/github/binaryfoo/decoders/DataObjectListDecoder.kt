@@ -7,6 +7,8 @@ import io.github.binaryfoo.tlv.Tag
 
 import java.nio.ByteBuffer
 import java.util.ArrayList
+import kotlin.text.Regex
+import kotlin.text.matches
 
 public class DataObjectListDecoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
@@ -24,7 +26,7 @@ public class DataObjectListDecoder : Decoder {
     }
 
     override fun validate(input: String?): String? {
-        if (input != null && input.matches("^[0-9A-Za-z]$")) {
+        if (input != null && input.matches(Regex("^[0-9A-Za-z]$"))) {
             return "Only A-Z and 0-9 are valid"
         }
         return null

@@ -11,7 +11,7 @@ import org.junit.Assert.assertThat
 
 public class BackgroundReadingTest {
 
-    Test
+    @Test
     public fun load() {
         assertThat(BackgroundReading.readingFor(APDUCommand.ReadRecord)?.get("short"), containsString("pair (SFI, record number)"))
         assertThat(BackgroundReading.readingFor(APDUCommand.ReadRecord)?.get("long"), containsString("short file indicator"))

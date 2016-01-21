@@ -4,6 +4,7 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
 
 import java.util.ArrayList
+import kotlin.text.substring
 
 /**
  * EMV Book 3 (v4.3) 10.2 Read Application Data

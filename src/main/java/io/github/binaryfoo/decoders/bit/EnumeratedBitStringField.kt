@@ -1,10 +1,7 @@
 package io.github.binaryfoo.decoders.bit
 
 import io.github.binaryfoo.bit.*
-import io.github.binaryfoo.bit.EmvBit
-
-import java.util.HashSet
-import java.util.TreeSet
+import java.util.*
 
 /**
  * The english description attached to one or more bit positions being set (to 0 or 1) in a single byte.
@@ -13,7 +10,7 @@ public class EnumeratedBitStringField(field: Set<EmvBit>, private val value: Str
 
     private val field: Set<EmvBit>
 
-    {
+    init {
         this.field = TreeSet(field)
     }
 
@@ -21,7 +18,7 @@ public class EnumeratedBitStringField(field: Set<EmvBit>, private val value: Str
         if (bits == null) {
             return field.toString(includeValue = true)
         }
-        return field.toHexString(bits.getByteCount()) + " (" + field.toString(field.size() > 1) + ")"
+        return field.toHexString(bits.getByteCount()) + " (" + field.toString(field.size > 1) + ")"
     }
 
     override public fun getValueIn(bits: Set<EmvBit>): String? {
