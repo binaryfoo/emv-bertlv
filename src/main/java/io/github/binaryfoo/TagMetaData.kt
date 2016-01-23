@@ -4,9 +4,10 @@ import io.github.binaryfoo.decoders.Decoders
 import io.github.binaryfoo.decoders.PrimitiveDecoder
 import io.github.binaryfoo.res.ClasspathIO
 import io.github.binaryfoo.tlv.Tag
-import org.yaml.snakeyaml.Dumper
-import org.yaml.snakeyaml.Loader
+import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.constructor.Constructor
+import org.yaml.snakeyaml.representer.Representer
 import org.yaml.snakeyaml.resolver.Resolver
 import java.io.FileWriter
 import java.io.PrintWriter
@@ -67,7 +68,12 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
         }
 
         @JvmStatic public fun load(name: String): TagMetaData {
-            return TagMetaData(LinkedHashMap((Yaml(Loader(), Dumper(), Resolver(false)).load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>).mapValues {
+            val yaml = Yaml(Constructor(), Representer(), DumperOptions(), object: Resolver() {
+                override fun addImplicitResolvers() {
+                    // leave everything as strings
+                }
+            })
+            return TagMetaData(LinkedHashMap((yaml.load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>).mapValues {
                 val shortName = it.value["name"]!!
                 val longName = it.value.getOrElse("longName", {shortName})!!
                 val decoder: Decoder = if (it.value.contains("decoder")) {
