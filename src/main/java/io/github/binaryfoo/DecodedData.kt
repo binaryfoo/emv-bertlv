@@ -81,7 +81,7 @@ public data class DecodedData(
     }
 
     public fun getChild(index: Int): DecodedData {
-        return children.get(index)
+        return children[index]
     }
 
     public fun isComposite(): Boolean {
@@ -96,7 +96,7 @@ public data class DecodedData(
     }
 
     override fun toString(): String {
-        var s = "raw=[${rawData}] decoded=[$fullDecodedData] indexes=[${startIndex},${endIndex}]"
+        var s = "raw=[$rawData] decoded=[$fullDecodedData] indexes=[$startIndex,$endIndex]"
         if (backgroundReading != null) {
             s += " background=[$backgroundReading]"
         }

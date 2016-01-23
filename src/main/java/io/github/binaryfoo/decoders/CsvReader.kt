@@ -6,7 +6,7 @@ import java.util.*
 /**
  * Read a CSV into a map. Say alpha to numeric code.
  *
- * @param source CSV file with source data
+ * @param fileName CSV file with source data
  * @param codeLength length of first column in source file (followed by comma, space and alpha-description of the code
  */
 fun csvToMap(fileName: String, codeLength: Int): Map<String, String> {

@@ -5,11 +5,7 @@ import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.decoders.DecodeSession
 import io.github.binaryfoo.decoders.PopulatedDOLDecoder
 import io.github.binaryfoo.tlv.ISOUtil
-
-import java.util.Collections
 import java.util.logging.Logger
-import kotlin.collections.listOf
-import kotlin.text.substring
 
 public class GenerateACAPDUDecoder : CommandAPDUDecoder {
 
@@ -43,7 +39,7 @@ public class GenerateACAPDUDecoder : CommandAPDUDecoder {
             try {
                 return PopulatedDOLDecoder().decode(cdol, populatedCdol, startIndexInBytes, session)
             } catch (e: Exception) {
-                LOG.throwing(GenerateACAPDUDecoder::class.java.getSimpleName(), "decodeCDOLElements", e)
+                LOG.throwing(GenerateACAPDUDecoder::class.java.simpleName, "decodeCDOLElements", e)
             }
 
         }
@@ -53,13 +49,13 @@ public class GenerateACAPDUDecoder : CommandAPDUDecoder {
     private fun findCDOL(session: DecodeSession): String? {
         if (session.firstGenerateACCommand) {
             session.firstGenerateACCommand = false
-            return session.get(EmvTags.CDOL_1)
+            return session[EmvTags.CDOL_1]
         } else {
-            return session.get(EmvTags.CDOL_2)
+            return session[EmvTags.CDOL_2]
         }
     }
 
     companion object {
-        private val LOG = Logger.getLogger(GenerateACAPDUDecoder::class.java.getName())
+        private val LOG = Logger.getLogger(GenerateACAPDUDecoder::class.java.name)
     }
 }

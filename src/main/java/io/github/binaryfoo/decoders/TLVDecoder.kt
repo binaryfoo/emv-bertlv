@@ -13,14 +13,13 @@ public class TLVDecoder : Decoder {
         try {
             return decode(input, session, startIndexInBytes).second
         } catch(e: TlvParseException) {
-            val errorMessage = e.message ?: e.javaClass.getSimpleName()
+            val errorMessage = e.message ?: e.javaClass.simpleName
             if (session.tagRecognitionMode == CommonVendorErrorMode) {
                 if (!e.resultsSoFar.filter(::hasCommonVendorErrorTag).isEmpty()) {
                     try {
                         val (tlvs, decoded) = decode(input, session, startIndexInBytes, CommonVendorErrorMode)
                         val tagErrors = HashSet(tlvs.filter(::hasCommonVendorErrorTag).map { it.tag.hexString }).toList().sorted()
-                        val warning = DecodedData(null, "Warning", "This result is a second attempt ignoring the spec for these (often abused) tags: $tagErrors. " +
-                                "The first attempt (following the the spec) produced an error: $errorMessage", 0, 0, category = "parse-warning")
+                        val warning = DecodedData(null, "Warning", "This result is a second attempt ignoring the spec for these (often abused) tags: $tagErrors. The first attempt (following the the spec) produced an error: $errorMessage", 0, 0, category = "parse-warning")
                         return decoded + warning
                     } catch(e: TlvParseException) {
                     }
@@ -64,7 +63,7 @@ public class TLVDecoder : Decoder {
         try {
             return tagInfo.decoder.decode(valueAsHexString, compositeStartElementIndex, session)
         } catch(e: Exception) {
-            return listOf(DecodedData(null, "Error: Failed parsing " + valueAsHexString, e.message ?:e.javaClass.getSimpleName(), compositeStartElementIndex, compositeStartElementIndex + valueAsHexString.length /2, category = "parse-error"))
+            return listOf(DecodedData(null, "Error: Failed parsing " + valueAsHexString, e.message ?:e.javaClass.simpleName, compositeStartElementIndex, compositeStartElementIndex + valueAsHexString.length /2, category = "parse-error"))
         }
     }
 

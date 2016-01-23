@@ -43,11 +43,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
     }
 
     public fun get(tag: Tag): TagInfo {
-        val tagInfo = metadata.get(tag.hexString)
-        if (tagInfo == null) {
-            return TagInfo("?", "?", Decoders.PRIMITIVE, PrimitiveDecoder.HEX)
-        }
-        return tagInfo
+        return metadata[tag.hexString] ?: return TagInfo("?", "?", Decoders.PRIMITIVE, PrimitiveDecoder.HEX)
     }
 
     public fun join(other: TagMetaData): TagMetaData {
@@ -86,7 +82,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
                 } else {
                     PrimitiveDecoder.HEX
                 }
-                TagInfo(shortName, longName, decoder, primitiveDecoder, it.value["short"], it.value.get("long"))
+                TagInfo(shortName, longName, decoder, primitiveDecoder, it.value["short"], it.value["long"])
             }))
         }
 
@@ -100,10 +96,10 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
                         writer.println(" longName: " + tagInfo.longName)
                     }
                     if (tagInfo.decoder != Decoders.PRIMITIVE) {
-                        writer.println(" decoder: " + tagInfo.decoder.javaClass.getSimpleName())
+                        writer.println(" decoder: " + tagInfo.decoder.javaClass.simpleName)
                     }
                     if (tagInfo.primitiveDecoder != PrimitiveDecoder.HEX) {
-                        writer.println(" primitiveDecoder: " + tagInfo.primitiveDecoder.javaClass.getSimpleName())
+                        writer.println(" primitiveDecoder: " + tagInfo.primitiveDecoder.javaClass.simpleName)
                     }
                     writer.println(" scheme: $scheme")
                     writer.println()

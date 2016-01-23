@@ -3,10 +3,6 @@ package io.github.binaryfoo.decoders.apdu
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
 
-import java.util.Arrays
-import kotlin.collections.listOf
-import kotlin.text.substring
-
 public class ExternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.ExternalAuthenticate

@@ -1,6 +1,5 @@
 package io.github.binaryfoo;
 
-import io.github.binaryfoo.decoders.PrimitiveDecoder;
 import io.github.binaryfoo.tlv.Tag;
 
 import static io.github.binaryfoo.tlv.Tag.fromHex;

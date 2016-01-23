@@ -27,7 +27,7 @@ public class CVMResultsDecoder : Decoder {
 
     override fun validate(input: String?): String? {
         if (input == null || input.length != FIELD_LENGTH) {
-            return "Value must be exactly ${FIELD_LENGTH} characters"
+            return "Value must be exactly $FIELD_LENGTH characters"
         }
         if (!ISOUtil.isValidHexString(input)) {
             return "Value must contain only the characters 0-9 and A-F"

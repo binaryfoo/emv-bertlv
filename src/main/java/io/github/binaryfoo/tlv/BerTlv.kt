@@ -122,11 +122,11 @@ public abstract class BerTlv(public val tag: Tag) {
         }
 
         @JvmStatic public fun parse(data: ByteArray): BerTlv {
-            return parseList(ByteBuffer.wrap(data), true).get(0)
+            return parseList(ByteBuffer.wrap(data), true)[0]
         }
 
         @JvmStatic public fun parseAsPrimitiveTag(data: ByteArray): BerTlv {
-            return parseList(ByteBuffer.wrap(data), false).get(0)
+            return parseList(ByteBuffer.wrap(data), false)[0]
         }
 
         @JvmStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean): List<BerTlv> {
