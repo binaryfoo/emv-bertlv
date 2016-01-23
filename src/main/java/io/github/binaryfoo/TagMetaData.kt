@@ -75,7 +75,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
             })
             return TagMetaData(LinkedHashMap((yaml.load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>).mapValues {
                 val shortName = it.value["name"]!!
-                val longName = it.value.getOrElse("longName", {shortName})!!
+                val longName = it.value["longName"] ?: shortName
                 val decoder: Decoder = if (it.value.contains("decoder")) {
                     Class.forName("io.github.binaryfoo.decoders." + it.value["decoder"]).newInstance() as Decoder
                 } else {
@@ -86,7 +86,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
                 } else {
                     PrimitiveDecoder.HEX
                 }
-                TagInfo(shortName, longName, decoder, primitiveDecoder, it.value.get("short"), it.value.get("long"))
+                TagInfo(shortName, longName, decoder, primitiveDecoder, it.value["short"], it.value.get("long"))
             }))
         }
 
