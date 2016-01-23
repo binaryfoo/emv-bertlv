@@ -5,6 +5,9 @@ import io.github.binaryfoo.res.ClasspathIO
 import org.yaml.snakeyaml.Yaml
 import kotlin.collections.mapOf
 
+/**
+ * Some english description for each field. From a set of .yaml files.
+ */
 public class BackgroundReading {
 
     companion object {

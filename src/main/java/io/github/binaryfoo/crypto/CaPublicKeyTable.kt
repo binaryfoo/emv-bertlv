@@ -5,6 +5,11 @@ import kotlin.collections.firstOrNull
 import kotlin.collections.map
 import kotlin.text.split
 
+/**
+ * Table of trust anchors.
+ *
+ * From https://www.eftlab.co.uk/index.php/site-map/knowledge-base/243-ca-public-keys
+ */
 public class CaPublicKeyTable {
     companion object {
 

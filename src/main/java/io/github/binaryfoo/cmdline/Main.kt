@@ -6,6 +6,9 @@ import io.github.binaryfoo.decoders.DecodeSession
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+/**
+ * Command line too for parsing a few flavours of chip card data.
+ */
 public class Main {
     companion object {
         @JvmStatic public fun main(args: Array<String>) {
