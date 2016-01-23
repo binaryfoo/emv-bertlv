@@ -7,10 +7,6 @@ import io.github.binaryfoo.tlv.ISOUtil
 import io.github.binaryfoo.tlv.Tag
 import org.apache.commons.lang.StringUtils
 import java.util.*
-import kotlin.collections.forEach
-import kotlin.collections.last
-import kotlin.collections.listOf
-import kotlin.text.substring
 
 /**
  * A rather oddly named class that attempts to order a description of the bits (a decoding) into a hierarchy.
@@ -44,7 +40,7 @@ public data class DecodedData(
      * Position within the #hexDump of the bytes this decoding represents.
      * For a decoding of a TLV this will include the T, L and V components. The whole kit and caboodle.
      */
-    public val positionInHexDump: Range<Int>
+    public val positionInHexDump: ClosedRange<Int>
     get() {
         return startIndex..endIndex-1
     }
@@ -53,7 +49,7 @@ public data class DecodedData(
      * Position within the #hexDump of the bytes comprising the T (tag) in the TLV this decoding represents.
      * Null if this decoding didn't come from a TLV.
      */
-    public val tagPositionInHexDump: Range<Int>?
+    public val tagPositionInHexDump: ClosedRange<Int>?
     get() {
         return if (tlv != null) startIndex..(startIndex + tlv.tag.bytes.size - 1) else null
     }
@@ -62,10 +58,10 @@ public data class DecodedData(
      * Position within the #hexDump of the bytes comprising the L (length) in the TLV this decoding represents.
      * Null if this decoding didn't come from a TLV.
      */
-    public val lengthPositionInHexDump: Range<Int>?
+    public val lengthPositionInHexDump: ClosedRange<Int>?
     get() {
         return if (tlv != null) {
-            val firstLengthByte = tagPositionInHexDump!!.end + 1
+            val firstLengthByte = tagPositionInHexDump!!.endInclusive + 1
             firstLengthByte..(firstLengthByte + tlv.lengthInBytesOfEncodedLength - 1)
         } else {
             null
