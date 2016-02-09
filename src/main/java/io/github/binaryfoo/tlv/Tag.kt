@@ -10,7 +10,7 @@ import java.nio.ByteBuffer
  */
 public data class Tag constructor(val bytes: List<Byte>, val compliant: Boolean = true) {
 
-    constructor(bytes: ByteArray, compliant: Boolean = true): this(bytes.toArrayList(), compliant)
+    constructor(bytes: ByteArray, compliant: Boolean = true): this(bytes.toMutableList(), compliant)
 
     init {
         if (compliant) {
@@ -123,7 +123,7 @@ public object CommonVendorErrorMode: TagRecognitionMode {
     }
 
     public fun isCommonError(tag: ByteArray): Boolean {
-        return isCommonError(tag.toArrayList())
+        return isCommonError(tag.toMutableList())
     }
 
     public fun isCommonError(tag: List<Byte>): Boolean {

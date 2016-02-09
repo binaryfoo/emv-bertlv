@@ -140,10 +140,10 @@ public class TagTest {
 
     @Test
     public void commonVendorErrorMode() throws Exception {
-        assertThat(Tag.parse(asBuffer("9F81"), CommonVendorErrorMode.INSTANCE$).getHexString(), is("9F81"));
-        assertThat(Tag.parse(asBuffer("9F8A"), CommonVendorErrorMode.INSTANCE$).getHexString(), is("9F8A"));
-        assertThat(Tag.parse(asBuffer("9F8F"), CommonVendorErrorMode.INSTANCE$).getHexString(), is("9F8F"));
-        assertThat(Tag.parse(asBuffer("9FC81A"), CommonVendorErrorMode.INSTANCE$).getHexString(), is("9FC81A"));
+        assertThat(Tag.parse(asBuffer("9F81"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9F81"));
+        assertThat(Tag.parse(asBuffer("9F8A"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9F8A"));
+        assertThat(Tag.parse(asBuffer("9F8F"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9F8F"));
+        assertThat(Tag.parse(asBuffer("9FC81A"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9FC81A"));
     }
 
     private void doTestParse(byte[] rawTag) {
