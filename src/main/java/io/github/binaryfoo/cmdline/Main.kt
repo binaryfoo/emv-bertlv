@@ -9,9 +9,9 @@ import java.io.InputStreamReader
 /**
  * Command line too for parsing a few flavours of chip card data.
  */
-public class Main {
+class Main {
     companion object {
-        @JvmStatic public fun main(args: Array<String>) {
+        @JvmStatic fun main(args: Array<String>) {
             if (args.size < 2) {
                 printHelp()
                 System.exit(1)

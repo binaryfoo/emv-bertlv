@@ -11,7 +11,7 @@ import kotlin.text.substring
  * Decoder for Cardholder Verification Method List.
  * The list of ways to verify the person holding the card is authorized to use it.
  */
-public class CVMListDecoder : Decoder {
+class CVMListDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val x = Integer.parseInt(input.substring(0, 8), 16)

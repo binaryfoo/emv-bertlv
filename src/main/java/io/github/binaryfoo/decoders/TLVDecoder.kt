@@ -7,7 +7,7 @@ import io.github.binaryfoo.tlv.*
 import java.util.*
 import kotlin.collections.*
 
-public class TLVDecoder : Decoder {
+class TLVDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         try {

@@ -2,7 +2,7 @@ package io.github.binaryfoo.decoders
 
 import kotlin.text.substring
 
-public class CurrencyCodeDecoder : PrimitiveDecoder {
+class CurrencyCodeDecoder : PrimitiveDecoder {
 
     override fun decode(hexString: String): String {
         return numericToAlpha[hexString.substring(1)] ?: "Unknown"

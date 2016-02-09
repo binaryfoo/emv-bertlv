@@ -8,7 +8,7 @@ import java.nio.ByteBuffer
 /**
  * The tag in T-L-V. Sometimes called Type but EMV 4.3 Book 3 - B3 Coding of the Value Field of Data Objects uses the term.
  */
-public data class Tag constructor(val bytes: List<Byte>, val compliant: Boolean = true) {
+data class Tag constructor(val bytes: List<Byte>, val compliant: Boolean = true) {
 
     constructor(bytes: ByteArray, compliant: Boolean = true): this(bytes.toMutableList(), compliant)
 
@@ -40,38 +40,38 @@ public data class Tag constructor(val bytes: List<Byte>, val compliant: Boolean 
         }
     }
 
-    public val hexString: String
+    val hexString: String
         get() = ISOUtil.hexString(bytes)
 
-    public val constructed: Boolean
+    val constructed: Boolean
         get() = (bytes[0].toInt() and 0x20) == 0x20
 
-    public val byteArray: ByteArray
+    val byteArray: ByteArray
         get() = bytes.toByteArray()
 
-    public fun isConstructed(): Boolean = constructed
+    fun isConstructed(): Boolean = constructed
 
     override fun toString(): String {
         return ISOUtil.hexString(bytes)
     }
 
-    public fun toString(tagMetaData: TagMetaData): String {
+    fun toString(tagMetaData: TagMetaData): String {
         return toString(tagMetaData.get(this))
     }
 
-    public fun toString(tagInfo: TagInfo): String {
+    fun toString(tagInfo: TagInfo): String {
         return "${ISOUtil.hexString(bytes)} (${tagInfo.fullName})"
     }
 
     companion object {
 
-        @JvmStatic public fun fromHex(hexString: String): Tag {
+        @JvmStatic fun fromHex(hexString: String): Tag {
             return Tag(ISOUtil.hex2byte(hexString))
         }
 
-        @JvmStatic public fun parse(buffer: ByteBuffer): Tag = parse(buffer, CompliantTagMode)
+        @JvmStatic fun parse(buffer: ByteBuffer): Tag = parse(buffer, CompliantTagMode)
 
-        @JvmStatic public fun parse(buffer: ByteBuffer, recognitionMode: TagRecognitionMode): Tag {
+        @JvmStatic fun parse(buffer: ByteBuffer, recognitionMode: TagRecognitionMode): Tag {
             val out = ByteArrayOutputStream()
             var b = buffer.get()
             out.write(b.toInt())
@@ -86,21 +86,21 @@ public data class Tag constructor(val bytes: List<Byte>, val compliant: Boolean 
     }
 }
 
-public interface TagRecognitionMode {
+interface TagRecognitionMode {
     fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean
 }
 
 /**
  * Follows EMV 4.3 Book 3, Annex B Rules for BER-TLV Data Objects to the letter.
  */
-public object CompliantTagMode: TagRecognitionMode {
+object CompliantTagMode: TagRecognitionMode {
     override fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean = (current.toInt() and 0x80) == 0x80
 }
 
 /**
  * EMV 4.3 Book 3, Annex B Rules for BER-TLV Data Objects unless it's in a list of special cases.
  */
-public class QuirkListTagMode(val nonStandard: Set<String>) : TagRecognitionMode {
+class QuirkListTagMode(val nonStandard: Set<String>) : TagRecognitionMode {
     override fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean {
         return CompliantTagMode.keepReading(current, all) && !nonStandard.contains(all.toByteArray().toHexString())
     }
@@ -117,18 +117,18 @@ public class QuirkListTagMode(val nonStandard: Set<String>) : TagRecognitionMode
  *     </footer>
  * </blockquote>
  */
-public object CommonVendorErrorMode: TagRecognitionMode {
+object CommonVendorErrorMode: TagRecognitionMode {
     override fun keepReading(current: Byte, all: ByteArrayOutputStream): Boolean {
         return CompliantTagMode.keepReading(current, all) && (all.size() != 2 || !isCommonError(all.toByteArray()))
     }
 
-    public fun isCommonError(tag: ByteArray): Boolean {
+    fun isCommonError(tag: ByteArray): Boolean {
         return isCommonError(tag.toMutableList())
     }
 
-    public fun isCommonError(tag: List<Byte>): Boolean {
+    fun isCommonError(tag: List<Byte>): Boolean {
         return tag.size > 1 && (tag[0] == 0x9F.toByte() && (tag[1].toInt() and 0xF0) == 0x80)
     }
 }
 
-public fun hasCommonVendorErrorTag(tlv: BerTlv): Boolean = CommonVendorErrorMode.isCommonError(tlv.tag.bytes)
+fun hasCommonVendorErrorTag(tlv: BerTlv): Boolean = CommonVendorErrorMode.isCommonError(tlv.tag.bytes)

@@ -7,7 +7,7 @@ import java.util.BitSet
 /**
  * An integer masked out of a number of bits in a single byte.
  */
-public class NumericBitStringField(private val byteNumber: Int, private val firstBit: Int, private val lastBit: Int, private val name: String) : BitStringField {
+class NumericBitStringField(private val byteNumber: Int, private val firstBit: Int, private val lastBit: Int, private val name: String) : BitStringField {
 
     init {
         if (lastBit > firstBit) {
@@ -15,11 +15,11 @@ public class NumericBitStringField(private val byteNumber: Int, private val firs
         }
     }
 
-    override public fun getPositionIn(bits: Set<EmvBit>?): String {
+    override fun getPositionIn(bits: Set<EmvBit>?): String {
         return "Byte $byteNumber Bits $firstBit-$lastBit"
     }
 
-    override public fun getValueIn(bits: Set<EmvBit>): String {
+    override fun getValueIn(bits: Set<EmvBit>): String {
         val theByte = BitSet(8)
         for (bit in bits) {
             if (bit.byteNumber == byteNumber && bit.bitNumber <= firstBit && bit.bitNumber >= lastBit) {

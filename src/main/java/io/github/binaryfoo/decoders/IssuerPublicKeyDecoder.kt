@@ -15,7 +15,7 @@ import kotlin.text.substring
 /**
  * EMV 4.3 Book2, Table 6: Format of Data Recovered from Issuer Public Key Certificate
  */
-public class IssuerPublicKeyDecoder : SignedDataDecoder {
+class IssuerPublicKeyDecoder : SignedDataDecoder {
 
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val keyIndex = decoded.findValueForTag(EmvTags.CA_PUBLIC_KEY_INDEX)

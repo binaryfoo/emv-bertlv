@@ -13,7 +13,7 @@ import kotlin.collections.listOf
 /**
  * EMV 4.3 Book2, Table 14: Format of Data Recovered from ICC Public Key Certificate
  */
-public class ICCPublicKeyDecoder : SignedDataDecoder {
+class ICCPublicKeyDecoder : SignedDataDecoder {
 
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val recoveredIssuerPublicKeyCertificate = session.issuerPublicKeyCertificate

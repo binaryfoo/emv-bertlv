@@ -9,7 +9,7 @@ import kotlin.text.substring
 /**
  * EMV Book 3 (v4.3) 10.2 Read Application Data
  */
-public class ApplicationFileLocatorDecoder : Decoder {
+class ApplicationFileLocatorDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val decoded = ArrayList<DecodedData>()

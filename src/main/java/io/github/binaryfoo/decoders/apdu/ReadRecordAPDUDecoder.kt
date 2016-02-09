@@ -11,7 +11,7 @@ import kotlin.text.substring
  * In this language each file has multiple records. Hence the record id. File names in a typical desktop OS are somewhat more helpful to people but since we're dealing with a
  * machine to machine conversation here numbers make sense.
  */
-public class ReadRecordAPDUDecoder : CommandAPDUDecoder {
+class ReadRecordAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.ReadRecord
     }

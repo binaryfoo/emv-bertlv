@@ -18,9 +18,9 @@ import kotlin.collections.*
  * A set of rules for interpreting a set of tags.
  */
 
-public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
+class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
 
-    public fun put(tag: Tag, tagInfo: TagInfo) {
+    fun put(tag: Tag, tagInfo: TagInfo) {
         put(tag.hexString, tagInfo)
     }
 
@@ -30,23 +30,23 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
         }
     }
 
-    public fun newTag(hexString: String, shortName: String, longName: String, primitiveDecoder: PrimitiveDecoder): Tag {
+    fun newTag(hexString: String, shortName: String, longName: String, primitiveDecoder: PrimitiveDecoder): Tag {
         val tag = Tag.fromHex(hexString)
         put(tag, TagInfo(shortName, longName, Decoders.PRIMITIVE, primitiveDecoder))
         return tag
     }
 
-    public fun newTag(hexString: String, shortName: String, longName: String, decoder: Decoder): Tag {
+    fun newTag(hexString: String, shortName: String, longName: String, decoder: Decoder): Tag {
         val tag = Tag.fromHex(hexString)
         put(tag, TagInfo(shortName, longName, decoder, PrimitiveDecoder.HEX))
         return tag
     }
 
-    public fun get(tag: Tag): TagInfo {
+    fun get(tag: Tag): TagInfo {
         return metadata[tag.hexString] ?: return TagInfo("?", "?", Decoders.PRIMITIVE, PrimitiveDecoder.HEX)
     }
 
-    public fun join(other: TagMetaData): TagMetaData {
+    fun join(other: TagMetaData): TagMetaData {
         val joined = copy(other)
         for ((tag, info) in metadata) {
             joined.put(tag, info)
@@ -55,15 +55,15 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
     }
 
     companion object {
-        @JvmStatic public fun empty(): TagMetaData {
+        @JvmStatic fun empty(): TagMetaData {
             return TagMetaData(HashMap())
         }
 
-        @JvmStatic public fun copy(metadata: TagMetaData): TagMetaData {
+        @JvmStatic fun copy(metadata: TagMetaData): TagMetaData {
             return TagMetaData(HashMap(metadata.metadata))
         }
 
-        @JvmStatic public fun load(name: String): TagMetaData {
+        @JvmStatic fun load(name: String): TagMetaData {
             val yaml = Yaml(Constructor(), Representer(), DumperOptions(), object: Resolver() {
                 override fun addImplicitResolvers() {
                     // leave everything as strings
@@ -86,7 +86,7 @@ public class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
             }))
         }
 
-        public fun toYaml(fileName: String, meta: TagMetaData, scheme: String) {
+        fun toYaml(fileName: String, meta: TagMetaData, scheme: String) {
             PrintWriter(FileWriter(fileName)).use { writer ->
                 for (e in meta.metadata.entries) {
                     writer.println(e.key + ":")

@@ -2,7 +2,7 @@ package io.github.binaryfoo.decoders
 
 import io.github.binaryfoo.tlv.ISOUtil
 
-public class SometimesAsciiPrimitiveDecoder : PrimitiveDecoder {
+class SometimesAsciiPrimitiveDecoder : PrimitiveDecoder {
     override fun decode(hexString: String): String {
         val builder = StringBuilder()
         for (b in ISOUtil.hex2byte(hexString)) {

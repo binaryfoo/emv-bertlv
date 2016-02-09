@@ -8,9 +8,9 @@ import kotlin.collections.firstOrNull
 /**
  * Model data elements encoded using the Basic Encoding Rules: http://en.wikipedia.org/wiki/X.690#BER_encoding.
  */
-public abstract class BerTlv(public val tag: Tag) {
+abstract class BerTlv(val tag: Tag) {
 
-    public fun toBinary(): ByteArray {
+    fun toBinary(): ByteArray {
         val value = getValue()
         val encodedTag = tag.bytes
         val encodedLength = getLength(value)
@@ -26,46 +26,46 @@ public abstract class BerTlv(public val tag: Tag) {
     /**
      * The whole object (the T, L and V components) as a hex string.
      */
-    public fun toHexString(): String = ISOUtil.hexString(toBinary())
+    fun toHexString(): String = ISOUtil.hexString(toBinary())
 
     /**
      * The value of V in TLV as a hex string.
      */
-    public val valueAsHexString: String
+    val valueAsHexString: String
     get() = ISOUtil.hexString(getValue())
 
     /**
      * The number of bytes used to encode the L (length) in TLV.
      * Eg 1 byte might be used to encode a length of 12, whilst at least 2 bytes would be used for a length of 300.
      */
-    public val lengthInBytesOfEncodedLength: Int
+    val lengthInBytesOfEncodedLength: Int
     get() = getLength(getValue()).size
 
     /**
      * The value of L (length) in TLV. Length in bytes of the value.
      */
-    public val length: Int
+    val length: Int
     get() = getValue().size
 
     /**
      * Skip the tag and length bytes.
      */
-    public val startIndexOfValue: Int
+    val startIndexOfValue: Int
     get() = tag.bytes.size + lengthInBytesOfEncodedLength
 
-    public abstract fun findTlv(tag: Tag): BerTlv?
+    abstract fun findTlv(tag: Tag): BerTlv?
 
-    public abstract fun findTlvs(tag: Tag): List<BerTlv>
+    abstract fun findTlvs(tag: Tag): List<BerTlv>
 
     /**
      * The value of V in TLV as a byte array.
      */
-    public abstract fun getValue(): ByteArray
+    abstract fun getValue(): ByteArray
 
     /**
      * For a constructed TLV the child elements that make up the V. For a primitive, an empty list.
      */
-    public abstract fun getChildren(): List<BerTlv>
+    abstract fun getChildren(): List<BerTlv>
 
     private fun getLength(value: ByteArray?): ByteArray {
         val length: ByteArray
@@ -98,42 +98,42 @@ public abstract class BerTlv(public val tag: Tag) {
 
     companion object {
 
-        @JvmStatic public fun newInstance(tag: Tag, value: ByteArray): BerTlv {
+        @JvmStatic fun newInstance(tag: Tag, value: ByteArray): BerTlv {
             return PrimitiveBerTlv(tag, value)
         }
 
-        @JvmStatic public fun newInstance(tag: Tag, hexString: String): BerTlv {
+        @JvmStatic fun newInstance(tag: Tag, hexString: String): BerTlv {
             return PrimitiveBerTlv(tag, ISOUtil.hex2byte(hexString))
         }
 
-        @JvmStatic public fun newInstance(tag: Tag, value: Int): BerTlv {
+        @JvmStatic fun newInstance(tag: Tag, value: Int): BerTlv {
             if (value > 255) {
                 throw IllegalArgumentException("Value greater than 255 must be encoded in a byte array")
             }
             return PrimitiveBerTlv(tag, byteArrayOf(value.toByte()))
         }
 
-        @JvmStatic public fun newInstance(tag: Tag, value: List<BerTlv>): BerTlv {
+        @JvmStatic fun newInstance(tag: Tag, value: List<BerTlv>): BerTlv {
             return ConstructedBerTlv(tag, value)
         }
 
-        @JvmStatic public fun newInstance(tag: Tag, tlv1: BerTlv, tlv2: BerTlv): BerTlv {
+        @JvmStatic fun newInstance(tag: Tag, tlv1: BerTlv, tlv2: BerTlv): BerTlv {
             return ConstructedBerTlv(tag, Arrays.asList<BerTlv>(tlv1, tlv2))
         }
 
-        @JvmStatic public fun parse(data: ByteArray): BerTlv {
+        @JvmStatic fun parse(data: ByteArray): BerTlv {
             return parseList(ByteBuffer.wrap(data), true)[0]
         }
 
-        @JvmStatic public fun parseAsPrimitiveTag(data: ByteArray): BerTlv {
+        @JvmStatic fun parseAsPrimitiveTag(data: ByteArray): BerTlv {
             return parseList(ByteBuffer.wrap(data), false)[0]
         }
 
-        @JvmStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean): List<BerTlv> {
+        @JvmStatic fun parseList(data: ByteArray, parseConstructedTags: Boolean): List<BerTlv> {
             return parseList(ByteBuffer.wrap(data), parseConstructedTags)
         }
 
-        @JvmStatic public fun parseList(data: ByteArray, parseConstructedTags: Boolean, recognitionMode: TagRecognitionMode): List<BerTlv> {
+        @JvmStatic fun parseList(data: ByteArray, parseConstructedTags: Boolean, recognitionMode: TagRecognitionMode): List<BerTlv> {
             return parseList(ByteBuffer.wrap(data), parseConstructedTags, recognitionMode)
         }
 
@@ -200,7 +200,7 @@ public abstract class BerTlv(public val tag: Tag) {
             return length
         }
 
-        @JvmStatic public fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? = tlvs.firstOrNull { it.tag == tag }
+        @JvmStatic fun findTlv(tlvs: List<BerTlv>, tag: Tag): BerTlv? = tlvs.firstOrNull { it.tag == tag }
     }
 
 }

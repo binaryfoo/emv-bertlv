@@ -19,7 +19,7 @@ import kotlin.text.split
 import kotlin.text.substring
 import kotlin.text.toUpperCase
 
-public class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
+class APDUSequenceDecoder(private val replyDecoder: ReplyAPDUDecoder, vararg commandDecoders: CommandAPDUDecoder) : Decoder {
     private val _commandDecoders: Array<CommandAPDUDecoder> = arrayOf(*commandDecoders)
     private val signedDataRecoverers = listOf(
         IssuerPublicKeyDecoder(),

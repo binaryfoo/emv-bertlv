@@ -6,7 +6,7 @@ import io.github.binaryfoo.EmvTags
 import io.github.binaryfoo.decoders.apdu.APDUCommand
 import io.github.binaryfoo.tlv.Tag
 
-public class ResponseFormat1Decoder : Decoder {
+class ResponseFormat1Decoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         if (session.currentCommand == APDUCommand.GetProcessingOptions) {
             val aip = input.substring(0, 4)

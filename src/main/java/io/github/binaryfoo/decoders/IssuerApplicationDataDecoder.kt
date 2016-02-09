@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.collections.listOf
 import kotlin.text.substring
 
-public class IssuerApplicationDataDecoder : Decoder {
+class IssuerApplicationDataDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         try {

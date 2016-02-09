@@ -5,7 +5,7 @@ import kotlin.collections.firstOrNull
 /**
  * A way of verifying a cardholder ... is allowed to hold the card they're presenting.
  */
-public enum class CardholderVerificationMethod(public val code: Int, public val description: String) {
+enum class CardholderVerificationMethod(val code: Int, val description: String) {
     Fail(0, "Fail"),
     PlainPinByIcc(1, "Plain PIN by ICC"),
     EncryptedPinOnline(2, "Encrypted PIN online"),
@@ -16,6 +16,6 @@ public enum class CardholderVerificationMethod(public val code: Int, public val 
     NoCvmRequired(31, "No CVM required");
 
     companion object {
-        public fun fromCode(code: Int): CardholderVerificationMethod? = values().firstOrNull() { it.code == code }
+        fun fromCode(code: Int): CardholderVerificationMethod? = values().firstOrNull() { it.code == code }
     }
 }

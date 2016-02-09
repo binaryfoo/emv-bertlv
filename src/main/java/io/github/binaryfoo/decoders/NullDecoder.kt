@@ -3,7 +3,7 @@ package io.github.binaryfoo.decoders
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.Decoder
 
-public class NullDecoder : Decoder {
+class NullDecoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         return listOf()
     }

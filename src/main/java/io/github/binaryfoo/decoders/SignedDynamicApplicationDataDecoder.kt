@@ -15,7 +15,7 @@ import kotlin.collections.listOf
  *
  * EMV 4.3 Book2, Table 18: Dynamic Application Data to be Signed
  */
-public class SignedDynamicApplicationDataDecoder : SignedDataDecoder {
+class SignedDynamicApplicationDataDecoder : SignedDataDecoder {
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val iccPublicKeyCertificate = session.iccPublicKeyCertificate
         val signedData = session.signedDynamicAppData ?: decoded.findForTag(EmvTags.SIGNED_DYNAMIC_APPLICATION_DATA)?.fullDecodedData

@@ -5,7 +5,7 @@ import io.github.binaryfoo.decoders.DecodeSession
 import io.github.binaryfoo.tlv.Tag
 import kotlin.text.substring
 
-public class GetDataAPDUDecoder : CommandAPDUDecoder {
+class GetDataAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.GetData
     }

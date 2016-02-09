@@ -6,7 +6,7 @@ import io.github.binaryfoo.tlv.ISOUtil
 import java.nio.ByteBuffer
 import java.util.*
 
-public class PopulatedDOLDecoder : Decoder {
+class PopulatedDOLDecoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): MutableList<DecodedData> {
         val fields = input.split(":")
         val pdol = fields[0]
@@ -14,7 +14,7 @@ public class PopulatedDOLDecoder : Decoder {
         return decode(pdol, populatedPDOL, pdol.length / 2, session)
     }
 
-    public fun decode(pdol: String, populatedPDOL: String, startIndexInBytes: Int, session: DecodeSession): MutableList<DecodedData> {
+    fun decode(pdol: String, populatedPDOL: String, startIndexInBytes: Int, session: DecodeSession): MutableList<DecodedData> {
         val decoded = ArrayList<DecodedData>()
         val values = ByteBuffer.wrap(ISOUtil.hex2byte(populatedPDOL))
         val elements = DOLParser().parse(ISOUtil.hex2byte(pdol))

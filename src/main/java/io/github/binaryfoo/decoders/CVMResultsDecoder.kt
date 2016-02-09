@@ -6,7 +6,7 @@ import io.github.binaryfoo.tlv.ISOUtil
 import kotlin.collections.listOf
 import kotlin.text.substring
 
-public class CVMResultsDecoder : Decoder {
+class CVMResultsDecoder : Decoder {
 
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val rule = CVRule(input.substring(0, 4))

@@ -5,7 +5,7 @@ import kotlin.collections.firstOrNull
 /**
  * When a given method for verifying a cardholder should be applied.
  */
-public enum class CardholderVerificationConditionCode(public val code: Int, public val description: String) {
+enum class CardholderVerificationConditionCode(val code: Int, val description: String) {
     Always(0, "Always"),
     UnattendedCash(1, "If unattended cash"),
     NotStuff(2, "If not (unattended cash, manual cash, purchase + cash)"),
@@ -18,6 +18,6 @@ public enum class CardholderVerificationConditionCode(public val code: Int, publ
     TxMoreThanY(9, "If transaction in application currency and >= Y");
 
     companion object {
-        public fun fromCode(code: Int): CardholderVerificationConditionCode? = values().firstOrNull { it.code == code }
+        fun fromCode(code: Int): CardholderVerificationConditionCode? = values().firstOrNull { it.code == code }
     }
 }

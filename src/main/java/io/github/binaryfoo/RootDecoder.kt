@@ -11,7 +11,7 @@ import kotlin.collections.toTypedArray
 /**
  * The main entry point.
  */
-public class RootDecoder {
+class RootDecoder {
 
     /**
      * f(hex string) -> somewhat english description
@@ -22,18 +22,18 @@ public class RootDecoder {
      *
      * @return Somewhat english description.
      */
-    public fun decode(value: String, meta: String, tagInfo: TagInfo, tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode): List<DecodedData> {
+    fun decode(value: String, meta: String, tagInfo: TagInfo, tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode): List<DecodedData> {
         val decodeSession = DecodeSession()
         decodeSession.tagMetaData = getTagMetaData(meta)
         decodeSession.tagRecognitionMode = tagRecognitionMode
         return tagInfo.decoder.decode(value, 0, decodeSession)
     }
 
-    public fun decode(value: String, meta: String, tag: String): List<DecodedData> {
+    fun decode(value: String, meta: String, tag: String): List<DecodedData> {
         return decode(value, meta, getTagInfo(tag)!!)
     }
 
-    public fun getTagMetaData(meta: String): TagMetaData {
+    fun getTagMetaData(meta: String): TagMetaData {
         return TAG_META_SETS[meta] ?: EmvTags.METADATA
     }
 
@@ -67,17 +67,17 @@ public class RootDecoder {
 
         private infix fun Tag.to(that: TagMetaData): Pair<String, TagInfo> = Pair(this.hexString, that.get(this))
 
-        @JvmStatic public fun getTagInfo(tag: String): TagInfo? {
+        @JvmStatic fun getTagInfo(tag: String): TagInfo? {
             return ROOT_TAG_INFO[tag]
         }
 
         // array because List<TagInfo> and friends seem to show up in .java as List<Object>
         // at least when using emv-bertlv as a library
-        @JvmStatic public fun getSupportedTags(): Array<Map.Entry<String, TagInfo>> {
+        @JvmStatic fun getSupportedTags(): Array<Map.Entry<String, TagInfo>> {
             return ROOT_TAG_INFO.entries.toTypedArray()
         }
 
-        @JvmStatic public fun getAllTagMeta(): Set<String> {
+        @JvmStatic fun getAllTagMeta(): Set<String> {
             return TAG_META_SETS.keys
         }
     }

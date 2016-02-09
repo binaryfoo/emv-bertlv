@@ -7,9 +7,9 @@ import io.github.binaryfoo.decoders.TLVDecoder
 import io.github.binaryfoo.tlv.Tag
 import java.util.*
 
-public class ReplyAPDUDecoder(private val tlvDecoder: TLVDecoder) {
+class ReplyAPDUDecoder(private val tlvDecoder: TLVDecoder) {
 
-    public fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): DecodedData {
+    fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): DecodedData {
         val statusBytesStart = input.length - 4
         val endIndex: Int
         val children: List<DecodedData>

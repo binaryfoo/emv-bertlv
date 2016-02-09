@@ -2,7 +2,7 @@ package io.github.binaryfoo.decoders
 
 import kotlin.text.substring
 
-public class CVRule(hexString: String) {
+class CVRule(hexString: String) {
     private val failIfUnsuccessful: Boolean
     private val verificationMethod: CardholderVerificationMethod?
     private val conditionCode: CardholderVerificationConditionCode?
@@ -15,7 +15,7 @@ public class CVRule(hexString: String) {
         conditionCode = CardholderVerificationConditionCode.fromCode(rightByte)
     }
 
-    public fun getDescription(x: Int, y: Int): String {
+    fun getDescription(x: Int, y: Int): String {
         var baseRule = "$verificationMethodDescription, $conditionCodeDescription, ${if (failIfUnsuccessful) "FAIL" else "next"}"
         if (conditionCode == CardholderVerificationConditionCode.TxLessThanX || conditionCode == CardholderVerificationConditionCode.TxMoreThanX) {
             baseRule += " (x = $x)"
@@ -25,8 +25,8 @@ public class CVRule(hexString: String) {
         return baseRule
     }
 
-    public val verificationMethodDescription: String = if (verificationMethod == null) "Unknown" else verificationMethod.description
+    val verificationMethodDescription: String = if (verificationMethod == null) "Unknown" else verificationMethod.description
 
-    public val conditionCodeDescription: String = if (conditionCode == null) "Unknown" else conditionCode.description
+    val conditionCodeDescription: String = if (conditionCode == null) "Unknown" else conditionCode.description
 
 }

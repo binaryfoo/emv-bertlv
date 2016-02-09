@@ -12,7 +12,7 @@ import kotlin.collections.listOf
  *
  * Static data auth means CA (scheme) -> Issuer -> data. Chip has no RSA hardware. No replay attack prevention.
  */
-public class SignedStaticApplicationDataDecoder : SignedDataDecoder {
+class SignedStaticApplicationDataDecoder : SignedDataDecoder {
 
     override fun decodeSignedData(session: DecodeSession, decoded: List<DecodedData>) {
         val issuerPublicKeyCertificate = session.issuerPublicKeyCertificate

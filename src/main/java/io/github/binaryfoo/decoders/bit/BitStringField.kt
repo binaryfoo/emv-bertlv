@@ -2,9 +2,9 @@ package io.github.binaryfoo.decoders.bit
 
 import io.github.binaryfoo.bit.EmvBit
 
-public interface BitStringField {
-    public fun getPositionIn(bits: Set<EmvBit>?): String
-    public fun getValueIn(bits: Set<EmvBit>): String?
-    public fun getStartBytesOffset(): Int
-    public fun getLengthInBytes(): Int
+interface BitStringField {
+    fun getPositionIn(bits: Set<EmvBit>?): String
+    fun getValueIn(bits: Set<EmvBit>): String?
+    fun getStartBytesOffset(): Int
+    fun getLengthInBytes(): Int
 }

@@ -1,6 +1,6 @@
 package io.github.binaryfoo.decoders
 
-public class CryptogramInformationDecoder : PrimitiveDecoder {
+class CryptogramInformationDecoder : PrimitiveDecoder {
 
     override fun decode(hexString: String): String {
         val cryptogramType = CryptogramType.fromHex(hexString)

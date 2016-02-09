@@ -21,7 +21,7 @@ import java.util.*
  *     <li>Numeric - the left or right nibble in a byte is interpreted as an integer.</li>
  * </ul>
  */
-open public class EmvBitStringDecoder(fileName: String, val showFieldHexInDecoding: Boolean) : Decoder {
+open class EmvBitStringDecoder(fileName: String, val showFieldHexInDecoding: Boolean) : Decoder {
 
     private val bitMappings: List<BitStringField>
     private val maxLength: Int

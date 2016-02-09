@@ -5,9 +5,9 @@ import io.github.binaryfoo.res.ClasspathIO
 /**
  * Maps the two status words (SW1, SW2) included in an R-APDU to a type and description.
  */
-public data class ResponseCode(val sw1: String, val sw2: String, val `type`: String, val description: String) {
+data class ResponseCode(val sw1: String, val sw2: String, val `type`: String, val description: String) {
 
-    public fun getHex(): String {
+    fun getHex(): String {
         return sw1 + sw2
     }
 
@@ -17,7 +17,7 @@ public data class ResponseCode(val sw1: String, val sw2: String, val `type`: Str
             ResponseCode(line.substring(0, 2), line.substring(3, 5), line.substring(6, 7), line.substring(8))
         }
 
-        @JvmStatic public fun lookup(hex: String): ResponseCode {
+        @JvmStatic fun lookup(hex: String): ResponseCode {
             val sw1 = hex.substring(0, 2)
             val sw2 = hex.substring(2, 4)
             for (code in codes) {

@@ -8,14 +8,14 @@ import io.github.binaryfoo.tlv.Tag
 import io.github.binaryfoo.tlv.TagRecognitionMode
 import java.util.*
 
-public class DecodeSession : HashMap<Tag, String>() {
+class DecodeSession : HashMap<Tag, String>() {
 
-    public var firstGenerateACCommand: Boolean = true
-    public var tagMetaData: TagMetaData? = null
-    public var currentCommand: APDUCommand? = null
-    public var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
-    public var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
-    public var signedDynamicAppData: String? = null
-    public var tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode
+    var firstGenerateACCommand: Boolean = true
+    var tagMetaData: TagMetaData? = null
+    var currentCommand: APDUCommand? = null
+    var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
+    var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
+    var signedDynamicAppData: String? = null
+    var tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode
 
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList
 import kotlin.text.Regex
 import kotlin.text.matches
 
-public class DataObjectListDecoder : Decoder {
+class DataObjectListDecoder : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val children = ArrayList<DecodedData>()
         val buffer = ByteBuffer.wrap(ISOUtil.hex2byte(input))

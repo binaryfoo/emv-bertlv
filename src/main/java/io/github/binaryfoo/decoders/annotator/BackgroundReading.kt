@@ -8,16 +8,16 @@ import kotlin.collections.mapOf
 /**
  * Some english description for each field. From a set of .yaml files.
  */
-public class BackgroundReading {
+class BackgroundReading {
 
     companion object {
 
-        @JvmStatic public fun readingFor(apdu: APDUCommand): Map<String, String?>? {
+        @JvmStatic fun readingFor(apdu: APDUCommand): Map<String, String?>? {
             return apduDescriptions["$apdu"]
         }
 
 
-        @JvmStatic public fun readingFor(field: String): Map<String, String?>? {
+        @JvmStatic fun readingFor(field: String): Map<String, String?>? {
             return descriptions["$field"]
         }
 
@@ -31,4 +31,4 @@ public class BackgroundReading {
 
     }
 }
-public fun backgroundOf(short: String, long: String? = null): Map<String, String?> = mapOf("short" to short, "long" to long)
+fun backgroundOf(short: String, long: String? = null): Map<String, String?> = mapOf("short" to short, "long" to long)

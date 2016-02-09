@@ -15,7 +15,7 @@ object EmvBitStringParser {
     val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<firstBit>\\d+)-(?<lastBit>\\d+)\\)=INT\\s*")
     val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+)\\)=0x(?<value>[0-9a-fA-F]{2})\\s*")
 
-    @JvmStatic public fun parse(lines: List<String>): List<BitStringField> {
+    @JvmStatic fun parse(lines: List<String>): List<BitStringField> {
         fun usefulLine(line: String) = StringUtils.isNotBlank(line) && !line.startsWith("#")
 
         return lines.filter(::usefulLine).map {

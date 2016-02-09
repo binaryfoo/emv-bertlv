@@ -10,9 +10,9 @@ import kotlin.text.substring
 
 
 // java interop
-public fun fromHex(hex: String): Set<EmvBit> = fromHex(hex, 1)
+fun fromHex(hex: String): Set<EmvBit> = fromHex(hex, 1)
 
-public fun fromHex(hex: String, firstByteNumber: Int): Set<EmvBit> {
+fun fromHex(hex: String, firstByteNumber: Int): Set<EmvBit> {
     val set = TreeSet<EmvBit>()
     for (i in 0..hex.length-1 step 2) {
         val b = Integer.parseInt(hex.substring(i, i + 2), 16)
@@ -24,7 +24,7 @@ public fun fromHex(hex: String, firstByteNumber: Int): Set<EmvBit> {
     return set
 }
 
-public fun Set<EmvBit>.toHexString(fieldLengthInBytes: Int): String {
+fun Set<EmvBit>.toHexString(fieldLengthInBytes: Int): String {
     val bytes = ByteArray(fieldLengthInBytes)
     for (bit in this) {
         if (bit.set) {
@@ -37,11 +37,11 @@ public fun Set<EmvBit>.toHexString(fieldLengthInBytes: Int): String {
     return ISOUtil.hexString(bytes)
 }
 
-public fun Set<EmvBit>.reduceToOnBits(): Set<EmvBit> = TreeSet(filter { it.set })
+fun Set<EmvBit>.reduceToOnBits(): Set<EmvBit> = TreeSet(filter { it.set })
 
-public fun setOf(vararg bits: EmvBit): Set<EmvBit> = sortedSetOf(*bits)
+fun setOf(vararg bits: EmvBit): Set<EmvBit> = sortedSetOf(*bits)
 
-public fun Set<EmvBit>.toConfigString(): String {
+fun Set<EmvBit>.toConfigString(): String {
     val b = StringBuilder()
     for (bit in this) {
         if (b.length > 0) {
@@ -52,19 +52,19 @@ public fun Set<EmvBit>.toConfigString(): String {
     return b.toString()
 }
 
-public fun EmvBit.toConfigString(): String {
+fun EmvBit.toConfigString(): String {
     return "($byteNumber,$bitNumber)=$value"
 }
 
-public fun Set<EmvBit>.getByteCount(): Int {
+fun Set<EmvBit>.getByteCount(): Int {
     return map { it.byteNumber }.reduce { a, b -> if (a >= b) a else b }
 }
 
-public fun Set<EmvBit>.matches(other: Set<EmvBit>): Boolean {
+fun Set<EmvBit>.matches(other: Set<EmvBit>): Boolean {
     return intersect(other).size == size
 }
 
-public fun Set<EmvBit>.toString(includeValue: Boolean): String {
+fun Set<EmvBit>.toString(includeValue: Boolean): String {
     val b = StringBuilder()
     for (bit in this) {
         if (b.length > 0) {
@@ -78,6 +78,6 @@ public fun Set<EmvBit>.toString(includeValue: Boolean): String {
 /**
  * Label set bits (those = 1) in hex.
  */
-public fun labelFor(hex: String): String {
+fun labelFor(hex: String): String {
     return fromHex(hex).toString(includeValue = false)
 }

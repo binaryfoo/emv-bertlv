@@ -4,14 +4,14 @@ package io.github.binaryfoo.bit
  * EMV specs seem to follow the convention: bytes are numbered left to right, bits are numbered byte right to left,
  * both start at 1.
  */
-public data class EmvBit(public val byteNumber: Int, public val bitNumber: Int, public val set: Boolean) : Comparable<EmvBit> {
+data class EmvBit(val byteNumber: Int, val bitNumber: Int, val set: Boolean) : Comparable<EmvBit> {
 
-    public val value: String
+    val value: String
     get() = if (set) "1" else "0"
 
     override fun toString(): String = toString(true)
 
-    public fun toString(includeComma: Boolean, includeValue: Boolean = true): String {
+    fun toString(includeComma: Boolean, includeValue: Boolean = true): String {
         val separator = if (includeComma) "," else ""
         if (includeValue) {
             return "Byte $byteNumber$separator Bit $bitNumber = $value"

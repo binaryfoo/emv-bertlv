@@ -8,7 +8,7 @@ import java.util.logging.Logger
 import kotlin.collections.listOf
 import kotlin.text.substring
 
-public class InternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
+class InternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.InternalAuthenticate
     }

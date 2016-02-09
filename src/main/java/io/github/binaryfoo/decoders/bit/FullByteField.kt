@@ -7,7 +7,7 @@ import java.util.*
 /**
  * An english description for a hex literal of a single byte.
  */
-public class FullByteField(field: Set<EmvBit>, private val byteNumber: Int, private val hexValue: String, private val decodedValue: String) : BitStringField {
+class FullByteField(field: Set<EmvBit>, private val byteNumber: Int, private val hexValue: String, private val decodedValue: String) : BitStringField {
 
     private val field: Set<EmvBit>
 
@@ -15,11 +15,11 @@ public class FullByteField(field: Set<EmvBit>, private val byteNumber: Int, priv
         this.field = TreeSet(field)
     }
 
-    override public fun getPositionIn(bits: Set<EmvBit>?): String {
+    override fun getPositionIn(bits: Set<EmvBit>?): String {
         return "Byte $byteNumber = 0x$hexValue"
     }
 
-    override public fun getValueIn(bits: Set<EmvBit>): String? {
+    override fun getValueIn(bits: Set<EmvBit>): String? {
         return if (field.matches(bits)) decodedValue else null
     }
 

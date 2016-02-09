@@ -6,7 +6,7 @@ import io.github.binaryfoo.tlv.ISOUtil
 import kotlin.text.startsWith
 import kotlin.text.substring
 
-public class SelectCommandAPDUDecoder : CommandAPDUDecoder {
+class SelectCommandAPDUDecoder : CommandAPDUDecoder {
 
     override fun getCommand(): APDUCommand {
         return APDUCommand.Select

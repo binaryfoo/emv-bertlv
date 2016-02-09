@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Decode and label bits in a string according to the EMV spec convention.
  */
-public class ByteLabeller : Decoder {
+class ByteLabeller : Decoder {
     override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
         val decoded = ArrayList<DecodedData>()
         for (bit in fromHex(input)) {

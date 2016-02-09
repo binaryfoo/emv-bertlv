@@ -3,7 +3,7 @@ package io.github.binaryfoo.decoders.apdu
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
 
-public class ExternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
+class ExternalAuthenticateAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.ExternalAuthenticate
     }

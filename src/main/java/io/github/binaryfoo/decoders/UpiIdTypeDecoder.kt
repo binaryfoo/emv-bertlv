@@ -1,6 +1,6 @@
 package io.github.binaryfoo.decoders
 
-public class UpiIdTypeDecoder : PrimitiveDecoder {
+class UpiIdTypeDecoder : PrimitiveDecoder {
 
     override fun decode(hexString: String): String {
         return numericToName[hexString] ?: "Unknown"

@@ -7,7 +7,7 @@ import io.github.binaryfoo.decoders.PopulatedDOLDecoder
 import io.github.binaryfoo.tlv.BerTlv
 import io.github.binaryfoo.tlv.ISOUtil
 
-public class GetProcessingOptionsCommandAPDUDecoder : CommandAPDUDecoder {
+class GetProcessingOptionsCommandAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.GetProcessingOptions
     }

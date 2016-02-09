@@ -10,9 +10,9 @@ import java.util.ArrayList
  *
  * Each element in the list is a tag and a length the receiver would like the value encoded on.
  */
-public class DOLParser {
+class DOLParser {
 
-    public fun parse(dol: ByteArray): List<DOLElement> {
+    fun parse(dol: ByteArray): List<DOLElement> {
         val elements = ArrayList<DOLElement>()
         val buffer = ByteBuffer.wrap(dol)
         while (buffer.hasRemaining()) {
@@ -23,6 +23,6 @@ public class DOLParser {
         return elements
     }
 
-    public data class DOLElement(val tag: Tag, val length: Int) {
+    data class DOLElement(val tag: Tag, val length: Int) {
     }
 }

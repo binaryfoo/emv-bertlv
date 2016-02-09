@@ -28,7 +28,7 @@ interface SignedDataDecoder {
      *                           Or the security of the system is broken...
      * @param decode Function to break apart the bytes recovered from signedData.
      */
-    public fun recoverSignedData(signedData: BerTlv,
+    fun recoverSignedData(signedData: BerTlv,
                                  decodedSignedData: DecodedData,
                                  certificateOfSigner: RecoveredPublicKeyCertificate,
                                  decode: (ByteArray, Int) -> List<DecodedData>) {
@@ -37,7 +37,7 @@ interface SignedDataDecoder {
         updateWithRecoveredData(decodedSignedData, result, startIndex)
     }
 
-    public fun recoverText(signedData: String,
+    fun recoverText(signedData: String,
                        certificateOfSigner: RecoveredPublicKeyCertificate,
                        startIndexInBytes: Int,
                        decode: (ByteArray, Int) -> List<DecodedData>): RecoveryResult {
@@ -57,7 +57,7 @@ interface SignedDataDecoder {
     /**
      * Use for issuer and ICC certificates.
      */
-    public fun recoverCertificate(encryptedCertificate: BerTlv,
+    fun recoverCertificate(encryptedCertificate: BerTlv,
                                   decodedCertificate: DecodedData,
                                   certificateOfSigner: PublicKeyCertificate,
                                   decode: (ByteArray, Int, Int) -> RecoveredPublicKeyCertificate): RecoveryResult {
@@ -92,8 +92,8 @@ interface SignedDataDecoder {
         }
     }
 
-    public data class RecoveryResult(public val text: String, val _decoded: List<DecodedData> = listOf(), public val recoveredHex: String? = null, public val certificate: RecoveredPublicKeyCertificate? = null) {
-        public val decoded: List<DecodedData>
+    data class RecoveryResult(val text: String, val _decoded: List<DecodedData> = listOf(), val recoveredHex: String? = null, val certificate: RecoveredPublicKeyCertificate? = null) {
+        val decoded: List<DecodedData>
         get() {
             return listOf(DecodedData.primitive("", text)) + _decoded
         }

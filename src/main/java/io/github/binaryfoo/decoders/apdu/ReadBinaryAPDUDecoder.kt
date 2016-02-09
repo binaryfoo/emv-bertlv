@@ -4,7 +4,7 @@ import io.github.binaryfoo.decoders.DecodeSession
 import io.github.binaryfoo.DecodedData
 import kotlin.text.substring
 
-public class ReadBinaryAPDUDecoder : CommandAPDUDecoder {
+class ReadBinaryAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.ReadBinary
     }

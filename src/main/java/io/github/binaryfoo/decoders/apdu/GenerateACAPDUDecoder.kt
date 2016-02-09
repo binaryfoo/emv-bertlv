@@ -7,7 +7,7 @@ import io.github.binaryfoo.decoders.PopulatedDOLDecoder
 import io.github.binaryfoo.tlv.ISOUtil
 import java.util.logging.Logger
 
-public class GenerateACAPDUDecoder : CommandAPDUDecoder {
+class GenerateACAPDUDecoder : CommandAPDUDecoder {
 
     override fun getCommand(): APDUCommand {
         return APDUCommand.GenerateAC

@@ -4,7 +4,7 @@ import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
 import kotlin.text.substring
 
-public class VerifyPinAPDUDecoder : CommandAPDUDecoder {
+class VerifyPinAPDUDecoder : CommandAPDUDecoder {
     override fun getCommand(): APDUCommand {
         return APDUCommand.Verify
     }
