@@ -22,11 +22,13 @@ class BackgroundReading {
         }
 
         private val apduDescriptions: Map<String, Map<String, String?>> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            Yaml().load(ClasspathIO.open("apdus.yaml")) as Map<String, Map<String, String?>>
+            @Suppress("UNCHECKED_CAST")
+            (Yaml().load(ClasspathIO.open("apdus.yaml")) as Map<String, Map<String, String?>>)
         }
 
         private val descriptions: Map<String, Map<String, String?>> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            Yaml().load(ClasspathIO.open("descriptions.yaml")) as Map<String, Map<String, String?>>
+            @Suppress("UNCHECKED_CAST")
+            (Yaml().load(ClasspathIO.open("descriptions.yaml")) as Map<String, Map<String, String?>>)
         }
 
     }

@@ -69,7 +69,9 @@ class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
                     // leave everything as strings
                 }
             })
-            return TagMetaData(LinkedHashMap((yaml.load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>).mapValues {
+            @Suppress("UNCHECKED_CAST")
+            val map = yaml.load(ClasspathIO.open(name)) as Map<String, Map<String, String?>>
+            return TagMetaData(LinkedHashMap(map.mapValues {
                 val shortName = it.value["name"]!!
                 val longName = it.value["longName"] ?: shortName
                 val decoder: Decoder = if (it.value.contains("decoder")) {
