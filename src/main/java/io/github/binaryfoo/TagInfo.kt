@@ -39,7 +39,7 @@ data class TagInfo(
      * Idea being the decodedData is shown on the same line (same node in the tree) instead of nesting one level down.
      */
     fun decodePrimitiveTlvValue(valueAsHexString: String): String {
-        return primitiveDecoder.decode(valueAsHexString)
+        return if (valueAsHexString.isNullOrBlank()) "" else primitiveDecoder.decode(valueAsHexString)
     }
 
     companion object {
