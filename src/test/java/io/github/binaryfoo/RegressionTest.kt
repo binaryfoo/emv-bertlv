@@ -5,25 +5,19 @@ import org.junit.Test
 import java.io.File
 import java.nio.file.Files
 
-public class RegressionTest {
+class RegressionTest {
 
-    @Test
-    public fun contactMastercard(): Unit = execute("contact-mastercard")
+    @Test fun contactMastercard(): Unit = execute("contact-mastercard")
 
-    @Test
-    public fun contactVisa(): Unit = execute("contact-visa")
+    @Test fun contactVisa(): Unit = execute("contact-visa")
 
-    @Test
-    public fun contactlessMastercard(): Unit = execute("contactless-mastercard")
+    @Test fun contactlessMastercard(): Unit = execute("contactless-mastercard")
 
-    @Test
-    public fun contactlessMsd(): Unit = execute("contactless-msd", "MSD")
+    @Test fun contactlessMsd(): Unit = execute("contactless-msd", "MSD")
 
-    @Test
-    public fun contactAmexCda(): Unit = execute("amex-cda", "Amex")
+    @Test fun contactAmexCda(): Unit = execute("amex-cda", "Amex")
 
-    @Test
-    public fun contactUpi(): Unit = execute("contact-upi", "UPI")
+    @Test fun contactUpi(): Unit = execute("contact-upi", "UPI")
 
     private fun execute(name: String, meta: String = "EMV") {
         val (input, expectedOutput) = loadCase(name)

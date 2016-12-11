@@ -9,10 +9,9 @@ import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.notNullValue
 import org.junit.Assert.assertThat
 
-public class BackgroundReadingTest {
+class BackgroundReadingTest {
 
-    @Test
-    public fun load() {
+    @Test fun load() {
         assertThat(BackgroundReading.readingFor(APDUCommand.ReadRecord)?.get("short"), containsString("pair (SFI, record number)"))
         assertThat(BackgroundReading.readingFor(APDUCommand.ReadRecord)?.get("long"), containsString("short file indicator"))
     }

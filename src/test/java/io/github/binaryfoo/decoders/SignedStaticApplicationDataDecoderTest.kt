@@ -7,9 +7,8 @@ import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
 import io.github.binaryfoo.DecodedAsStringMatcher
 
-public class SignedStaticApplicationDataDecoderTest {
-    @Test
-    public fun decode() {
+class SignedStaticApplicationDataDecoderTest {
+    @Test fun decode() {
         val recovered = ISOUtil.hex2byte("6A03010001BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBF6E1F5D3652F06C2D5F9E6599AE8ED5BE1D575CFBC")
         val notes = decodeSignedStaticData(recovered, 0)
         assertThat(notes, `is`(DecodedAsStringMatcher.decodedAsString("""Header: 6A

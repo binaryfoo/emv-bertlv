@@ -18,7 +18,7 @@ class BackgroundReading {
 
 
         @JvmStatic fun readingFor(field: String): Map<String, String?>? {
-            return descriptions["$field"]
+            return descriptions[field]
         }
 
         private val apduDescriptions: Map<String, Map<String, String?>> by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {

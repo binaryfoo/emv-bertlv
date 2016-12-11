@@ -3,7 +3,7 @@ package io.github.binaryfoo
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 
-public class DecodedAsStringMatcher(private val raw: String) : TypeSafeMatcher<List<DecodedData>>() {
+class DecodedAsStringMatcher(private val raw: String) : TypeSafeMatcher<List<DecodedData>>() {
 
     override fun matchesSafely(decodedData: List<DecodedData>): Boolean {
         return raw == toString(decodedData)
@@ -21,6 +21,6 @@ public class DecodedAsStringMatcher(private val raw: String) : TypeSafeMatcher<L
 
     companion object {
 
-        @JvmStatic public fun decodedAsString(raw: String): TypeSafeMatcher<List<DecodedData>> = DecodedAsStringMatcher(raw)
+        @JvmStatic fun decodedAsString(raw: String): TypeSafeMatcher<List<DecodedData>> = DecodedAsStringMatcher(raw)
     }
 }

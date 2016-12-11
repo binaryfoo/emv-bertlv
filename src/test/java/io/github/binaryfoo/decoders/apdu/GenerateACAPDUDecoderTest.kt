@@ -10,10 +10,9 @@ import org.junit.Test
 import kotlin.collections.first
 import kotlin.collections.last
 
-public class GenerateACAPDUDecoderTest {
+class GenerateACAPDUDecoderTest {
 
-    @Test
-    public fun testDecode() {
+    @Test fun testDecode() {
         val input = "80AE50002B00000001000100000000000000020000000000003612031500000EEC8522000000000000000000005E030000"
         val session = DecodeSession()
         session.tagMetaData = EmvTags.METADATA
@@ -28,8 +27,7 @@ public class GenerateACAPDUDecoderTest {
         assertThat(decoded.children.last(), `is`(DecodedData(EmvTags.CVM_RESULTS, "9F34 (CVM Results - Cardholder Verification Results)", "5E0300", startIndex + 45, startIndex + 48, expectedDecodedCVMResults, backgroundOf("How was the card holder verified? Did this check succeed?"))))
     }
 
-    @Test
-    public fun testDecodeSecondGenerateAC() {
+    @Test fun testDecodeSecondGenerateAC() {
         val first = "80AE80002B000000001000000000000000000280000080000036120316008221F60122000000000000000000005E030000"
         val second = "80AE40001D11223344556677880000303080000080008221F601000000000000000000"
         val session = DecodeSession()

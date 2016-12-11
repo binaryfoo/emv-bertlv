@@ -7,34 +7,30 @@ import io.github.binaryfoo.tlv.Tag
 import org.hamcrest.Matchers.`is`
 import kotlin.collections.listOf
 
-public class DecodedDataTest {
+class DecodedDataTest {
 
-    @Test
-    public fun hexDumpReferenceIncludesTlvTagAndLengthPosition() {
+    @Test fun hexDumpReferenceIncludesTlvTagAndLengthPosition() {
         val decoded = DecodedData.fromTlv(BerTlv.newInstance(Tag.fromHex("9F1B"), "112233"), EmvTags.METADATA, "", 42, 48)
         assertEquals(42..47, decoded.positionInHexDump)
         assertEquals(42..43, decoded.tagPositionInHexDump)
         assertEquals(44..44, decoded.lengthPositionInHexDump)
     }
 
-    @Test
-    public fun hexDumpReferenceWithTagOnlyHasNoTagOrLengthPosition() {
+    @Test fun hexDumpReferenceWithTagOnlyHasNoTagOrLengthPosition() {
         val decoded = DecodedData.withTag(Tag.fromHex("9F1B"), EmvTags.METADATA, "112233", 42, 45)
         assertEquals(42..44, decoded.positionInHexDump)
         assertEquals(null, decoded.tagPositionInHexDump)
         assertEquals(null, decoded.lengthPositionInHexDump)
     }
 
-    @Test
-    public fun hexDumpReferenceWithNoTagOrTlv() {
+    @Test fun hexDumpReferenceWithNoTagOrTlv() {
         val decoded = DecodedData.primitive("332211", "", 42, 45)
         assertEquals(42..44, decoded.positionInHexDump)
         assertEquals(null, decoded.tagPositionInHexDump)
         assertEquals(null, decoded.lengthPositionInHexDump)
     }
 
-    @Test
-    public fun findAll() {
+    @Test fun findAll() {
         val first91 = DecodedData(Tag.fromHex("91"), "1st 91", "value")
         val second91 = DecodedData(Tag.fromHex("91"), "2nd 91", "")
         val nested91 = DecodedData(Tag.fromHex("91"), "nested 91", "value")
