@@ -26,7 +26,7 @@ class Main {
             val tagInfo = RootDecoder.getTagInfo(tag)
             if (tagInfo == null) {
                 println("Unknown tag $tag")
-                printHelp();
+                printHelp()
             } else {
                 if (value == "-") {
                     val reader = BufferedReader(InputStreamReader(System.`in`))

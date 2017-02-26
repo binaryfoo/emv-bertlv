@@ -23,6 +23,5 @@ class DOLParser {
         return elements
     }
 
-    data class DOLElement(val tag: Tag, val length: Int) {
-    }
+    data class DOLElement(val tag: Tag, val length: Int)
 }

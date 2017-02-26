@@ -13,5 +13,5 @@ fun Byte.toHexString(): String {
 }
 
 fun String.decodeAsHex(): ByteArray {
-    return ISOUtil.hex2byte(this);
+    return ISOUtil.hex2byte(this)
 }

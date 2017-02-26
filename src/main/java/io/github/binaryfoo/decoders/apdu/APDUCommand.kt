@@ -2,7 +2,7 @@ package io.github.binaryfoo.decoders.apdu
 
 import kotlin.collections.firstOrNull
 
-enum class APDUCommand private constructor(val firstTwoBytes: String) {
+enum class APDUCommand constructor(val firstTwoBytes: String) {
     Select("00A4"),
     ReadRecord("00B2"),
     ReadBinary("00B0"),
