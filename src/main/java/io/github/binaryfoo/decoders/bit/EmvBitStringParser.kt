@@ -11,9 +11,9 @@ import kotlin.collections.map
 import kotlin.text.*
 
 object EmvBitStringParser {
-    val SINGLE_BIT_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<bit>\\d+)\\)=(?<value>\\d+)\\s*")
-    val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+),(?<firstBit>\\d+)-(?<lastBit>\\d+)\\)=INT\\s*")
-    val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((?<byte>\\d+)\\)=0x(?<value>[0-9a-fA-F]{2})\\s*")
+    val SINGLE_BIT_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)\\)=(\\d+)\\s*")
+    val NUMERIC_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+),(\\d+)-(\\d+)\\)=INT\\s*")
+    val FULL_BYTE_FIELD_PATTERN = Pattern.compile("\\s*\\((\\d+)\\)=0x([0-9a-fA-F]{2})\\s*")
 
     @JvmStatic fun parse(lines: List<String>): List<BitStringField> {
         fun usefulLine(line: String) = StringUtils.isNotBlank(line) && !line.startsWith("#")
@@ -36,9 +36,9 @@ object EmvBitStringParser {
 
     private fun parseNumericField(key: String, label: String): BitStringField {
         val matcher = match(key, NUMERIC_FIELD_PATTERN, "numeric")
-        val byteNumber = matcher.group("byte").toInt()
-        val firstBit = matcher.group("firstBit").toInt()
-        val lastBit = matcher.group("lastBit").toInt()
+        val byteNumber = matcher.group(1).toInt()
+        val firstBit = matcher.group(2).toInt()
+        val lastBit = matcher.group(3).toInt()
         return NumericBitStringField(byteNumber, firstBit, lastBit, label)
     }
 
@@ -49,8 +49,8 @@ object EmvBitStringParser {
 
     private fun parseFullByteField(key: String, label: String): BitStringField {
         val matcher = match(key, FULL_BYTE_FIELD_PATTERN, "full byte")
-        val byteNumber = matcher.group("byte").toInt()
-        val hexValue = matcher.group("value")
+        val byteNumber = matcher.group(1).toInt()
+        val hexValue = matcher.group(2)
         val bits = fromHex(hexValue, byteNumber)
         return FullByteField(bits, byteNumber, hexValue, label)
     }
@@ -58,9 +58,9 @@ object EmvBitStringParser {
 
 private fun parseBit(key: String): EmvBit {
     val matcher = match(key, EmvBitStringParser.SINGLE_BIT_PATTERN, "enumerated")
-    val byteNumber = matcher.group("byte").toInt()
-    val bitNumber = matcher.group("bit").toInt()
-    val bitValue = matcher.group("value") == "1"
+    val byteNumber = matcher.group(1).toInt()
+    val bitNumber = matcher.group(2).toInt()
+    val bitValue = matcher.group(3) == "1"
     return EmvBit(byteNumber, bitNumber, bitValue)
 }
 
