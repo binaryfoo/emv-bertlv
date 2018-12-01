@@ -1,18 +1,16 @@
 package io.github.binaryfoo.decoders
 
-import kotlin.text.substring
-
 class CurrencyCodeDecoder : PrimitiveDecoder {
 
-    override fun decode(hexString: String): String {
-        return numericToAlpha[hexString.substring(1)] ?: "Unknown"
-    }
+  override fun decode(hexString: String): String {
+    return numericToAlpha[hexString.substring(1)] ?: "Unknown"
+  }
 
-    companion object {
+  companion object {
 
-        private val numericToAlpha: Map<String, String> by lazy {
-            csvToMap("numeric-currency-list.csv", 3)
-        }
+    private val numericToAlpha: Map<String, String> by lazy {
+      csvToMap("numeric-currency-list.csv", 3)
     }
+  }
 
 }

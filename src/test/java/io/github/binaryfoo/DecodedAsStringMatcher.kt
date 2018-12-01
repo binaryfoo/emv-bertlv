@@ -5,22 +5,23 @@ import org.hamcrest.TypeSafeMatcher
 
 class DecodedAsStringMatcher(private val raw: String) : TypeSafeMatcher<List<DecodedData>>() {
 
-    override fun matchesSafely(decodedData: List<DecodedData>): Boolean {
-        return raw == toString(decodedData)
-    }
+  override fun matchesSafely(decodedData: List<DecodedData>): Boolean {
+    return raw == toString(decodedData)
+  }
 
-    override fun describeTo(description: Description) {
-        description.appendText("is ").appendValue(raw)
-    }
+  override fun describeTo(description: Description) {
+    description.appendText("is ").appendValue(raw)
+  }
 
-    override fun describeMismatchSafely(item: List<DecodedData>, mismatchDescription: Description) {
-        mismatchDescription.appendText("was ").appendValue(toString(item))
-    }
+  override fun describeMismatchSafely(item: List<DecodedData>, mismatchDescription: Description) {
+    mismatchDescription.appendText("was ").appendValue(toString(item))
+  }
 
-    private fun toString(decoded: List<DecodedData>): String = decoded.toSimpleString("")
+  private fun toString(decoded: List<DecodedData>): String = decoded.toSimpleString("")
 
-    companion object {
+  companion object {
 
-        @JvmStatic fun decodedAsString(raw: String): TypeSafeMatcher<List<DecodedData>> = DecodedAsStringMatcher(raw)
-    }
+    @JvmStatic
+    fun decodedAsString(raw: String): TypeSafeMatcher<List<DecodedData>> = DecodedAsStringMatcher(raw)
+  }
 }

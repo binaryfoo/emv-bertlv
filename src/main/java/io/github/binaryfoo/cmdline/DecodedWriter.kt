@@ -6,17 +6,17 @@ import java.io.PrintStream
 
 class DecodedWriter(private val out: PrintStream) {
 
-    fun write(decoded: List<DecodedData>, indent: String) {
-        for (d in decoded) {
-            out.print(indent)
-            if (d.rawData.length > 0) {
-                out.print("[")
-                out.print(d.rawData)
-                out.print("] ")
-            }
-            out.print(d.getDecodedData())
-            out.print("\n")
-            write(d.children, indent + "  ")
-        }
+  fun write(decoded: List<DecodedData>, indent: String) {
+    for (d in decoded) {
+      out.print(indent)
+      if (d.rawData.length > 0) {
+        out.print("[")
+        out.print(d.rawData)
+        out.print("] ")
+      }
+      out.print(d.getDecodedData())
+      out.print("\n")
+      write(d.children, indent + "  ")
     }
+  }
 }

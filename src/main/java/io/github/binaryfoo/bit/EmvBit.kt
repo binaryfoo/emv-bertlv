@@ -6,28 +6,28 @@ package io.github.binaryfoo.bit
  */
 data class EmvBit(val byteNumber: Int, val bitNumber: Int, val set: Boolean) : Comparable<EmvBit> {
 
-    val value: String
+  val value: String
     get() = if (set) "1" else "0"
 
-    override fun toString(): String = toString(true)
+  override fun toString(): String = toString(true)
 
-    fun toString(includeComma: Boolean, includeValue: Boolean = true): String {
-        val separator = if (includeComma) "," else ""
-        if (includeValue) {
-            return "Byte $byteNumber$separator Bit $bitNumber = $value"
-        }
-        return "Byte $byteNumber$separator Bit $bitNumber"
+  fun toString(includeComma: Boolean, includeValue: Boolean = true): String {
+    val separator = if (includeComma) "," else ""
+    if (includeValue) {
+      return "Byte $byteNumber$separator Bit $bitNumber = $value"
     }
+    return "Byte $byteNumber$separator Bit $bitNumber"
+  }
 
-    override fun compareTo(other: EmvBit): Int {
-        val byteOrder = byteNumber.compareTo(other.byteNumber)
-        if (byteOrder != 0) {
-            return byteOrder
-        }
-        val bitOrder = other.bitNumber.compareTo(bitNumber)
-        if (bitOrder != 0) {
-            return bitOrder
-        }
-        return set.compareTo(other.set)
+  override fun compareTo(other: EmvBit): Int {
+    val byteOrder = byteNumber.compareTo(other.byteNumber)
+    if (byteOrder != 0) {
+      return byteOrder
     }
+    val bitOrder = other.bitNumber.compareTo(bitNumber)
+    if (bitOrder != 0) {
+      return bitOrder
+    }
+    return set.compareTo(other.set)
+  }
 }

@@ -2,7 +2,6 @@ package io.github.binaryfoo.decoders.apdu
 
 import io.github.binaryfoo.DecodedData
 import io.github.binaryfoo.decoders.DecodeSession
-import kotlin.text.substring
 
 /**
  * Read a record (bucket of bits) from the card's file system. The record is identified by the pair (SFI, record number).
@@ -12,14 +11,14 @@ import kotlin.text.substring
  * machine to machine conversation here numbers make sense.
  */
 class ReadRecordAPDUDecoder : CommandAPDUDecoder {
-    override fun getCommand(): APDUCommand {
-        return APDUCommand.ReadRecord
-    }
+  override fun getCommand(): APDUCommand {
+    return APDUCommand.ReadRecord
+  }
 
-    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): DecodedData {
-        val recordNumber = Integer.parseInt(input.substring(4, 6), 16)
-        val referenceControlParameter = Integer.parseInt(input.substring(6, 8), 16)
-        val sfi = (referenceControlParameter and 0x000000f8) shr 3
-        return DecodedData(null, "C-APDU: Read Record", "SFI $sfi record $recordNumber", startIndexInBytes, startIndexInBytes + 5)
-    }
+  override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): DecodedData {
+    val recordNumber = Integer.parseInt(input.substring(4, 6), 16)
+    val referenceControlParameter = Integer.parseInt(input.substring(6, 8), 16)
+    val sfi = (referenceControlParameter and 0x000000f8) shr 3
+    return DecodedData(null, "C-APDU: Read Record", "SFI $sfi record $recordNumber", startIndexInBytes, startIndexInBytes + 5)
+  }
 }

@@ -23,52 +23,52 @@ import java.util.*
  */
 open class EmvBitStringDecoder(fileName: String, val showFieldHexInDecoding: Boolean) : Decoder {
 
-    private val bitMappings: List<BitStringField>
-    private val maxLength: Int
+  private val bitMappings: List<BitStringField>
+  private val maxLength: Int
 
-    init {
-        val input = ClasspathIO.open(fileName)
-        try {
-            bitMappings = EmvBitStringParser.parse(IOUtils.readLines(input))
-        } catch (e: IOException) {
-            throw RuntimeException(e)
-        } finally {
-            IOUtils.closeQuietly(input)
-        }
-        this.maxLength = findMaxLengthInBytes() * 2
+  init {
+    val input = ClasspathIO.open(fileName)
+    try {
+      bitMappings = EmvBitStringParser.parse(IOUtils.readLines(input))
+    } catch (e: IOException) {
+      throw RuntimeException(e)
+    } finally {
+      IOUtils.closeQuietly(input)
     }
+    this.maxLength = findMaxLengthInBytes() * 2
+  }
 
-    override fun getMaxLength(): Int = maxLength
+  override fun getMaxLength(): Int = maxLength
 
-    private fun findMaxLengthInBytes(): Int {
-        if (bitMappings.isEmpty()) {
-            return 0
-        }
-        fun max(a: Int, b: Int): Int = if ((a >= b)) a else b
-        return bitMappings.map { it.getStartBytesOffset() + it.getLengthInBytes() }.reduce(::max)
+  private fun findMaxLengthInBytes(): Int {
+    if (bitMappings.isEmpty()) {
+      return 0
     }
+    fun max(a: Int, b: Int): Int = if ((a >= b)) a else b
+    return bitMappings.map { it.getStartBytesOffset() + it.getLengthInBytes() }.reduce(::max)
+  }
 
-    override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
-        val decoded = ArrayList<DecodedData>()
-        val bits = fromHex(input)
-        for (field in bitMappings) {
-            val v = field.getValueIn(bits)
-            if (v != null) {
-                val fieldStartIndex = startIndexInBytes + field.getStartBytesOffset()
-                decoded.add(DecodedData.primitive(field.getPositionIn(if (showFieldHexInDecoding) bits else null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()))
-            }
-        }
-        return decoded
+  override fun decode(input: String, startIndexInBytes: Int, session: DecodeSession): List<DecodedData> {
+    val decoded = ArrayList<DecodedData>()
+    val bits = fromHex(input)
+    for (field in bitMappings) {
+      val v = field.getValueIn(bits)
+      if (v != null) {
+        val fieldStartIndex = startIndexInBytes + field.getStartBytesOffset()
+        decoded.add(DecodedData.primitive(field.getPositionIn(if (showFieldHexInDecoding) bits else null), v, fieldStartIndex, fieldStartIndex + field.getLengthInBytes()))
+      }
     }
+    return decoded
+  }
 
-    override fun validate(input: String?): String? {
-        if (input == null || input.length != maxLength) {
-            return "Value must be exactly $maxLength characters"
-        }
-        if (!ISOUtil.isValidHexString(input)) {
-            return "Value must contain only the characters 0-9 and A-F"
-        }
-        return null
+  override fun validate(input: String?): String? {
+    if (input == null || input.length != maxLength) {
+      return "Value must be exactly $maxLength characters"
     }
+    if (!ISOUtil.isValidHexString(input)) {
+      return "Value must contain only the characters 0-9 and A-F"
+    }
+    return null
+  }
 
 }

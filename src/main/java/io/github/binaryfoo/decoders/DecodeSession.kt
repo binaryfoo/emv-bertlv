@@ -10,12 +10,12 @@ import java.util.*
 
 class DecodeSession : HashMap<Tag, String>() {
 
-    var firstGenerateACCommand: Boolean = true
-    var tagMetaData: TagMetaData? = null
-    var currentCommand: APDUCommand? = null
-    var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
-    var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
-    var signedDynamicAppData: String? = null
-    var tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode
+  var firstGenerateACCommand: Boolean = true
+  var tagMetaData: TagMetaData? = null
+  var currentCommand: APDUCommand? = null
+  var issuerPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
+  var iccPublicKeyCertificate: RecoveredPublicKeyCertificate? = null
+  var signedDynamicAppData: String? = null
+  var tagRecognitionMode: TagRecognitionMode = CommonVendorErrorMode
 
 }
