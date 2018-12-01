@@ -1,6 +1,6 @@
 package io.github.binaryfoo
 
-import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.File
 import java.nio.file.Files
@@ -21,7 +21,7 @@ class RegressionTest {
 
     private fun execute(name: String, meta: String = "EMV") {
         val (input, expectedOutput) = loadCase(name)
-        assertThat(decode(input, meta), DecodedAsStringMatcher(expectedOutput))
+        assertEquals(expectedOutput, decode(input, meta).toSimpleString(""))
     }
 
     private fun loadCase(name: String): Pair<String, String> {

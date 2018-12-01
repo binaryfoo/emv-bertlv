@@ -17,7 +17,7 @@ R-APDU: 9000
       SFI 2 record 1
       SFI 3 records 3-4
 C-APDU: Read Record: SFI 1 record 1
-00000000: Failed to decode: Index: 0, Size: 0
+00000000: Failed to decode: Index 0 out-of-bounds for length 0
 C-APDU: Read Record: SFI 2 record 1
 R-APDU: 9000
   70 (response template): 5A0847613400000000508C159F02069F03069F1A0295055F2A029A03...0000
