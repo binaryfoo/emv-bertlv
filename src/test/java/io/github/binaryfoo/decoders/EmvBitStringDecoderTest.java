@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 public class EmvBitStringDecoderTest {
 
   @Test
-  public void decodeSomeBits() throws Exception {
+  public void decodeSomeBits() {
     EmvBitStringDecoder decoder = decoderFor("(1,8)=1 & (1,7)=1 : One\n" +
         "(1,8)=1 & (1,7)=0 : Two\n" +
         "(2,1)=1 : Three");
@@ -32,7 +32,7 @@ public class EmvBitStringDecoderTest {
   }
 
   @Test
-  public void canIncludeHexStringInFieldDescription() throws Exception {
+  public void canIncludeHexStringInFieldDescription() {
     EmvBitStringDecoder decoder = decoderFor("(1,8)=1 & (1,7)=0 : Two", true);
 
     List<DecodedData> decoded = decoder.decode("8000", 0, new DecodeSession());
@@ -40,7 +40,7 @@ public class EmvBitStringDecoderTest {
   }
 
   @Test
-  public void decodeNumericField() throws Exception {
+  public void decodeNumericField() {
     EmvBitStringDecoder decoder = decoderFor("(1,8-5)=INT : A number\n");
 
     int startIndex = 4;
@@ -51,7 +51,7 @@ public class EmvBitStringDecoderTest {
   }
 
   @Test
-  public void decodeFullByteMatchField() throws Exception {
+  public void decodeFullByteMatchField() {
     EmvBitStringDecoder decoder = decoderFor("(1)=0x01 : Bit 1\n(1)=0x3F : Three F\n(2)=0x81 : Four\n");
 
     assertThat(decoder.decode("01", 0, new DecodeSession()), hasItem(decodedAs("Byte 1 = 0x01", "Bit 1")));
@@ -61,12 +61,12 @@ public class EmvBitStringDecoderTest {
   }
 
   @Test
-  public void ignoreCommentsAndBlankLines() throws Exception {
+  public void ignoreCommentsAndBlankLines() {
     decoderFor("# comment\n\n\n");
   }
 
   @Test
-  public void maxLength() throws Exception {
+  public void maxLength() {
     EmvBitStringDecoder oneByteDecoder = decoderFor("(1,1)=1:A");
     assertThat(oneByteDecoder.getMaxLength(), is(2));
 

@@ -24,7 +24,7 @@ public class CVMResultsDecoderTest {
   }
 
   @Test
-  public void testDecodeInvalidValue() throws Exception {
+  public void testDecodeInvalidValue() {
     CVMResultsDecoder decoder = new CVMResultsDecoder();
     List<DecodedData> expected = Arrays.asList(
         DecodedData.primitive("3F", "Unknown", 0, 1),

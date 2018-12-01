@@ -3,7 +3,6 @@ package io.github.binaryfoo.tlv;
 import org.junit.Test;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
@@ -23,74 +22,74 @@ public class TagTest {
   private static final byte[] TAG_9FC8C8 = {(byte) 0x9f, (byte) 0xC8, (byte) 0xC8};
 
   @Test
-  public void testHexStringFactoryMethod() throws Exception {
+  public void testHexStringFactoryMethod() {
     Tag tag = Tag.fromHex("9FC81A");
-    assertTrue(Arrays.equals(TAG_9FC81A, tag.getByteArray()));
+    assertArrayEquals(TAG_9FC81A, tag.getByteArray());
   }
 
   @Test
-  public void testConstructTagWithNull() throws Exception {
+  public void testConstructTagWithNull() {
     doIllegalArgumentTest(null);
   }
 
   @Test
-  public void testConstructTagWithEmptyByteArray() throws Exception {
+  public void testConstructTagWithEmptyByteArray() {
     doIllegalArgumentTest(new byte[]{});
   }
 
   @Test
-  public void testConstructTagWithNegative1() throws Exception {
+  public void testConstructTagWithNegative1() {
     doIllegalArgumentTest(TAG_NEGATIVE_1);
   }
 
   @Test
-  public void testConstructTagWith1F() throws Exception {
+  public void testConstructTagWith1F() {
     doIllegalArgumentTest(TAG_1F);
   }
 
   @Test
-  public void testConstructTagWith3F() throws Exception {
+  public void testConstructTagWith3F() {
     doIllegalArgumentTest(TAG_3F);
   }
 
   @Test
-  public void testConstructTagWithE1() throws Exception {
+  public void testConstructTagWithE1() {
     doValidTest(TAG_E1);
   }
 
   @Test
-  public void testConstructTagWith9F39() throws Exception {
+  public void testConstructTagWith9F39() {
     doValidTest(TAG_9F39);
   }
 
   @Test
-  public void testConstructTagWith9F1A() throws Exception {
+  public void testConstructTagWith9F1A() {
     doValidTest(TAG_9F1A);
   }
 
   @Test
-  public void testConstructTagWith9FC8() throws Exception {
+  public void testConstructTagWith9FC8() {
     doIllegalArgumentTest(TAG_9FC8);
   }
 
   @Test
-  public void testConstructTagWith9FC81A() throws Exception {
+  public void testConstructTagWith9FC81A() {
     doValidTest(TAG_9FC81A);
   }
 
   @Test
-  public void testConstructTagWith9F1A1A() throws Exception {
+  public void testConstructTagWith9F1A1A() {
     doIllegalArgumentTest(TAG_9F1A1A);
   }
 
   @Test
-  public void testConstructTagWith9FC8C8() throws Exception {
+  public void testConstructTagWith9FC8C8() {
     doIllegalArgumentTest(TAG_9FC8C8);
   }
 
   private void doValidTest(byte[] bytes) {
     Tag tag = new Tag(bytes, true);
-    assertTrue(Arrays.equals(bytes, tag.getByteArray()));
+    assertArrayEquals(bytes, tag.getByteArray());
   }
 
   private void doIllegalArgumentTest(byte[] bytes) {
@@ -102,14 +101,14 @@ public class TagTest {
   }
 
   @Test
-  public void testIsConstructed() throws Exception {
+  public void testIsConstructed() {
     assertTrue(Tag.fromHex("21").isConstructed());
     assertFalse(Tag.fromHex("01").isConstructed());
     assertFalse(Tag.fromHex("8F").isConstructed());
   }
 
   @Test
-  public void testParse() throws Exception {
+  public void testParse() {
     doTestParse(TAG_E1);
     doTestParse(TAG_9F39);
     doTestParse(TAG_9F1A);
@@ -117,7 +116,7 @@ public class TagTest {
   }
 
   @Test
-  public void testParseListOfTags() throws Exception {
+  public void testParseListOfTags() {
     ByteBuffer byteBuffer = ByteBuffer.allocate(20);
     byteBuffer.put(TAG_E1);
     byteBuffer.put(TAG_9F39);
@@ -133,13 +132,13 @@ public class TagTest {
   }
 
   @Test
-  public void nonStandard9F84() throws Exception {
+  public void nonStandard9F84() {
     Tag parsedTag = Tag.parse(asBuffer("9F84"), new QuirkListTagMode(Collections.singleton("9F84")));
     assertThat(parsedTag.getHexString(), is("9F84"));
   }
 
   @Test
-  public void commonVendorErrorMode() throws Exception {
+  public void commonVendorErrorMode() {
     assertThat(Tag.parse(asBuffer("9F81"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9F81"));
     assertThat(Tag.parse(asBuffer("9F8A"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9F8A"));
     assertThat(Tag.parse(asBuffer("9F8F"), CommonVendorErrorMode.INSTANCE).getHexString(), is("9F8F"));

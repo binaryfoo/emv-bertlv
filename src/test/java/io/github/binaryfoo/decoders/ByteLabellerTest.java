@@ -14,7 +14,7 @@ import static org.junit.Assert.assertThat;
 public class ByteLabellerTest {
 
   @Test
-  public void labelsByteLeftToRight() throws Exception {
+  public void labelsByteLeftToRight() {
     assertThat(labelFor("8000"), containsString("Byte 1"));
     assertThat(labelFor("0800"), containsString("Byte 1"));
     assertThat(labelFor("0080"), containsString("Byte 2"));
@@ -23,7 +23,7 @@ public class ByteLabellerTest {
   }
 
   @Test
-  public void labelsBitsRightToLeft() throws Exception {
+  public void labelsBitsRightToLeft() {
     assertThat(labelFor("80"), containsString("Bit 8"));
     assertThat(labelFor("40"), containsString("Bit 7"));
     assertThat(labelFor("20"), containsString("Bit 6"));
@@ -35,7 +35,7 @@ public class ByteLabellerTest {
   }
 
   @Test
-  public void decodeBits() throws Exception {
+  public void decodeBits() {
     int startIndexInBytes = 3;
     List<DecodedData> decoded = new ByteLabeller().decode("0080", startIndexInBytes, new DecodeSession());
     assertThat(decoded.size(), is(16));
@@ -48,7 +48,7 @@ public class ByteLabellerTest {
   }
 
   @Test
-  public void decodeAllOnes() throws Exception {
+  public void decodeAllOnes() {
     List<DecodedData> decoded = new ByteLabeller().decode("ffff", 0, new DecodeSession());
     assertThat(decoded.size(), is(16));
     for (int i = 0; i < 16; i++) {
@@ -57,7 +57,7 @@ public class ByteLabellerTest {
   }
 
   @Test
-  public void decodeAllZeroes() throws Exception {
+  public void decodeAllZeroes() {
     List<DecodedData> decoded = new ByteLabeller().decode("0000", 0, new DecodeSession());
     assertThat(decoded.size(), is(16));
     for (int i = 0; i < 16; i++) {

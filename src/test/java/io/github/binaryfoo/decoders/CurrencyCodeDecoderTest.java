@@ -10,7 +10,7 @@ public class CurrencyCodeDecoderTest {
   private CurrencyCodeDecoder decoder = new CurrencyCodeDecoder();
 
   @Test
-  public void decodeAUD() throws Exception {
+  public void decodeAUD() {
     String decoded = decoder.decode("0036");
     assertThat(decoded, is("AUD (Australian Dollar)"));
   }

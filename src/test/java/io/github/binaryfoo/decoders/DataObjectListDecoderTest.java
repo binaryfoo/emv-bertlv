@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 public class DataObjectListDecoderTest {
 
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "9F02069F03069F090295055F2A029A039C019F37049F35019F45029F4C089F3403";
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(EmvTags.METADATA);

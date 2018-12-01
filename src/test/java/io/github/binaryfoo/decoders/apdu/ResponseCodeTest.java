@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 public class ResponseCodeTest {
 
   @Test
-  public void decode() throws Exception {
+  public void decode() {
     assertThat(ResponseCode.lookup("9000").getDescription(), is("OK"));
   }
 }

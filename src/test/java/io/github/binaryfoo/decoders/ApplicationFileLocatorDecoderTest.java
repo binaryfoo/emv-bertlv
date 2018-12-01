@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 
 public class ApplicationFileLocatorDecoderTest {
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     int startIndexInBytes = 3;
     List<DecodedData> decoded = new ApplicationFileLocatorDecoder().decode("100102001801010118040400", startIndexInBytes, new DecodeSession());
     assertThat(decoded.get(0), is(DecodedData.primitive("", "SFI 2 records 1-2", startIndexInBytes, startIndexInBytes + 4)));

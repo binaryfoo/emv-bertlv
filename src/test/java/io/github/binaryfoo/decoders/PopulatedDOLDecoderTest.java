@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 public class PopulatedDOLDecoderTest {
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(QVsdcTags.METADATA);
     List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704:36000000000000001000000000000000003600000000000036120315000008E4C8", 0, session);
@@ -30,7 +30,7 @@ public class PopulatedDOLDecoderTest {
   }
 
   @Test
-  public void testDecodeTwoParameters() throws Exception {
+  public void testDecodeTwoParameters() {
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(QVsdcTags.METADATA);
     List<DecodedData> decoded = new PopulatedDOLDecoder().decode("9F66049F02069F03069F1A0295055F2A029A039C019F3704", "36000000000000001000000000000000003600000000000036120315000008E4C8", 0, session);
@@ -48,7 +48,7 @@ public class PopulatedDOLDecoderTest {
   }
 
   @Test
-  public void testDecodeIncludesPrimitiveElementsInPopulatedList() throws Exception {
+  public void testDecodeIncludesPrimitiveElementsInPopulatedList() {
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(QVsdcTags.METADATA);
     int startIndex = 12;

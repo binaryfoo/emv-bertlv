@@ -21,7 +21,7 @@ public class APDUSequenceDecoderTest {
   private Decoder decoder;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     ReplyAPDUDecoder replyAPDUDecoder = new ReplyAPDUDecoder(new TLVDecoder());
     decoder = new APDUSequenceDecoder(replyAPDUDecoder,
         new SelectCommandAPDUDecoder(),
@@ -32,7 +32,7 @@ public class APDUSequenceDecoderTest {
   }
 
   @Test
-  public void testOneSelectCommand() throws Exception {
+  public void testOneSelectCommand() {
     String input = "00A4040007A000000004101000";
 
     List<DecodedData> list = decoder.decode(input, 0, session);
@@ -43,7 +43,7 @@ public class APDUSequenceDecoderTest {
   }
 
   @Test
-  public void testOneGetProcessingOptionsCommand() throws Exception {
+  public void testOneGetProcessingOptionsCommand() {
     String input = "80A8000002830000";
 
     List<DecodedData> list = decoder.decode(input, 0, session);
@@ -54,7 +54,7 @@ public class APDUSequenceDecoderTest {
   }
 
   @Test
-  public void testOneSelectCommandPlusResponse() throws Exception {
+  public void testOneSelectCommandPlusResponse() {
     String line1 = "00A4040007A000000004101000";
     String line2 = "6F1C8407A0000000041010A511500F505043204D434420303420207632309000";
     String input = line1 + " " + line2;
@@ -73,7 +73,7 @@ public class APDUSequenceDecoderTest {
   }
 
   @Test
-  public void testGetMaximumLength() throws Exception {
+  public void testGetMaximumLength() {
     assertThat(decoder.getMaxLength(), is(Integer.MAX_VALUE));
   }
 }

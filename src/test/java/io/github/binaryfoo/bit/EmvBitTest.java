@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 public class EmvBitTest {
 
   @Test
-  public void decodeBits() throws Exception {
+  public void decodeBits() {
     Set<EmvBit> decoded = BitPackage.fromHex("0080");
     assertThat(decoded.size(), is(16));
     assertThat(decoded, hasItem(new EmvBit(1, 8, false)));
@@ -22,7 +22,7 @@ public class EmvBitTest {
   }
 
   @Test
-  public void decodeAllOnes() throws Exception {
+  public void decodeAllOnes() {
     List<EmvBit> decoded = new ArrayList<>(BitPackage.fromHex("ffff"));
     assertThat(decoded.size(), is(16));
     for (int i = 0; i < 16; i++) {
@@ -31,7 +31,7 @@ public class EmvBitTest {
   }
 
   @Test
-  public void decodeAllZeroes() throws Exception {
+  public void decodeAllZeroes() {
     List<EmvBit> decoded = new ArrayList<>(BitPackage.fromHex("0000"));
     assertThat(decoded.size(), is(16));
     for (int i = 0; i < 16; i++) {
@@ -40,7 +40,7 @@ public class EmvBitTest {
   }
 
   @Test
-  public void fromHexWithFirstByteNumber() throws Exception {
+  public void fromHexWithFirstByteNumber() {
     Set<EmvBit> bits = BitPackage.fromHex("00FF", 2);
     int bitsSeen = 0;
     for (EmvBit bit : bits) {

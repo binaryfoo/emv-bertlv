@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 
 public class ExternalAuthenticateAPDUDecoderTest {
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "008200000A0EC3EE4C45E247893030";
     int startIndex = 4;
     DecodeSession session = new DecodeSession();

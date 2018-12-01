@@ -13,12 +13,12 @@ public class IssuerApplicationDataDecoderTest {
   private IssuerApplicationDataDecoder decoder;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     decoder = new IssuerApplicationDataDecoder();
   }
 
   @Test
-  public void testDecodeVisaIAD() throws Exception {
+  public void testDecodeVisaIAD() {
     String input = "06010A03A4B8000F112233445566778899AABBCCDDEEFF";
     int startIndex = 5;
     DecodeSession session = new DecodeSession();
@@ -31,7 +31,7 @@ public class IssuerApplicationDataDecoderTest {
   }
 
   @Test
-  public void testDecodeVisaIADWithoutIssuerDiscretionaryData() throws Exception {
+  public void testDecodeVisaIADWithoutIssuerDiscretionaryData() {
     String input = "06010A03A00000";
     int startIndex = 5;
     DecodeSession session = new DecodeSession();
@@ -43,14 +43,14 @@ public class IssuerApplicationDataDecoderTest {
   }
 
   @Test
-  public void decodeJcbValue() throws Exception {
+  public void decodeJcbValue() {
     List<DecodedData> decoded = decoder.decode("0701010460040280", 0, new DecodeSession());
     assertThat(decoded.get(2).getRawData(), is("Card verification results"));
     assertThat(decoded.get(2).getDecodedData(), is("0460040280"));
   }
 
   @Test
-  public void decodeMasterCardValue() throws Exception {
+  public void decodeMasterCardValue() {
     List<DecodedData> decoded = decoder.decode("0110A78005022000693800000001999300FF", 0, new DecodeSession());
     assertThat(decoded.get(2).getRawData(), is("Card verification results"));
     assertThat(decoded.get(2).getDecodedData(), is("A78005022000"));
@@ -61,7 +61,7 @@ public class IssuerApplicationDataDecoderTest {
   }
 
   @Test
-  public void decodeMasterCardValue2() throws Exception {
+  public void decodeMasterCardValue2() {
     List<DecodedData> decoded = decoder.decode("0110A08001222000067500000000000000FF00000000000000FF", 0, new DecodeSession());
     assertThat(decoded.get(2).getRawData(), is("Card verification results"));
     assertThat(decoded.get(2).getDecodedData(), is("A08001222000"));

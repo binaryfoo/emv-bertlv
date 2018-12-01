@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 public class ReplyAPDUDecoderTest {
 
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "6F1C8407A0000000041010A511500F505043204D434420303420207632309000";
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(EmvTags.METADATA);
@@ -24,7 +24,7 @@ public class ReplyAPDUDecoderTest {
   }
 
   @Test
-  public void testReplyWithPDOL() throws Exception {
+  public void testReplyWithPDOL() {
     String input = "6F318407A0000000031010A52650095649534120544553549F38189F66049F02069F03069F1A0295055F2A029A039C019F37049000";
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(EmvTags.METADATA);
@@ -34,7 +34,7 @@ public class ReplyAPDUDecoderTest {
   }
 
   @Test
-  public void replyWithDDOL() throws Exception {
+  public void replyWithDDOL() {
     String input = "701B9F080200205F300202019F49039F37049F420201565F25031109019000";
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(EmvTags.METADATA);
@@ -44,7 +44,7 @@ public class ReplyAPDUDecoderTest {
   }
 
   @Test
-  public void status() throws Exception {
+  public void status() {
     String input = "9000";
     DecodeSession session = new DecodeSession();
     session.setTagMetaData(EmvTags.METADATA);

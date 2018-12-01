@@ -43,7 +43,7 @@ public class TerminalCapabilitiesDecoderTest {
   }
 
   @Test
-  public void testAllBitsSet() throws Exception {
+  public void testAllBitsSet() {
     List<DecodedData> actual = decoder.decode("FFFFFF", 0, new DecodeSession());
     assertEquals(24, actual.size());
   }

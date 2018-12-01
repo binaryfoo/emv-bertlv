@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class ComputeCryptoChecksumDecoderTest {
 
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "802A8E80040000000000";
     int startIndex = 5;
     DecodedData decodedData = new ComputeCryptoChecksumDecoder().decode(input, startIndex, new DecodeSession());

@@ -14,7 +14,7 @@ public class VisaCardVerificationResultsDecoderTest {
   private VisaCardVerificationResultsDecoder decoder = new VisaCardVerificationResultsDecoder();
 
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     int startIndex = 3;
     List<DecodedData> decoded = decoder.decode("03A4B800", startIndex, new DecodeSession());
     assertThat(decoded, is(Arrays.asList(
@@ -30,7 +30,7 @@ public class VisaCardVerificationResultsDecoderTest {
   }
 
   @Test
-  public void issuerScriptCount() throws Exception {
+  public void issuerScriptCount() {
     assertThat(decoder.decode("00000010", 0, new DecodeSession()).get(2).getDecodedData(), is("Issuer Script Commands processed on last transaction = 1"));
     assertThat(decoder.decode("00000020", 0, new DecodeSession()).get(2).getDecodedData(), is("Issuer Script Commands processed on last transaction = 2"));
     assertThat(decoder.decode("000000F0", 0, new DecodeSession()).get(2).getDecodedData(), is("Issuer Script Commands processed on last transaction = 15"));

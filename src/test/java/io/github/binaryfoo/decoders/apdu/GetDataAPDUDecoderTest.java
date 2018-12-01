@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 
 public class GetDataAPDUDecoderTest {
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "80CA9F1700";
     int startIndex = 3;
     DecodeSession session = new DecodeSession();

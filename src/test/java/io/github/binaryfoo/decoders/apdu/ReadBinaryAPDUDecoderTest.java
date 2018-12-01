@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class ReadBinaryAPDUDecoderTest {
 
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     DecodedData decoded = new ReadBinaryAPDUDecoder().decode("00B0000200", 0, new DecodeSession());
     assertThat(decoded.getRawData(), is("C-APDU: Read Binary"));
     assertThat(decoded.getDecodedData(), is("P1=0 P2=2"));

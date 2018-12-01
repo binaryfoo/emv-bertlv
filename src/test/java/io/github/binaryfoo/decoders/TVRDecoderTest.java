@@ -27,7 +27,7 @@ public class TVRDecoderTest {
   }
 
   @Test
-  public void testAllBitsSet() throws Exception {
+  public void testAllBitsSet() {
     List<DecodedData> actual = decoder.decode("FFFFFFFFFF", 0, new DecodeSession());
     assertEquals(27, actual.size());
   }

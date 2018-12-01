@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 
 public class VerifyPinAPDUDecoderTest {
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "0020000002AABB";
     int startIndex = 3;
     DecodeSession session = new DecodeSession();

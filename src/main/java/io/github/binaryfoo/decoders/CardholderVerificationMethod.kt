@@ -14,6 +14,6 @@ enum class CardholderVerificationMethod(val code: Int, val description: String) 
   NoCvmRequired(31, "No CVM required");
 
   companion object {
-    fun fromCode(code: Int): CardholderVerificationMethod? = values().firstOrNull() { it.code == code }
+    fun fromCode(code: Int): CardholderVerificationMethod? = values().firstOrNull { it.code == code }
   }
 }

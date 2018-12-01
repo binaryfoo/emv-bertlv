@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 
 public class GetChallengeAPDUDecoderTest {
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "0020000000";
     int startIndex = 3;
     DecodeSession session = new DecodeSession();

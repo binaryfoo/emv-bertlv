@@ -18,14 +18,14 @@ public class InternalAuthenticateAPDUDecoderTest {
   private InternalAuthenticateAPDUDecoder internalAuthenticateAPDUDecoder;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     session = new DecodeSession();
     session.setTagMetaData(METADATA);
     internalAuthenticateAPDUDecoder = new InternalAuthenticateAPDUDecoder();
   }
 
   @Test
-  public void testDecode() throws Exception {
+  public void testDecode() {
     String input = "008800001D000000100100000000000000003600000000000036141001003F9EAF3300";
     int startIndex = 4;
     DecodedData decodedData = internalAuthenticateAPDUDecoder.decode(input, startIndex, session);
@@ -36,7 +36,7 @@ public class InternalAuthenticateAPDUDecoderTest {
   }
 
   @Test
-  public void decodeWithDDOL() throws Exception {
+  public void decodeWithDDOL() {
     session.put(EmvTags.DDOL, "9F0206 9F0306 9F1A02 9505 5F2A02 9A03 9C01 9F3704".replace(" ", ""));
     String input = "00 88 00 00 1D 000000100100 000000000000 0036 0000000000 0036 141002 00 B77E064F 00".replace(" ", "");
     DecodedData decodedData = internalAuthenticateAPDUDecoder.decode(input, 0, session);

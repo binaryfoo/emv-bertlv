@@ -17,12 +17,12 @@ public class RootDecoderTest {
   private RootDecoder rootDecoder;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     rootDecoder = new RootDecoder();
   }
 
   @Test
-  public void keepTryingWhenDecodeFailsOnOneAPDU() throws Exception {
+  public void keepTryingWhenDecodeFailsOnOneAPDU() {
     String apdus = "00B2020C00\n" +
         "700E9F080200019F420209789F4A01829000\n" +
         "00AABBCCDDEE\n" +
@@ -32,7 +32,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void decodingResponseToGenerateACUSesCDOLInCommand() throws Exception {
+  public void decodingResponseToGenerateACUSesCDOLInCommand() {
     String apdus = "80AE40001F3030000000101000000000000000003602000080000036141002005563312100\n" +
         "80124000015C221DC28EB72FCF060201036400009000";
     List<DecodedData> decoded = decodeApdus(apdus);
@@ -59,7 +59,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void decodePutData() throws Exception {
+  public void decodePutData() {
     String apdus = "04DA9F58090098636D71A294BB85";
     List<DecodedData> decoded = decodeApdus(apdus);
     assertThat(decoded.get(0).getRawData(), is("C-APDU: Put Data"));
@@ -67,14 +67,14 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void decodeAIP() throws Exception {
+  public void decodeAIP() {
     List<DecodedData> decoded = rootDecoder.decode("4000", "EMV", EmvTags.APPLICATION_INTERCHANGE_PROFILE.toString());
     assertThat(decoded.get(0).getRawData(), is("4000 (Byte 1 Bit 7)"));
     assertThat(decoded.get(0).getDecodedData(), is("SDA supported"));
   }
 
   @Test
-  public void decodeStaticSignedData() throws Exception {
+  public void decodeStaticSignedData() {
     String apdus = "00 A4 04 00 07 A0 00 00 00 65 10 10 00\n" +
         "6F 32 84 07 A0 00 00 00 65 10 10 A5 27 50 0A 4A 43 42 20 43 72 65 64 69 74 87 01 01 5F 2D 04 6A 61 65 6E 9F 11 01 01 9F 12 0A 4A 43 42 20 43 72 65 64 69 74 90 00\n" +
         "00 B2 05 0C 00\n" +
@@ -119,7 +119,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void decodeDynamicSignedData_InternalAuthenticate() throws Exception {
+  public void decodeDynamicSignedData_InternalAuthenticate() {
     String apdus = "00 A4 04 00 08 A0 00 00 00 25 01 01 04 00\n" + // Command: select
         "6F 2A 84 08 A0 00 00 00 25 01 01 04 A5 1E 50 04 41 4D 45 58 87 01 01 9F 38 12 9F 1A 02 9F 33 03 9F 40 05 9F 1B 04 9F 09 02 9F 35 01 90 00 \n" + // Response: has AID
         "00 B2 01 0C 00\n" + // Command: read record
@@ -148,7 +148,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void decodedCombinedDataAuth_MagstripeMode() throws Exception {
+  public void decodedCombinedDataAuth_MagstripeMode() {
     String apdus = "00A404000E325041592E5359532E444446303100\n" +
         "6F36840E325041592E5359532E4444463031A524BF0C21611F4F08A0000000250109015010414D45524943414E20455850524553538701019000\n" +
         "00A4040008A00000002501090100\n" +
@@ -194,7 +194,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void addsBackgroundReadingToReadRecordCommand() throws Exception {
+  public void addsBackgroundReadingToReadRecordCommand() {
     String apdus = "00B2011400";
 
     List<DecodedData> decoded = decodeApdus(apdus);
@@ -202,7 +202,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void handleOddTag() throws Exception {
+  public void handleOddTag() {
     String expected = "5F20 (card holder name):  /\n" +
         "5F24 (card expiry): 150831\n" +
         "5F2D (language preference): ruen\n" +
@@ -279,7 +279,7 @@ public class RootDecoderTest {
   }
 
   @Test
-  public void handleOddDdol() throws Exception {
+  public void handleOddDdol() {
     String expected = "DF5D (Default DDOL - Default dynamic data auth object list): 000000\n" +
         "  Error: Failed parsing 000000: BufferUnderflowException\n";
     String tlv = "DF5D03000000";
