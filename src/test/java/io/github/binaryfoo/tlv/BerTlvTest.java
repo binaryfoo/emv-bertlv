@@ -250,20 +250,18 @@ public class BerTlvTest {
   }
 
   @Test
-  public void detailInExceptionForNegativeLength() {
-    try {
-      BerTlv.parse(ISOUtil.hex2byte("91FE4C94B779BC04"));
-      fail();
-    } catch (TlvParseException e) {
-      assertThat(e.getMessage(), is("Failed parsing TLV with tag 91: Bad length: -1799915264 < 0. Read 4 of 126 (0xFE) bytes used to encode length of TLV."));
-    }
-  }
-
-  @Test
   public void withNonStandardTag() {
     List<BerTlv> parsed = BerTlv.parseList(ISOUtil.hex2byte("9F84101C9291EA7DB1EA276A8C96999DF512A6"), true, new QuirkListTagMode(Collections.singleton("9F84")));
     assertThat(parsed.get(0).getTag().getHexString(), is("9F84"));
     assertThat(parsed.get(0).getValueAsHexString(), is("1C9291EA7DB1EA276A8C96999DF512A6"));
+  }
+
+  @Test
+  public void lengthWith0x80EncodedInSingleByte() {
+    String example = "709157134761739001010119D22122011143804400000F5F201A5541542041544D2F5465737420436172642030352020202020205F300202019F1F183131343338303434303030303030303030303030303030309F080200969F4401028C159F02069F03069F1A0295055F2A029A039C019F37048D178A029F02069F03069F1A0295055F2A029A039C019F37049F49039F3704";
+    List<BerTlv> tlvs = BerTlv.parseList(ISOUtil.hex2byte(example), true);
+    assertEquals(1, tlvs.size());
+    assertEquals(9, tlvs.get(0).getChildren().size());
   }
 }
 

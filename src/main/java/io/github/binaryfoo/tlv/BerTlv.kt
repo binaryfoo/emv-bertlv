@@ -186,9 +186,9 @@ abstract class BerTlv(val tag: Tag) {
 
     private fun parseLength(data: ByteBuffer): Int {
       val firstByte = data.get().toInt()
-      var length = 0
-      if ((firstByte and 0x80) == 0x80) {
-        var numberOfBytesToEncodeLength = (firstByte and 0x7F)
+      val numberOfBytesToEncodeLength = additionalBytesToEncodeLength(firstByte)
+      return if (numberOfBytesToEncodeLength != null) {
+        var length = 0
         for (i in 1..numberOfBytesToEncodeLength) {
           if (!data.hasRemaining()) {
             throw IllegalArgumentException("Bad length: expected to read $numberOfBytesToEncodeLength (0x${firstByte.toByte().toHexString()}) bytes. Only have ${i - 1}.")
@@ -201,10 +201,22 @@ abstract class BerTlv(val tag: Tag) {
             throw IllegalArgumentException("Bad length: $length < 0. Read $i of $numberOfBytesToEncodeLength (0x${firstByte.toByte().toHexString()}) bytes used to encode length of TLV.")
           }
         }
+        length
       } else {
-        length = firstByte
+        firstByte and 0x000000FF
       }
-      return length
+    }
+
+    private fun additionalBytesToEncodeLength(firstByte: Int): Int? {
+      val numberOfBytesToEncodeLength = (firstByte and 0x7F)
+      // Bit 8 == 1 indicates length is encoded in a variable number of bytes
+      // Bit 8 == 0 indicates length is encoded in a single byte (<128)
+      // Assumption: Bit 8 == 1 and >5 bytes implies a single byte (128..254)
+      return if ((firstByte and 0x80) == 0x80 && numberOfBytesToEncodeLength <= 5) {
+        numberOfBytesToEncodeLength
+      } else {
+        null
+      }
     }
 
     @JvmStatic

@@ -1,5 +1,6 @@
 package io.github.binaryfoo
 
+import io.github.binaryfoo.DecodedData.Companion.asSimpleString
 import io.github.binaryfoo.decoders.annotator.BackgroundReading
 import io.github.binaryfoo.hex.HexDumpElement
 import io.github.binaryfoo.tlv.BerTlv
@@ -192,6 +193,24 @@ data class DecodedData(
       return matches
     }
 
+    @JvmStatic
+    fun asSimpleString(decoded: List<DecodedData>, indent: String = ""): String {
+      val b = StringBuilder()
+      for (d in decoded) {
+        b.append(indent)
+        val decodedData = d.getDecodedData()
+        if ("" != d.rawData) {
+          b.append(d.rawData).append(":")
+          if ("" != decodedData) {
+            b.append(" ")
+          }
+        }
+        b.append(decodedData).append("\n")
+        b.append(d.children.toSimpleString("$indent  "))
+      }
+      return b.toString()
+    }
+
   }
 
 }
@@ -221,18 +240,5 @@ fun List<DecodedData>.findAllForValue(value: String): List<DecodedData> {
 }
 
 fun List<DecodedData>.toSimpleString(indent: String = ""): String {
-  val b = StringBuilder()
-  for (d in this) {
-    b.append(indent)
-    val decodedData = d.getDecodedData()
-    if ("" != d.rawData) {
-      b.append(d.rawData).append(":")
-      if ("" != decodedData) {
-        b.append(" ")
-      }
-    }
-    b.append(decodedData).append("\n")
-    b.append(d.children.toSimpleString(indent + "  "))
-  }
-  return b.toString()
+  return asSimpleString(this, indent)
 }
