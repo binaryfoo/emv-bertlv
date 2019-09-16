@@ -92,6 +92,7 @@ public class EmvTags {
   public static final Tag CDOL_2 = fromHex("8D");
   public static final Tag APPLICATION_USAGE_CONTROL = fromHex("9F07");
   public static final Tag CARD_APPLICATION_VERSION_NUMBER = fromHex("9F08");
+  public static final Tag APPLICATION_SELECTION_REGISTERED_PROPRIETARY_DATA = fromHex("9F0A");
   public static final Tag IAC_DEFAULT = fromHex("9F0D");
   public static final Tag IAC_DENIAL = fromHex("9F0E");
   public static final Tag IAC_ONLINE = fromHex("9F0F");
