@@ -24,7 +24,7 @@ Dependency Information (available from [Maven Central](https://repo1.maven.org/m
         <dependency>
             <groupId>io.github.binaryfoo</groupId>
             <artifactId>emv-bertlv</artifactId>
-            <version>0.1.6</version>
+            <version>0.1.8</version>
         </dependency>
         
 To get started decoding call decode() on [RootDecoder](https://github.com/binaryfoo/emv-bertlv/blob/master/src/main/java/io/github/binaryfoo/RootDecoder.java).
