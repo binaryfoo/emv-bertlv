@@ -5,6 +5,7 @@ import io.github.binaryfoo.decoders.PrimitiveDecoder
 import io.github.binaryfoo.res.ClasspathIO
 import io.github.binaryfoo.tlv.Tag
 import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.LoaderOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import org.yaml.snakeyaml.representer.Representer
@@ -67,7 +68,7 @@ class TagMetaData(private val metadata: MutableMap<String, TagInfo>) {
 
     @JvmStatic
     fun load(name: String): TagMetaData {
-      val yaml = Yaml(Constructor(), Representer(), DumperOptions(), object : Resolver() {
+      val yaml = Yaml(Constructor(LoaderOptions()), Representer(DumperOptions()), DumperOptions(), object : Resolver() {
         override fun addImplicitResolvers() {
           // leave everything as strings
         }
